@@ -18,7 +18,7 @@ public class AppConstants {
 	public static boolean IS_SERVICE_RUNNING = false;
 
 	/** Use In Service for Retrieving all running Module */
-	public static String APP_BASE_PACKAGE = "in.sel.election.loksabha2014";
+	public static String APP_BASE_PACKAGE = "in.sel.indianbabyname";
 
 	public static int sort = 0;
 

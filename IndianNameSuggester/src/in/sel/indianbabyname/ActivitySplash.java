@@ -2,6 +2,7 @@ package in.sel.indianbabyname;
 
 import in.sel.model.M_Name;
 import in.sel.utility.AppLogger;
+import in.sel.utility.Utility;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -56,7 +57,7 @@ public class ActivitySplash extends Activity {
 
 	public void insertValue() {
 		// boolean isDrop = this.deleteDatabase(DatabaseHelper.DATABASE_NAME);
-
+		Utility t = new Utility();
 		/* Insert Database */
 		DatabaseHelper db = new DatabaseHelper(this);
 		// /db.executeStatement(dropDB);
@@ -65,9 +66,9 @@ public class ActivitySplash extends Activity {
 		int count = db.getTableRowCount(TableContract.Name.TABLE_NAME, null);
 		if (count == 0) {
 			try {
-				InputStream im = getAssets().open("name.txt");
+				InputStream im = getAssets().open("name8.txt");
 				BufferedReader br = new BufferedReader(
-						new InputStreamReader(im));
+						new InputStreamReader(im, "UTF-8"));
 				String line = br.readLine();
 				List<M_Name> lst = new ArrayList<M_Name>();
 				do {
@@ -75,11 +76,13 @@ public class ActivitySplash extends Activity {
 					M_Name s1 = new M_Name(temp[0], temp[1], temp[2]);
 					lst.add(s1);
 				} while ((line = br.readLine()) != null);
-				db.insertName(lst);
+				//db.insertName(lst);
+				db.insertNameInsertHelperLock(lst);
 			} catch (IOException e) {
 				AppLogger.WriteIntoFile("state " + TAG + " -- " + e.toString());
 				Log.e("", e.toString());
 			}
+			System.out.println(t.getTime(t));
 		}
 	}
 

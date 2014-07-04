@@ -58,8 +58,7 @@ public class TableContract {
 	/*String List Of State*/
 	public interface Name
 	{
-		String TABLE_NAME = "Name";
-		String NAME_ID = "Id";
+		String TABLE_NAME = "BabyName";
 		String NAME_EN = "NameEn";
 		String NAME_MA = "NameMa";
 		String NAME_FRE = "NameFre";
@@ -67,7 +66,7 @@ public class TableContract {
 		
 		String SQL_CREATE = CREATE_TABLE+TABLE_NAME
 				    +OPEN_BRACE
-				    +NAME_ID+TYPE_INTEGER+PRIMARY_KEY+AUTO_INCREMENT+SEP_COMMA
+				    + AppColumn.CAUTO_ID + TYPE_INTEGER+PRIMARY_KEY+AUTO_INCREMENT+SEP_COMMA
 				    +NAME_EN+TYPE_TEXT+SEP_COMMA
 				    +NAME_MA+TYPE_TEXT+SEP_COMMA
 				    +NAME_FRE+TYPE_INTEGER+SEP_COMMA
@@ -75,7 +74,7 @@ public class TableContract {
 				    + UNIQUE 
 				     + OPEN_BRACE 
 				       + NAME_EN+SEP_COMMA
-				       + NAME_MA+SEP_COMMA
+				       + NAME_MA
 				     + CLOSE_BRACE + ON_CONFLICT_IGNORE
 				    +CLOSE_BRACE;
 		String SQL_DROP = DROP_TABLE+TABLE_NAME;

@@ -7,10 +7,10 @@ public class M_Name {
 	String frequency;
 	int id;
 
-	public M_Name(String name_ma, String name_en, String frequency) {
+	public M_Name(String name_en, String name_ma, String frequency) {
 		super();
-		this.name_ma = name_ma;
 		this.name_en = name_en;
+		this.name_ma = name_ma;
 		this.frequency = frequency;
 	}
 	
