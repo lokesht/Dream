@@ -1,4 +1,4 @@
-package in.sel.indiannamesuggester;
+package in.sel.indianbabyname;
 
 import android.app.Activity;
 import android.os.Bundle;

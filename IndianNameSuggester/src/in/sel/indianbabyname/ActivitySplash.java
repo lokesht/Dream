@@ -1,4 +1,4 @@
-package in.sel.indiannamesuggester;
+package in.sel.indianbabyname;
 
 import in.sel.model.M_Name;
 import in.sel.utility.AppLogger;

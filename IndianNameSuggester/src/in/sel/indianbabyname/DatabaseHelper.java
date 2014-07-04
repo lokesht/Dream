@@ -1,4 +1,4 @@
-package in.sel.indiannamesuggester;
+package in.sel.indianbabyname;
 
 import in.sel.exception.ValueNotInsertedException;
 import in.sel.model.M_Name;

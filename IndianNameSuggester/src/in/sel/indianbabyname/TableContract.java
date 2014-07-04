@@ -1,7 +1,7 @@
 /*Most of The column are self Explainable by Skipping that only few 
  * columns description I am maintaining*/
 
-package in.sel.indiannamesuggester;
+package in.sel.indianbabyname;
 
 
 public class TableContract {
