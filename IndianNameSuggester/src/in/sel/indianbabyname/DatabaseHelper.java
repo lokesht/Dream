@@ -5,13 +5,19 @@ import in.sel.model.M_Name;
 import in.sel.utility.AppConstants;
 import in.sel.utility.AppLogger;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils.InsertHelper;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -28,10 +34,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * version.
 	 */
 	public static final int DATABASE_VERSION = 1;
-	public static final String DATABASE_NAME = "BabyName2";
+	public static final String DB_NAME = "BabyName.sqlite";
+
+	private static String DB_PATH = "/data/data/in.sel.indianbabyname/databases/";
+	Context myContext;
 
 	public DatabaseHelper(Context context) {
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		super(context, DB_NAME, null, DATABASE_VERSION);
+		this.myContext = context;
 	}
 
 	@Override
@@ -46,6 +56,64 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			AppLogger.WriteIntoFile("Class Name --> DBHelper -- "
 					+ e.toString());
 		}
+	}
+
+	public void createDataBase() throws IOException {
+		boolean dbExist = checkDataBase();
+		if (dbExist) {
+			Log.v("log_tag", "database does exist");
+		} else {
+			Log.v("log_tag", "database does not exist");
+			this.getReadableDatabase();
+			try {
+				copyDataBase();
+			} catch (IOException e) {
+				throw new Error("Error copying database");
+			}
+		}
+	}
+
+	private void copyDataBase() throws IOException {
+		InputStream myInput = myContext.getAssets().open(DB_NAME);
+		String outFileName = DB_PATH + DB_NAME;
+		OutputStream myOutput = new FileOutputStream(outFileName);
+		byte[] buffer = new byte[1024];
+		int length;
+		while ((length = myInput.read(buffer)) > 0) {
+			myOutput.write(buffer, 0, length);
+		}
+		myOutput.flush();
+		myOutput.close();
+		myInput.close();
+	}
+
+	private boolean checkDataBase() {
+		SQLiteDatabase checkDB = null;
+		try {
+			String myPath = DB_PATH + DB_NAME;
+			checkDB = SQLiteDatabase.openDatabase(myPath, null,
+					SQLiteDatabase.NO_LOCALIZED_COLLATORS);
+		} catch (SQLiteException e) {
+			Log.v(TAG, e.toString() + "   database doesn't exists yet..");
+		}
+		if (checkDB != null) {
+			checkDB.close();
+		}
+		return checkDB != null;
+	}
+
+	public boolean openDataBase() throws SQLException {
+		String myPath = DB_PATH + DB_NAME;
+		db = SQLiteDatabase.openDatabase(myPath, null,
+				SQLiteDatabase.NO_LOCALIZED_COLLATORS);
+		return db != null;
+	}
+
+	@Override
+	public synchronized void close() {
+		if (db != null)
+			db.close();
+		super.close();
 	}
 
 	@Override
@@ -236,18 +304,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 		return rowid;
 	}
-	
+
 	/* Insert state */
 	public long insertNameInsertHelperLock(List<M_Name> lsData) {
 		long rowid = 0;
 		InsertHelper ih = new InsertHelper(getWritableDatabase(),
 				TableContract.Name.TABLE_NAME);
-		
+
 		final int nEn = ih.getColumnIndex(TableContract.Name.NAME_EN);
 		final int nMa = ih.getColumnIndex(TableContract.Name.NAME_MA);
 		final int nFre = ih.getColumnIndex(TableContract.Name.NAME_FRE);
 		try {
-			
+
 			this.db.setLockingEnabled(false);
 			for (M_Name obj : lsData) {
 

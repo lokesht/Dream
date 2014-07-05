@@ -34,7 +34,7 @@ public class ActivitySplash extends Activity {
 		new AsyncTask<Void, Integer, String>() {
 
 			protected void onPreExecute() {
-
+              
 			};
 
 			@Override
@@ -66,6 +66,7 @@ public class ActivitySplash extends Activity {
 		int count = db.getTableRowCount(TableContract.Name.TABLE_NAME, null);
 		if (count == 0) {
 			try {
+			//	db.createDataBase();
 				InputStream im = getAssets().open("name8.txt");
 				BufferedReader br = new BufferedReader(
 						new InputStreamReader(im, "UTF-8"));
@@ -89,7 +90,7 @@ public class ActivitySplash extends Activity {
 	/* */
 	public void writeDataBase() {
 		File f = new File("/data/data/" + this.getPackageName() + "/databases/"
-				+ DatabaseHelper.DATABASE_NAME);
+				+ DatabaseHelper.DB_NAME);
 		FileInputStream fis = null;
 		FileOutputStream fos = null;
 
@@ -99,7 +100,7 @@ public class ActivitySplash extends Activity {
 			 */
 			fis = new FileInputStream(f);
 			fos = new FileOutputStream("/mnt/sdcard/Download/"
-					+ DatabaseHelper.DATABASE_NAME + ".db");
+					+ DatabaseHelper.DB_NAME + ".db");
 			while (true) {
 				int i = fis.read();
 				if (i != -1) {
