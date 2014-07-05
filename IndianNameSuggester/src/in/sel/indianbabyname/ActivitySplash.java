@@ -51,6 +51,7 @@ public class ActivitySplash extends Activity {
 				/**/
 				Intent in = new Intent(ActivitySplash.this, ActivityMain.class);
 				startActivity(in);
+				finish();
 			};
 		}.execute();
 	}
@@ -63,28 +64,28 @@ public class ActivitySplash extends Activity {
 		// /db.executeStatement(dropDB);
 
 		/* State Entry */
-		int count = db.getTableRowCount(TableContract.Name.TABLE_NAME, null);
-		if (count == 0) {
+		//int count = db.getTableRowCount(TableContract.Name.TABLE_NAME, null);
+		//if (count == 0) {
 			try {
-			//	db.createDataBase();
-				InputStream im = getAssets().open("name8.txt");
-				BufferedReader br = new BufferedReader(
-						new InputStreamReader(im, "UTF-8"));
-				String line = br.readLine();
-				List<M_Name> lst = new ArrayList<M_Name>();
-				do {
-					String temp[] = line.split(",");
-					M_Name s1 = new M_Name(temp[0], temp[1], temp[2]);
-					lst.add(s1);
-				} while ((line = br.readLine()) != null);
-				//db.insertName(lst);
-				db.insertNameInsertHelperLock(lst);
+				db.createDataBase();
+//				InputStream im = getAssets().open("name8.txt");
+//				BufferedReader br = new BufferedReader(
+//						new InputStreamReader(im, "UTF-8"));
+//				String line = br.readLine();
+//				List<M_Name> lst = new ArrayList<M_Name>();
+//				do {
+//					String temp[] = line.split(",");
+//					M_Name s1 = new M_Name(temp[0], temp[1], temp[2]);
+//					lst.add(s1);
+//				} while ((line = br.readLine()) != null);
+//				//db.insertName(lst);
+//				db.insertNameInsertHelperLock(lst);
 			} catch (IOException e) {
 				AppLogger.WriteIntoFile("state " + TAG + " -- " + e.toString());
 				Log.e("", e.toString());
 			}
 			System.out.println(t.getTime(t));
-		}
+		//}
 	}
 
 	/* */

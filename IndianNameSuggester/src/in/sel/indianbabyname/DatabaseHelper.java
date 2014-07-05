@@ -47,9 +47,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		try {
-			db.execSQL(TableContract.TimeStamp.SQL_CREATE);
-			db.execSQL(TableContract.Name.SQL_CREATE);
-			Log.i(TAG, "success");
+//			db.execSQL(TableContract.TimeStamp.SQL_CREATE);
+//			db.execSQL(TableContract.Name.SQL_CREATE);
+//			Log.i(TAG, "success");
 		} catch (Exception e) {
 			if (AppConstants.DEBUG)
 				Log.e(TAG, e.toString());
