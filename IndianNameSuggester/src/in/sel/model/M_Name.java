@@ -1,20 +1,23 @@
 package in.sel.model;
 
-public class M_Name {
+import java.util.Collection;
+import java.util.Comparator;
+
+public class M_Name implements Comparator<M_Name> {
 
 	String name_ma;
 	String name_en;
-	String frequency;
+	int frequency;
 	int id;
 
-	public M_Name(String name_en, String name_ma, String frequency) {
+	public M_Name(String name_en, String name_ma, int frequency) {
 		super();
 		this.name_en = name_en;
 		this.name_ma = name_ma;
 		this.frequency = frequency;
 	}
-	
-	public M_Name(String name_ma, String name_en, String frequency, int id) {
+
+	public M_Name(String name_ma, String name_en, int frequency, int id) {
 		super();
 		this.name_ma = name_ma;
 		this.name_en = name_en;
@@ -38,11 +41,11 @@ public class M_Name {
 		this.name_en = name_en;
 	}
 
-	public String getFrequency() {
+	public int getFrequency() {
 		return frequency;
 	}
 
-	public void setFrequency(String frequency) {
+	public void setFrequency(int frequency) {
 		this.frequency = frequency;
 	}
 
@@ -52,5 +55,10 @@ public class M_Name {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	@Override
+	public int compare(M_Name lhs, M_Name rhs) {
+		return lhs.getFrequency()-rhs.getFrequency();
 	}
 }

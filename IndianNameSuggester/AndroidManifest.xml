@@ -22,7 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="in.sel.indianbabyname.ActivityMain" />
+         <activity android:name="in.sel.indianbabyname.ActivityMain" />
+        <activity android:name="in.sel.indianbabyname.ActivityDisplayName" />
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
