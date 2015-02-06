@@ -14,6 +14,9 @@ public class ActivityMain extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+	}
+
+	public void display() {
 		String[] letter = new String[] { "A", "B", "C", "D", "E", "F", "G",
 				"H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S",
 				"T", "U", "V", "W", "X", "Y", "Z" };
@@ -21,6 +24,9 @@ public class ActivityMain extends Activity {
 				android.R.layout.simple_list_item_1, letter);
 		GridView gvAl = (GridView) findViewById(R.id.gv_alphabet);
 		gvAl.setAdapter(adapter);
+		
+		
+		/** Grid View Test*/
 	}
 
 	@Override

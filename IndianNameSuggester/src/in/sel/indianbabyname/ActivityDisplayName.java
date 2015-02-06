@@ -28,12 +28,13 @@ public class ActivityDisplayName extends Activity {
 						TableContract.Name.NAME_EN, TableContract.Name.NAME_MA,
 						TableContract.Name.NAME_FRE }, where);
 
+		/** */
 		List<M_Name> name = getName(c);
 		Collections.sort(name, new Comparator<M_Name>() {
 
 			@Override
 			public int compare(M_Name lhs, M_Name rhs) {
-				return rhs.getFrequency()-lhs.getFrequency();
+				return rhs.getFrequency() - lhs.getFrequency();
 			}
 		});
 		ListView lsName = (ListView) findViewById(R.id.lv_alphabet);
@@ -41,6 +42,7 @@ public class ActivityDisplayName extends Activity {
 		lsName.setAdapter(na);
 	}
 
+	/** */
 	List<M_Name> getName(Cursor c) {
 		List<M_Name> lsName = new ArrayList<M_Name>();
 		if (c != null && c.getCount() > 0) {
