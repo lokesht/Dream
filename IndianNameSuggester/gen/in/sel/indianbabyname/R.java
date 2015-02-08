@@ -178,50 +178,101 @@ public final class R {
         public static final int gray_lutech_collection_sidebar_divider=0x7f04000b;
     }
     public static final class dimen {
-        /**  Default screen margins, per the Android Design guidelines. 
-
+        /** 
          Example customization of dimensions originally defined in res/values/dimens.xml
          (such as screen margins) for screens with more than 820dp of available width. This
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
     
          */
-        public static final int activity_horizontal_margin=0x7f050000;
-        public static final int activity_vertical_margin=0x7f050001;
-        public static final int list_vertical_margin=0x7f050002;
-        /** 
-         Per the design guidelines, navigation drawers should be between 240dp and 320dp:
-         https://developer.android.com/design/patterns/navigation-drawer.html
-
-    
+        public static final int activity_horizontal_margin=0x7f050001;
+        public static final int activity_vertical_margin=0x7f050000;
+        public static final int def_lutech_margin_horizontal=0x7f050005;
+        public static final int def_lutech_margin_vertical=0x7f050004;
+        /**  Default screen margins,as per the Android Design guidelines. 
          */
-        public static final int navigation_drawer_width=0x7f050003;
-        public static final int text_size_default=0x7f050004;
+        public static final int def_margin_horizontal=0x7f050002;
+        public static final int def_margin_vertical=0x7f050003;
+        /**  Default Min height , For Spinner, TextView, EditText 
+         */
+        public static final int def_min_height=0x7f05000c;
+        /**  Defalult Padding 
+         */
+        public static final int def_padding=0x7f050010;
+        /**  folder structure height 
+         */
+        public static final int folder_height=0x7f05000f;
+        /**  Default screen margins, per the Android Design guidelines. 
+         */
+        public static final int form_header_height=0x7f05000b;
+        public static final int height_sales_cart=0x7f050019;
+        /**  Submenu Icon Height 
+         */
+        public static final int icon_height=0x7f05000d;
+        /**  Submenu Icon Width 
+         */
+        public static final int icon_width=0x7f05000e;
+        public static final int no_of_grid_column=0x7f050018;
+        public static final int products_image_height=0x7f050017;
+        public static final int products_image_width=0x7f050016;
+        public static final int space_bottom=0x7f050015;
+        public static final int space_left=0x7f050012;
+        public static final int space_right=0x7f050013;
+        public static final int space_top=0x7f050014;
+        /**  Customize Text size 
+         */
+        public static final int ts_default=0x7f05000a;
+        public static final int ts_large=0x7f050009;
+        public static final int ts_medium=0x7f050008;
+        /**  Default Text size as per the Android Design guidelines 
+         */
+        public static final int ts_micro=0x7f050006;
+        public static final int ts_small=0x7f050007;
+        /**  Dimension of PopupWindow 
+         */
+        public static final int width_window=0x7f050011;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int ic_blank_img=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int ic_lutect_indi_border_circle=0x7f020002;
+        public static final int smile3=0x7f020003;
+        public static final int test=0x7f020004;
     }
     public static final class id {
-        public static final int action_settings=0x7f090008;
-        public static final int c1=0x7f090005;
-        public static final int c2=0x7f090006;
-        public static final int c3=0x7f090007;
-        public static final int container=0x7f090000;
-        public static final int gv_alphabet=0x7f090001;
-        public static final int lv_alphabet=0x7f090002;
-        public static final int progressbar_Horizontal=0x7f090004;
-        public static final int relative_container=0x7f090003;
+        public static final int action_about=0x7f090011;
+        public static final int action_settings=0x7f090010;
+        public static final int c1=0x7f09000d;
+        public static final int c2=0x7f09000e;
+        public static final int c3=0x7f09000f;
+        public static final int container=0x7f090001;
+        public static final int gv_alphabet=0x7f090002;
+        public static final int iv_product=0x7f09000b;
+        public static final int iv_product_cover=0x7f09000a;
+        public static final int lv_alphabet=0x7f090007;
+        public static final int progressbar_Horizontal=0x7f090009;
+        public static final int relative_container=0x7f090008;
+        public static final int tvEnglish=0x7f090004;
+        public static final int tvFrequency=0x7f090006;
+        public static final int tvHindi=0x7f090005;
+        public static final int tvTotal=0x7f090003;
+        public static final int tv_about=0x7f090000;
+        public static final int tv_alphabet=0x7f09000c;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int activity_name_list=0x7f030001;
-        public static final int activity_splash=0x7f030002;
-        public static final int fragment_main=0x7f030003;
-        public static final int item_list_name=0x7f030004;
+        public static final int activity_about=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int activity_name_list=0x7f030002;
+        public static final int activity_splash=0x7f030003;
+        public static final int fragment_main=0x7f030004;
+        public static final int item_alphabet=0x7f030005;
+        public static final int item_list_name=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f080000;
     }
     public static final class string {
+        public static final int about=0x7f060003;
+        public static final int about_info=0x7f060004;
         public static final int action_settings=0x7f060002;
         public static final int app_name=0x7f060000;
         public static final int hello_world=0x7f060001;

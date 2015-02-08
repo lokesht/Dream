@@ -2,7 +2,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/AliceBlue"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tvTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:paddingBottom="5dp"
+            android:paddingLeft="@dimen/def_margin_vertical"
+            android:paddingRight="@dimen/def_margin_vertical"
+            android:paddingTop="5dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/def_margin_vertical"
+            android:layout_marginRight="@dimen/def_margin_vertical"
+            android:background="@color/Black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:paddingLeft="@dimen/def_margin_vertical"
+            android:paddingRight="@dimen/def_margin_vertical"
+            android:paddingTop="10dp"
+            android:weightSum="3" >
+
+            <TextView
+                android:id="@+id/tvEnglish"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="English"
+                android:textSize="@dimen/ts_large"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvHindi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="Marathi/Hindi"
+                android:textSize="@dimen/ts_large"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvFrequency"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="Frequency"
+                android:textSize="@dimen/ts_large"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
 
     <ListView
         android:id="@+id/lv_alphabet"
