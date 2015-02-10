@@ -20,6 +20,8 @@ public class AlphaGridAdapter extends BaseAdapter {
 		ImageView ivUpper;
 		ImageView ivLower;
 	}
+	
+	
 
 	LayoutInflater mInflator;
 
@@ -80,6 +82,7 @@ public class AlphaGridAdapter extends BaseAdapter {
 		v.ivUpper.setImageBitmap(bm);
 		
 		v.tvAlpha.setText(letter[position]);
+		
 		return convertView;
 	}
 	

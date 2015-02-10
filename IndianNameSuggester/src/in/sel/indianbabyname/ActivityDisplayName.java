@@ -59,7 +59,6 @@ public class ActivityDisplayName extends Activity {
 		final ListView lsName = (ListView) findViewById(R.id.lv_alphabet);
 		final NameAdapter na = new NameAdapter(this, name);
 		lsName.setAdapter(na);
-
 		
 		/* Sorting on Name based on English Name */
 		TextView tvEnName = (TextView) findViewById(R.id.tvEnglish);
