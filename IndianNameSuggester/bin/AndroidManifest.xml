@@ -24,6 +24,7 @@
         </activity>
          <activity android:name="in.sel.indianbabyname.ActivityMain" />
         <activity android:name="in.sel.indianbabyname.ActivityDisplayName" />
+         <activity android:name="in.sel.indianbabyname.ActivityAbout" />
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
