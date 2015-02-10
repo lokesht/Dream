@@ -5,6 +5,7 @@ import in.sel.model.M_Name;
 import in.sel.utility.AppConstants;
 import in.sel.utility.AppLogger;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +20,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -36,20 +38,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final int DATABASE_VERSION = 1;
 	public static final String DB_NAME = "BabyName.sqlite";
 
-	private static String DB_PATH = "/data/data/in.sel.indianbabyname/databases/";
+	// private static String DB_PATH =
+	// "/data/data/in.sel.indianbabyname/databases/";
+	private static String DB_PATH="/data/data/in.sel.indianbabyname/databases/";
 	Context myContext;
+
+	public static boolean createDirIfNotExists(String path) {
+		boolean ret = true;
+
+		File file = new File(Environment.getExternalStorageDirectory(), path);
+		if (!file.exists()) {
+			if (!file.mkdirs()) {
+				Log.e("TravellerLog :: ", "Problem creating Image folder");
+				ret = false;
+			}
+		}
+		return ret;
+	}
 
 	public DatabaseHelper(Context context) {
 		super(context, DB_NAME, null, DATABASE_VERSION);
 		this.myContext = context;
+		//createDirIfNotExists("Test/AndroidBabyName/");
+
+		//DB_PATH = Environment.getExternalStorageDirectory()+ "/Test/AndroidBabyName/";
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		try {
-//			db.execSQL(TableContract.TimeStamp.SQL_CREATE);
-//			db.execSQL(TableContract.Name.SQL_CREATE);
-//			Log.i(TAG, "success");
+			// db.execSQL(TableContract.TimeStamp.SQL_CREATE);
+			// db.execSQL(TableContract.Name.SQL_CREATE);
+			// Log.i(TAG, "success");
 		} catch (Exception e) {
 			if (AppConstants.DEBUG)
 				Log.e(TAG, e.toString());
@@ -64,7 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			Log.v("log_tag", "database does exist");
 		} else {
 			Log.v("log_tag", "database does not exist");
-			this.getReadableDatabase();
+			//this.getReadableDatabase();
 			try {
 				copyDataBase();
 			} catch (IOException e) {
@@ -91,15 +111,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase checkDB = null;
 		try {
 			String myPath = DB_PATH + DB_NAME;
-			checkDB = SQLiteDatabase.openDatabase(myPath, null,
-					SQLiteDatabase.NO_LOCALIZED_COLLATORS);
+			File f = new File(myPath);
+			if (f.exists()){
+				checkDB = SQLiteDatabase.openDatabase(myPath, null,
+						SQLiteDatabase.NO_LOCALIZED_COLLATORS);}
+			else{
+				try {
+					f.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
+				return false;
+			}
 		} catch (SQLiteException e) {
 			Log.v(TAG, e.toString() + "   database doesn't exists yet..");
 		}
 		if (checkDB != null) {
 			checkDB.close();
 		}
-		return checkDB != null;
+		return false;
 	}
 
 	public boolean openDataBase() throws SQLException {
