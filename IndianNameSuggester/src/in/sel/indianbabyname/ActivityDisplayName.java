@@ -40,6 +40,8 @@ public class ActivityDisplayName extends Activity {
 
 
 		final List<M_Name> name = getName(c);
+		/** Close data base*/
+		dbHelper.close();
 
 		/* */
 		TextView tvTotal = (TextView) findViewById(R.id.tvTotal);
@@ -144,6 +146,8 @@ public class ActivityDisplayName extends Activity {
 				lsName.add(temp);
 			} while (c.moveToNext());
 		}
+		if(c!=null)
+			c.close();
 		return lsName;
 	}
 }
