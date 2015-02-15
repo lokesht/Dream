@@ -23,7 +23,6 @@ public class NameAdapter extends BaseAdapter {
 		TextView c1;
 		TextView c2;
 		TextView c3;
-
 		RadioGroup rg;
 	}
 
@@ -59,6 +58,15 @@ public class NameAdapter extends BaseAdapter {
 	}
 
 	@Override
+    public int getViewTypeCount() {                 
+        return allElementDetails.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
@@ -81,7 +89,7 @@ public class NameAdapter extends BaseAdapter {
 		String enName = mName.getName_en();
 		if (enName == null)
 			enName = "";
-		holder.c1.setText(position + " " + enName);
+		holder.c1.setText((position+1) + " " + enName);
 
 		String maName = mName.getName_ma();
 		if (maName == null)
@@ -91,15 +99,12 @@ public class NameAdapter extends BaseAdapter {
 		String fre = mName.getFrequency() + "";
 		holder.c3.setText(fre);
 
-		if (position == 2) {
-			System.out.println("Test");
-		}
-		if (hmChecked.get(position) != null && hmChecked.containsKey(position)
-				&& hmChecked.get(position) > 0) {
-			holder.rg.check(hmChecked.get(position));
-		} else {
-			holder.rg.clearCheck();
-		}
+//		if (hmChecked.get(position) != null && hmChecked.containsKey(position)
+//				&& hmChecked.get(position) > 0) {
+//			holder.rg.check(hmChecked.get(position));
+//		} else {
+//			holder.rg.clearCheck();
+//		}
 
 		/** */
 		holder.rg.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -132,7 +137,7 @@ public class NameAdapter extends BaseAdapter {
 			}
 		});
 
-		Log.i("List", position + "");
+		Log.i("Position", position + "");
 		return convertView;
 	}
 }

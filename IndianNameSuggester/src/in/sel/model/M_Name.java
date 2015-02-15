@@ -9,12 +9,31 @@ public class M_Name implements Comparator<M_Name> {
 	String name_en;
 	int frequency;
 	int id;
+	int description;
 
 	public M_Name(String name_en, String name_ma, int frequency) {
 		super();
 		this.name_en = name_en;
 		this.name_ma = name_ma;
 		this.frequency = frequency;
+	}
+
+	public M_Name(String name_ma, String name_en, int frequency, int id,
+			int description) {
+		super();
+		this.name_ma = name_ma;
+		this.name_en = name_en;
+		this.frequency = frequency;
+		this.id = id;
+		this.description = description;
+	}
+
+	public int getDescription() {
+		return description;
+	}
+
+	public void setDescription(int description) {
+		this.description = description;
 	}
 
 	public M_Name(String name_ma, String name_en, int frequency, int id) {

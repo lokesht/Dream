@@ -31,7 +31,7 @@ public class TableContract {
 	
 	/* Common Column used in Tables */
 	public interface AppColumn {
-		String CAUTO_ID = "AutoId";
+		String CAUTO_ID = "_id";
 		String CIS_ACTIVE = "isActive";
 	}
 
