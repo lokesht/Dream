@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
@@ -24,6 +25,8 @@ public class NameAdapter extends BaseAdapter {
 		TextView c2;
 		TextView c3;
 		RadioGroup rg;
+		
+		ImageView ivSmile;
 	}
 
 	static HashMap<Integer, Integer> hmChecked = new HashMap<Integer, Integer>();
@@ -77,6 +80,7 @@ public class NameAdapter extends BaseAdapter {
 			holder.c3 = (TextView) convertView.findViewById(R.id.c3);
 
 			holder.rg = (RadioGroup) convertView.findViewById(R.id.rgMFBC);
+			holder.ivSmile = (ImageView)convertView.findViewById(R.id.ivSmily);
 
 			convertView.setTag(holder);
 		} else {
@@ -99,12 +103,12 @@ public class NameAdapter extends BaseAdapter {
 		String fre = mName.getFrequency() + "";
 		holder.c3.setText(fre);
 
-//		if (hmChecked.get(position) != null && hmChecked.containsKey(position)
-//				&& hmChecked.get(position) > 0) {
-//			holder.rg.check(hmChecked.get(position));
-//		} else {
-//			holder.rg.clearCheck();
-//		}
+		if (hmChecked.get(position) != null && hmChecked.containsKey(position)
+				&& hmChecked.get(position) > 0) {
+			holder.rg.check(hmChecked.get(position));
+		} else {
+			holder.rg.clearCheck();
+		}
 
 		/** */
 		holder.rg.setOnCheckedChangeListener(new OnCheckedChangeListener() {
