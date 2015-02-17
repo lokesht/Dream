@@ -11,6 +11,7 @@ import java.util.List;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.EventLogTags.Description;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
@@ -24,29 +25,31 @@ public class ActivityDisplayName extends Activity {
 		setContentView(R.layout.activity_name_list);
 		String alphabet = getIntent().getStringExtra(ActivityMain.ALPHA);
 
-		/** DBHelper Obeject*/
+		/** DBHelper Obeject */
 		DatabaseHelper dbHelper = new DatabaseHelper(this);
-		
-		/** just to check total entry inside table*/
-		int count = dbHelper.getTableRowCount(TableContract.Name.TABLE_NAME, null);
-		
+
+		/** just to check total entry inside table */
+		int count = dbHelper.getTableRowCount(TableContract.Name.TABLE_NAME,
+				null);
+
 		/** */
 		String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%'";
 
-		Cursor c = dbHelper.getTableValue(
-				TableContract.Name.TABLE_NAME, new String[] {
+		Cursor c = dbHelper.getTableValue(TableContract.Name.TABLE_NAME,
+				new String[] { TableContract.AppColumn.CAUTO_ID,
 						TableContract.Name.NAME_EN, TableContract.Name.NAME_MA,
-						TableContract.Name.NAME_FRE }, where);
+						TableContract.Name.NAME_FRE,
+						TableContract.Name.DESCRIPTION }, where);
 
-
+		/** Parse */
 		final List<M_Name> name = getName(c);
-		/** Close data base*/
+		/** Close data base */
 		dbHelper.close();
 
 		/* */
 		TextView tvTotal = (TextView) findViewById(R.id.tvTotal);
-		tvTotal.setText("Total unique word in this group is "+name.size());
-		
+		tvTotal.setText("Total unique word in this group is " + name.size());
+
 		/* sort on Frequency By Default */
 
 		/** */
@@ -61,7 +64,7 @@ public class ActivityDisplayName extends Activity {
 		final ListView lsName = (ListView) findViewById(R.id.lv_alphabet);
 		final NameAdapter na = new NameAdapter(this, name);
 		lsName.setAdapter(na);
-		
+
 		/* Sorting on Name based on English Name */
 		TextView tvEnName = (TextView) findViewById(R.id.tvEnglish);
 		tvEnName.setOnClickListener(new OnClickListener() {
@@ -135,18 +138,28 @@ public class ActivityDisplayName extends Activity {
 		if (c != null && c.getCount() > 0) {
 			c.moveToFirst();
 			do {
+				int id = c.getInt(c
+						.getColumnIndex(TableContract.AppColumn.CAUTO_ID));
+
 				String en = c.getString(c
 						.getColumnIndex(TableContract.Name.NAME_EN));
 				String ma = c.getString(c
 						.getColumnIndex(TableContract.Name.NAME_MA));
-				String fre = c.getString(c
+				int fre = c.getInt(c
 						.getColumnIndex(TableContract.Name.NAME_FRE));
 
-				M_Name temp = new M_Name(en, ma, Integer.parseInt(fre));
+				String s = c.getString(c
+						.getColumnIndex(TableContract.Name.DESCRIPTION));
+
+				int desc = -1;
+				if (s!= null && s.length() > 0)
+					desc = Integer.parseInt(s);
+
+				M_Name temp = new M_Name(ma, en, fre, id, desc);
 				lsName.add(temp);
 			} while (c.moveToNext());
 		}
-		if(c!=null)
+		if (c != null)
 			c.close();
 		return lsName;
 	}

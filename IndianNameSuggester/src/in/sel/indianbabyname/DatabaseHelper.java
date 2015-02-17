@@ -20,7 +20,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
 import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -40,28 +39,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	// private static String DB_PATH =
 	// "/data/data/in.sel.indianbabyname/databases/";
-	private static String DB_PATH="/data/data/in.sel.indianbabyname/databases/";
+	private static final String DB_SUFFIX = "/databases/";
 	Context myContext;
-
-	public static boolean createDirIfNotExists(String path) {
-		boolean ret = true;
-
-		File file = new File(Environment.getExternalStorageDirectory(), path);
-		if (!file.exists()) {
-			if (!file.mkdirs()) {
-				Log.e("TravellerLog :: ", "Problem creating Image folder");
-				ret = false;
-			}
-		}
-		return ret;
-	}
 
 	public DatabaseHelper(Context context) {
 		super(context, DB_NAME, null, DATABASE_VERSION);
 		this.myContext = context;
-		//createDirIfNotExists("Test/AndroidBabyName/");
+		// createDirIfNotExists(DB_PATH + DB_NAME);
 
-		//DB_PATH = Environment.getExternalStorageDirectory()+ "/Test/AndroidBabyName/";
+		// DB_PATH = Environment.getExternalStorageDirectory()+
+		// "/Test/AndroidBabyName/";
 	}
 
 	@Override
@@ -78,25 +65,74 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 	}
 
+	public static boolean createDirIfNotExists(String path) {
+		boolean ret = true;
+
+		// File file = new File(Environment.getExternalStorageDirectory(),
+		// path);
+		File file = new File(path);
+		if (!file.exists()) {
+			if (!file.mkdirs()) {
+				Log.e("TravellerLog :: ", "Problem creating Image folder");
+				ret = false;
+			}
+		}
+		return ret;
+	}
+
 	public void createDataBase() throws IOException {
 		boolean dbExist = checkDataBase();
 		if (dbExist) {
 			Log.v("log_tag", "database does exist");
 		} else {
 			Log.v("log_tag", "database does not exist");
-			//this.getReadableDatabase();
+			// this.getReadableDatabase();
 			try {
-				copyDataBase();
+				copyDataBaseFromAsset();
 			} catch (IOException e) {
-				throw new Error("Error copying database");
+				throw new Error(e.toString() + " -->Error copying database");
 			}
 		}
 	}
 
-	private void copyDataBase() throws IOException {
+	private boolean checkDataBase() {
+		try {
+			String myPath = getDatabasePath();
+			File f = new File(myPath);
+			if (f.exists()) {
+				return true;
+			} else {
+				try {
+					f.createNewFile();
+				} catch (IOException e) {
+					Log.e(TAG, e.toString());
+					e.printStackTrace();
+				}
+				return false;
+			}
+		} catch (SQLiteException e) {
+			Log.v(TAG, e.toString() + "   database doesn't exists yet..");
+		}
+		return false;
+	}
+
+	/* Give the Path of database */
+	private String getDatabasePath() {
+		return myContext.getApplicationInfo().dataDir + DB_SUFFIX + DB_NAME;
+	}
+
+	private void copyDataBaseFromAsset() throws IOException {
 		InputStream myInput = myContext.getAssets().open(DB_NAME);
-		String outFileName = DB_PATH + DB_NAME;
+		String outFileName = getDatabasePath();
+
+		/* if the path doesn't exist first, create it */
+		File f = new File(myContext.getApplicationInfo().dataDir + DB_SUFFIX);
+		if (!f.exists())
+			f.mkdir();
+
+		/* Open the empty db as the output stream */
 		OutputStream myOutput = new FileOutputStream(outFileName);
+
 		byte[] buffer = new byte[1024];
 		int length;
 		while ((length = myInput.read(buffer)) > 0) {
@@ -107,34 +143,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		myInput.close();
 	}
 
-	private boolean checkDataBase() {
-		SQLiteDatabase checkDB = null;
-		try {
-			String myPath = DB_PATH + DB_NAME;
-			File f = new File(myPath);
-			if (f.exists()){
-				checkDB = SQLiteDatabase.openDatabase(myPath, null,
-						SQLiteDatabase.NO_LOCALIZED_COLLATORS);}
-			else{
-				try {
-					f.createNewFile();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	
-				return false;
-			}
-		} catch (SQLiteException e) {
-			Log.v(TAG, e.toString() + "   database doesn't exists yet..");
-		}
-		if (checkDB != null) {
-			checkDB.close();
-		}
-		return false;
-	}
-
 	public boolean openDataBase() throws SQLException {
-		String myPath = DB_PATH + DB_NAME;
+		String myPath = getDatabasePath();
 		db = SQLiteDatabase.openDatabase(myPath, null,
 				SQLiteDatabase.NO_LOCALIZED_COLLATORS);
 		return db != null;
@@ -367,5 +377,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			this.db.setLockingEnabled(true);
 		}
 		return rowid;
+	}
+
+	/** Update Table */
+	public int updateTable(String table, ContentValues cv, String where) {
+		db = getWritableDatabase();
+		try {
+
+			return db.update(table, cv, where, null);
+
+		} catch (Exception e) {
+		} finally {
+			db.close();
+		}
+		return -1;
 	}
 }

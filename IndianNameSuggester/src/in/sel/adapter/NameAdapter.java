@@ -1,11 +1,14 @@
 package in.sel.adapter;
 
+import in.sel.indianbabyname.DatabaseHelper;
 import in.sel.indianbabyname.R;
+import in.sel.indianbabyname.TableContract;
 import in.sel.model.M_Name;
 
 import java.util.HashMap;
 import java.util.List;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
@@ -29,7 +32,7 @@ public class NameAdapter extends BaseAdapter {
 		ImageView ivSmile;
 	}
 
-	static HashMap<Integer, Integer> hmChecked = new HashMap<Integer, Integer>();
+	//static HashMap<Integer, Integer> hmChecked = new HashMap<Integer, Integer>();
 	private List<M_Name> allElementDetails;
 	private LayoutInflater mInflater;
 
@@ -103,19 +106,27 @@ public class NameAdapter extends BaseAdapter {
 		String fre = mName.getFrequency() + "";
 		holder.c3.setText(fre);
 
-		if (hmChecked.get(position) != null && hmChecked.containsKey(position)
-				&& hmChecked.get(position) > 0) {
-			holder.rg.check(hmChecked.get(position));
-		} else {
+		int cheked = allElementDetails.get(position).getDescription();
+		if(cheked>0)
+		{
+			holder.rg.check(cheked);
+		}else
+		{
 			holder.rg.clearCheck();
 		}
+//		if (hmChecked.get(position) != null && hmChecked.containsKey(position)
+//				&& hmChecked.get(position) > 0) {
+//			holder.rg.check(hmChecked.get(position));
+//		} else {
+//			holder.rg.clearCheck();
+//		}
 
 		/** */
 		holder.rg.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				int checked = 0;
+				int checked = -1;
 
 				switch (checkedId) {
 				case R.id.rbMale:
@@ -132,9 +143,19 @@ public class NameAdapter extends BaseAdapter {
 					break;
 				}
 
-				if (checkedId > 0) {
+				if (checked >= 0) {
 					Log.i("Listed", position + " " + checked + " " + checkedId);
-					hmChecked.put(position, checkedId);
+					allElementDetails.get(position).setDescription(checked);
+					//hmChecked.put(position, checkedId);
+					
+					DatabaseHelper dbtemp = new DatabaseHelper(mInflater.getContext());
+					ContentValues cv = new ContentValues();
+					cv.put(TableContract.Name.DESCRIPTION, checked);
+					
+					/** Where clause*/
+					String where  = TableContract.AppColumn.CAUTO_ID+" = "+allElementDetails.get(position).getId();
+					int i = dbtemp.updateTable(TableContract.Name.TABLE_NAME, cv, where);
+					Log.i("Adapter_Naka", i + " " + checked + " " + checkedId);
 				}
 
 				Log.i("Adapter", position + " " + checked + " " + checkedId);
