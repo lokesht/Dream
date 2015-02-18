@@ -32,8 +32,8 @@ public class ActivityDisplayName extends Activity {
 		int count = dbHelper.getTableRowCount(TableContract.Name.TABLE_NAME,
 				null);
 
-		/** */
-		String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%'";
+		/**This is will select only those which are not marked */
+		String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%' AND "+TableContract.Name.DESCRIPTION+" IS NULL" ;
 
 		Cursor c = dbHelper.getTableValue(TableContract.Name.TABLE_NAME,
 				new String[] { TableContract.AppColumn.CAUTO_ID,
@@ -42,18 +42,13 @@ public class ActivityDisplayName extends Activity {
 						TableContract.Name.DESCRIPTION }, where);
 
 		/** Parse */
-		final List<M_Name> name = getName(c);
-		/** Close data base */
+		final List<M_Name> name = parseListName(c);
 		dbHelper.close();
-
 		/* */
 		TextView tvTotal = (TextView) findViewById(R.id.tvTotal);
 		tvTotal.setText("Total unique word in this group is " + name.size());
 
 		/* sort on Frequency By Default */
-
-		/** */
-
 		Collections.sort(name, new Comparator<M_Name>() {
 
 			@Override
@@ -61,6 +56,7 @@ public class ActivityDisplayName extends Activity {
 				return rhs.getFrequency() - lhs.getFrequency();
 			}
 		});
+		
 		final ListView lsName = (ListView) findViewById(R.id.lv_alphabet);
 		final NameAdapter na = new NameAdapter(this, name);
 		lsName.setAdapter(na);
@@ -133,7 +129,7 @@ public class ActivityDisplayName extends Activity {
 	}
 
 	/** */
-	List<M_Name> getName(Cursor c) {
+	List<M_Name> parseListName(Cursor c) {
 		List<M_Name> lsName = new ArrayList<M_Name>();
 		if (c != null && c.getCount() > 0) {
 			c.moveToFirst();
@@ -159,9 +155,10 @@ public class ActivityDisplayName extends Activity {
 				M_Name temp = new M_Name(ma, en, fre, id, desc);
 				lsName.add(temp);
 			} while (c.moveToNext());
-		}
-		if (c != null)
+			
+			/** Close database*/
 			c.close();
+		}
 		return lsName;
 	}
 }
