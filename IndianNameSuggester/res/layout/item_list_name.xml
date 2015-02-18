@@ -67,21 +67,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="FeMale" />
+            android:text="Female" />
 
         <RadioButton
             android:id="@+id/rbBoth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Both" />
+            android:text="Trans" />
 
         <RadioButton
             android:id="@+id/rbCast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Cast" />
+            android:text="Religin" />
     </RadioGroup>
     <!-- <LinearLayout -->
     <!-- android:layout_width="match_parent" -->
