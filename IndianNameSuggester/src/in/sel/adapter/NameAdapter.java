@@ -1,11 +1,10 @@
 package in.sel.adapter;
 
-import in.sel.indianbabyname.DatabaseHelper;
+import in.sel.indianbabyname.DBHelper;
 import in.sel.indianbabyname.R;
 import in.sel.indianbabyname.TableContract;
 import in.sel.model.M_Name;
 
-import java.util.HashMap;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -28,11 +27,10 @@ public class NameAdapter extends BaseAdapter {
 		TextView c2;
 		TextView c3;
 		RadioGroup rg;
-		
+
 		ImageView ivSmile;
 	}
 
-	//static HashMap<Integer, Integer> hmChecked = new HashMap<Integer, Integer>();
 	private List<M_Name> allElementDetails;
 	private LayoutInflater mInflater;
 
@@ -64,14 +62,15 @@ public class NameAdapter extends BaseAdapter {
 	}
 
 	@Override
-    public int getViewTypeCount() {                 
-        return allElementDetails.size();
-    }
+	public int getViewTypeCount() {
+		return allElementDetails.size();
+	}
 
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
+	@Override
+	public int getItemViewType(int position) {
+		return position;
+	}
+
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
@@ -83,7 +82,7 @@ public class NameAdapter extends BaseAdapter {
 			holder.c3 = (TextView) convertView.findViewById(R.id.c3);
 
 			holder.rg = (RadioGroup) convertView.findViewById(R.id.rgMFBC);
-			holder.ivSmile = (ImageView)convertView.findViewById(R.id.ivSmily);
+			holder.ivSmile = (ImageView) convertView.findViewById(R.id.ivSmily);
 
 			convertView.setTag(holder);
 		} else {
@@ -96,7 +95,7 @@ public class NameAdapter extends BaseAdapter {
 		String enName = mName.getName_en();
 		if (enName == null)
 			enName = "";
-		holder.c1.setText((position+1) + " " + enName);
+		holder.c1.setText((position + 1) + " " + enName);
 
 		String maName = mName.getName_ma();
 		if (maName == null)
@@ -106,20 +105,28 @@ public class NameAdapter extends BaseAdapter {
 		String fre = mName.getFrequency() + "";
 		holder.c3.setText(fre);
 
-		int cheked = allElementDetails.get(position).getDescription();
-		if(cheked>0)
-		{
-			holder.rg.check(cheked);
-		}else
-		{
+		int posCheck = allElementDetails.get(position).getDescription();
+		if (posCheck > -1) {
+			int checkedId = -1;
+			switch (posCheck) {
+			case 0:
+				checkedId = R.id.rbMale;
+				break;
+			case 1:
+				checkedId = R.id.rbFeMale;
+				break;
+			case 2:
+				checkedId = R.id.rbBoth;
+				break;
+			case 3:
+				checkedId = R.id.rbCast;
+				break;
+			}
+			holder.rg.check(checkedId);
+
+		} else {
 			holder.rg.clearCheck();
 		}
-//		if (hmChecked.get(position) != null && hmChecked.containsKey(position)
-//				&& hmChecked.get(position) > 0) {
-//			holder.rg.check(hmChecked.get(position));
-//		} else {
-//			holder.rg.clearCheck();
-//		}
 
 		/** */
 		holder.rg.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -143,26 +150,22 @@ public class NameAdapter extends BaseAdapter {
 					break;
 				}
 
-				if (checked >= 0) {
-					Log.i("Listed", position + " " + checked + " " + checkedId);
+				if (checked > -1) {
+				
 					allElementDetails.get(position).setDescription(checked);
-					//hmChecked.put(position, checkedId);
-					
-					DatabaseHelper dbtemp = new DatabaseHelper(mInflater.getContext());
+
+					DBHelper dbtemp = new DBHelper(mInflater.getContext());
 					ContentValues cv = new ContentValues();
 					cv.put(TableContract.Name.DESCRIPTION, checked);
-					
-					/** Where clause*/
-					String where  = TableContract.AppColumn.CAUTO_ID+" = "+allElementDetails.get(position).getId();
-					int i = dbtemp.updateTable(TableContract.Name.TABLE_NAME, cv, where);
-					Log.i("Adapter_Naka", i + " " + checked + " " + checkedId);
-				}
 
-				Log.i("Adapter", position + " " + checked + " " + checkedId);
+					/** Where clause */
+					String where = TableContract.AppColumn.CAUTO_ID + " = "	+ allElementDetails.get(position).getId();
+					int i = dbtemp.updateTable(TableContract.Name.TABLE_NAME,cv, where);
+					Log.i("Updated", i + "");
+				}
 			}
 		});
 
-		Log.i("Position", position + "");
 		return convertView;
 	}
 }

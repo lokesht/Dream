@@ -1,18 +1,12 @@
 package in.sel.indianbabyname;
 
-import in.sel.model.M_Name;
 import in.sel.utility.AppLogger;
 import in.sel.utility.Utility;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -34,17 +28,16 @@ public class ActivitySplash extends Activity {
 		new AsyncTask<Void, Integer, String>() {
 
 			protected void onPreExecute() {
-              
+
 			};
 
 			@Override
 			protected String doInBackground(Void... params) {
-				insertValue();
-				return null;
-			}
 
-			protected void onProgressUpdate(Integer[] values) {
-			};
+				/** Copy full database from asset Folder to database Folder */
+				copyDatabaseFromAsset();
+				return "";
+			}
 
 			protected void onPostExecute(String result) {
 				// writeDataBase();
@@ -56,42 +49,35 @@ public class ActivitySplash extends Activity {
 		}.execute();
 	}
 
-	public void insertValue() {
-		// boolean isDrop = this.deleteDatabase(DatabaseHelper.DATABASE_NAME);
-		Utility t = new Utility();
-		/* Insert Database */
-		DatabaseHelper db = new DatabaseHelper(this);
-		// /db.executeStatement(dropDB);
+	
+	/**
+	 * Copy Database from asset Folder to data directory
+	 */
+	public void copyDatabaseFromAsset() {
 
-		/* State Entry */
-		//int count = db.getTableRowCount(TableContract.Name.TABLE_NAME, null);
-		//if (count == 0) {
-			try {
-				db.createDataBase();
-//				InputStream im = getAssets().open("name8.txt");
-//				BufferedReader br = new BufferedReader(
-//						new InputStreamReader(im, "UTF-8"));
-//				String line = br.readLine();
-//				List<M_Name> lst = new ArrayList<M_Name>();
-//				do {
-//					String temp[] = line.split(",");
-//					M_Name s1 = new M_Name(temp[0], temp[1], temp[2]);
-//					lst.add(s1);
-//				} while ((line = br.readLine()) != null);
-//				//db.insertName(lst);
-//				db.insertNameInsertHelperLock(lst);
-			} catch (IOException e) {
-				AppLogger.WriteIntoFile("state " + TAG + " -- " + e.toString());
-				Log.e("", e.toString());
-			}
-			System.out.println(t.getTime(t));
-		//}
+		/** Just to calculate time How much it will take to copy database */
+		Utility t = new Utility();
+
+		/* Insert Database */
+		DBHelper db = new DBHelper(this);
+		try {
+			boolean dbExist = db.isDataBaseAvailable();
+			
+			if (!dbExist)
+				db.copyDataBaseFromAsset();
+
+		} catch (IOException e) {
+			AppLogger.WriteIntoFile("state " + TAG + " -- " + e.toString());
+			Log.e("", e.toString());
+		}
+		System.out.println(t.getTime(t));
+		// }
 	}
 
 	/* */
 	public void writeDataBase() {
-		File f = new File("/data/data/" + this.getPackageName() + "/databases/"
-				+ DatabaseHelper.DB_NAME);
+		String dataBase = getApplicationInfo().dataDir + DBHelper.DB_SUFFIX + DBHelper.DB_NAME;
+		File f = new File(dataBase);
 		FileInputStream fis = null;
 		FileOutputStream fos = null;
 
@@ -100,8 +86,7 @@ public class ActivitySplash extends Activity {
 			 * code is coming till here so data is loaded in successfully
 			 */
 			fis = new FileInputStream(f);
-			fos = new FileOutputStream("/mnt/sdcard/Download/"
-					+ DatabaseHelper.DB_NAME + ".db");
+			fos = new FileOutputStream("/mnt/sdcard/Download/"+ DBHelper.DB_NAME + ".db");
 			while (true) {
 				int i = fis.read();
 				if (i != -1) {

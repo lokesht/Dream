@@ -26,7 +26,7 @@ public class ActivityDisplayName extends Activity {
 		String alphabet = getIntent().getStringExtra(ActivityMain.ALPHA);
 
 		/** DBHelper Obeject */
-		DatabaseHelper dbHelper = new DatabaseHelper(this);
+		DBHelper dbHelper = new DBHelper(this);
 
 		/** just to check total entry inside table */
 		int count = dbHelper.getTableRowCount(TableContract.Name.TABLE_NAME,
@@ -151,6 +151,7 @@ public class ActivityDisplayName extends Activity {
 				String s = c.getString(c
 						.getColumnIndex(TableContract.Name.DESCRIPTION));
 
+				/* Considering default value as -1*/
 				int desc = -1;
 				if (s!= null && s.length() > 0)
 					desc = Integer.parseInt(s);

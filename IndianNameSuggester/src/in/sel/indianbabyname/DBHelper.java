@@ -22,7 +22,12 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+/**
+ * @author lokesh.tiwari
+ *
+ */
+
+public class DBHelper extends SQLiteOpenHelper {
 
 	/** */
 	String TAG = "DatabaseHelper";
@@ -37,18 +42,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final int DATABASE_VERSION = 1;
 	public static final String DB_NAME = "BabyName.sqlite";
 
-	// private static String DB_PATH =
-	// "/data/data/in.sel.indianbabyname/databases/";
-	private static final String DB_SUFFIX = "/databases/";
+	public static final String DB_SUFFIX = "/databases/";
 	Context myContext;
 
-	public DatabaseHelper(Context context) {
+	public DBHelper(Context context) {
 		super(context, DB_NAME, null, DATABASE_VERSION);
 		this.myContext = context;
-		// createDirIfNotExists(DB_PATH + DB_NAME);
 
-		// DB_PATH = Environment.getExternalStorageDirectory()+
-		// "/Test/AndroidBabyName/";
+		// DB_PATH =
+		// Environment.getExternalStorageDirectory()+"/Test/AndroidBabyName/";
 	}
 
 	@Override
@@ -65,63 +67,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 	}
 
-	public static boolean createDirIfNotExists(String path) {
-		boolean ret = true;
-
-		// File file = new File(Environment.getExternalStorageDirectory(),
-		// path);
-		File file = new File(path);
-		if (!file.exists()) {
-			if (!file.mkdirs()) {
-				Log.e("TravellerLog :: ", "Problem creating Image folder");
-				ret = false;
-			}
-		}
-		return ret;
-	}
-
-	public void createDataBase() throws IOException {
-		boolean dbExist = checkDataBase();
-		if (dbExist) {
-			Log.v("log_tag", "database does exist");
-		} else {
-			Log.v("log_tag", "database does not exist");
-			// this.getReadableDatabase();
-			try {
-				copyDataBaseFromAsset();
-			} catch (IOException e) {
-				throw new Error(e.toString() + " -->Error copying database");
-			}
-		}
-	}
-
-	private boolean checkDataBase() {
+	/** Identify Database is available or Not */
+	boolean isDataBaseAvailable() {
 		try {
 			String myPath = getDatabasePath();
 			File f = new File(myPath);
 			if (f.exists()) {
 				return true;
-			} else {
-				try {
-					f.createNewFile();
-				} catch (IOException e) {
-					Log.e(TAG, e.toString());
-					e.printStackTrace();
-				}
-				return false;
 			}
+
 		} catch (SQLiteException e) {
 			Log.v(TAG, e.toString() + "   database doesn't exists yet..");
 		}
 		return false;
 	}
 
-	/* Give the Path of database */
-	private String getDatabasePath() {
+	/** Give the Path of database */
+	public String getDatabasePath() {
 		return myContext.getApplicationInfo().dataDir + DB_SUFFIX + DB_NAME;
 	}
 
-	private void copyDataBaseFromAsset() throws IOException {
+	public void copyDataBaseFromAsset() throws IOException {
 		InputStream myInput = myContext.getAssets().open(DB_NAME);
 		String outFileName = getDatabasePath();
 
@@ -162,8 +128,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	}
 
-	/* general Method */
-	/** */
+	/** Reset Table Identity column from 0 */
 	public void resetTable(String TableName) {
 		try {
 			db = getWritableDatabase();
@@ -187,24 +152,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 	}
 
-	public Cursor getTableValue(String sqlQuery, String[] selectionArgs)
-			throws Exception {
-		Cursor c = null;
-		try {
-			db = this.getReadableDatabase();
-			c = db.rawQuery(sqlQuery, selectionArgs);
-		} catch (Exception e) {
-			AppLogger.WriteIntoFile("Class Name --> DBHelper -- "
-					+ e.toString());
-			if (AppConstants.DEBUG)
-				Log.e(TAG, e.toString() + "getTableValue()");
-		} finally {
-			if (c == null)
-				db.close();
-		}
-		return c;
-	}
-
+	/**
+	 * @param TableName
+	 * @param columns
+	 * @param where
+	 * @return Cursor
+	 */
 	public Cursor getTableValue(String TableName, String[] columns, String where) {
 		Cursor c = null;
 		try {
@@ -217,13 +170,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			if (AppConstants.DEBUG)
 				Log.e(TAG, e.toString() + "--> getTableValue()");
 		} finally {
+			/** If database does not contain anything immediately close database */
 			if (c == null)
 				db.close();
 		}
 		return c;
 	}
 
-	/** */
+	/**
+	 * Get row count of Table
+	 * 
+	 * @param tableName
+	 * @param where
+	 * @return
+	 */
 	public int getTableRowCount(String tableName, String where) {
 		int count = 0;
 		try {
@@ -242,7 +202,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return count;
 	}
 
-	/* */
+	/**
+	 * Execute Row query
+	 * 
+	 * @param sqlQuery
+	 */
 	public void executeStatement(String sqlQuery) {
 		try {
 			db = this.getWritableDatabase();
@@ -254,6 +218,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		} finally {
 			db.close();
 		}
+	}
+
+	/**
+	 * Update Table
+	 * 
+	 * @param table
+	 * @param cv
+	 * @param where
+	 * @return
+	 */
+	public int updateTable(String table, ContentValues cv, String where) {
+		db = getWritableDatabase();
+		try {
+			return db.update(table, cv, where, null);
+		} catch (Exception e) {
+			AppLogger.WriteIntoFile(TAG + e.toString());
+
+			if (AppConstants.DEBUG)
+				Log.e("updateTable", e.toString());
+
+		} finally {
+			db.close();
+		}
+		return -1;
 	}
 
 	/* Insert state */
@@ -281,7 +269,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			if (AppConstants.DEBUG)
 				Log.e("insertName", e.toString());
 		} finally {
-
 			db.close();
 		}
 		return rowid;
@@ -379,17 +366,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return rowid;
 	}
 
-	/** Update Table */
-	public int updateTable(String table, ContentValues cv, String where) {
-		db = getWritableDatabase();
-		try {
-
-			return db.update(table, cv, where, null);
-
-		} catch (Exception e) {
-		} finally {
-			db.close();
-		}
-		return -1;
-	}
 }

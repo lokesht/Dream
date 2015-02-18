@@ -1,7 +1,7 @@
 package in.sel.adapter;
 
 import in.sel.indianbabyname.R;
-import in.sel.utility.UtilityControl;
+import in.sel.utility.Utility;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -93,12 +93,17 @@ public class AlphaGridAdapter extends BaseAdapter {
 		} else {
 			myBitmap = BitmapFactory.decodeResource(mInflator.getContext().getResources(), R.drawable.test);
 		}
-		return UtilityControl.getRoundedRectBitmap(myBitmap, dim);
+		/** Radius margin*/
+		int margin = 5;
+		return Utility.getRoundedRectBitmap(myBitmap, dim, margin);
 	}
 
 	private Bitmap getCoverBitMapImage(int dim) {
 		Bitmap myBitmap = BitmapFactory.decodeResource(mInflator.getContext().getResources(), R.drawable.ic_lutect_indi_border_circle);
-		return UtilityControl.getAboveBitmap(myBitmap, dim);
+		
+		/** Radius margin*/
+		int margin = 3;
+		return Utility.getRoundedRectBitmap(myBitmap, dim , margin);
 	}
 
 }
