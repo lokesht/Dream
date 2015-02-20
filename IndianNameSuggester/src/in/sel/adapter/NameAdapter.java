@@ -158,7 +158,7 @@ public class NameAdapter extends BaseAdapter {
 
 					DBHelper dbtemp = new DBHelper(mInflater.getContext());
 					ContentValues cv = new ContentValues();
-					cv.put(TableContract.Name.DESCRIPTION, checked);
+					cv.put(TableContract.Name.GENDER_CAST, checked);
 
 					/** Where clause */
 					String where = TableContract.AppColumn.CAUTO_ID + " = "	+ allElementDetails.get(position).getId();

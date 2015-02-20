@@ -62,7 +62,7 @@ public class TableContract {
 		String NAME_EN = "NameEn";
 		String NAME_MA = "NameMa";
 		String NAME_FRE = "NameFre";
-		String DESCRIPTION = "Description";/* */
+		String GENDER_CAST = "Gender_Cast";/* */
 		
 		String SQL_CREATE = CREATE_TABLE+TABLE_NAME
 				    +OPEN_BRACE
@@ -70,7 +70,7 @@ public class TableContract {
 				    +NAME_EN+TYPE_TEXT+SEP_COMMA
 				    +NAME_MA+TYPE_TEXT+SEP_COMMA
 				    +NAME_FRE+TYPE_INTEGER+SEP_COMMA
-				    +DESCRIPTION+TYPE_TEXT+SEP_COMMA
+				    +GENDER_CAST+TYPE_TEXT+SEP_COMMA
 				    + UNIQUE 
 				     + OPEN_BRACE 
 				       + NAME_EN+SEP_COMMA

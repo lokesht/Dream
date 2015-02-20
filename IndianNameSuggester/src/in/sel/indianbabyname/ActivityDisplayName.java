@@ -43,13 +43,13 @@ public class ActivityDisplayName extends Activity {
 
 		/** This is will select only those which are not marked */
 		String where = TableContract.Name.NAME_EN + " like '" + alphabet
-				+ "%' AND " + TableContract.Name.DESCRIPTION + " IS NULL";
+				+ "%' AND " + TableContract.Name.GENDER_CAST + " IS NULL";
 
 		Cursor c = dbHelper.getTableValue(TableContract.Name.TABLE_NAME,
 				new String[] { TableContract.AppColumn.CAUTO_ID,
 						TableContract.Name.NAME_EN, TableContract.Name.NAME_MA,
 						TableContract.Name.NAME_FRE,
-						TableContract.Name.DESCRIPTION}, where);
+						TableContract.Name.GENDER_CAST}, where);
 
 		/** Parse */
 		final List<M_Name> name = parseListName(c);
@@ -155,7 +155,7 @@ public class ActivityDisplayName extends Activity {
 						.getColumnIndex(TableContract.Name.NAME_FRE));
 
 				String s = c.getString(c
-						.getColumnIndex(TableContract.Name.DESCRIPTION));
+						.getColumnIndex(TableContract.Name.GENDER_CAST));
 
 				/* Considering default value as -1 */
 				int desc = -1;
