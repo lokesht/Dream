@@ -87,26 +87,36 @@ public class DBHelper extends SQLiteOpenHelper {
 		return myContext.getApplicationInfo().dataDir + DB_SUFFIX + DB_NAME;
 	}
 
-	public void copyDataBaseFromAsset() throws IOException {
+	public void copyDataBaseFromAsset() throws Exception {
 		InputStream myInput = myContext.getAssets().open(DB_NAME);
-		String outFileName = getDatabasePath();
+		OutputStream myOutput = null;
+		try {
 
-		/* if the path doesn't exist first, create it */
-		File f = new File(myContext.getApplicationInfo().dataDir + DB_SUFFIX);
-		if (!f.exists())
-			f.mkdir();
+			String outFileName = getDatabasePath();
 
-		/* Open the empty db as the output stream */
-		OutputStream myOutput = new FileOutputStream(outFileName);
+			/* if the path doesn't exist first, create it */
+			File f = new File(myContext.getApplicationInfo().dataDir
+					+ DB_SUFFIX);
+			if (!f.exists())
+				f.mkdir();
 
-		byte[] buffer = new byte[1024];
-		int length;
-		while ((length = myInput.read(buffer)) > 0) {
-			myOutput.write(buffer, 0, length);
+			/* Open the empty db as the output stream */
+			myOutput = new FileOutputStream(outFileName);
+
+			byte[] buffer = new byte[1024];
+			int length;
+			while ((length = myInput.read(buffer)) > 0) {
+				myOutput.write(buffer, 0, length);
+			}
+			myOutput.flush();
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			myOutput.close();
+			myInput.close();
 		}
-		myOutput.flush();
-		myOutput.close();
-		myInput.close();
+
 	}
 
 	public boolean openDataBase() throws SQLException {

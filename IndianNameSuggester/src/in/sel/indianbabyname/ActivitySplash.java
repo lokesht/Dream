@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -49,7 +51,6 @@ public class ActivitySplash extends Activity {
 		}.execute();
 	}
 
-	
 	/**
 	 * Copy Database from asset Folder to data directory
 	 */
@@ -62,50 +63,15 @@ public class ActivitySplash extends Activity {
 		DBHelper db = new DBHelper(this);
 		try {
 			boolean dbExist = db.isDataBaseAvailable();
-			
+
 			if (!dbExist)
 				db.copyDataBaseFromAsset();
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			AppLogger.WriteIntoFile("state " + TAG + " -- " + e.toString());
 			Log.e("", e.toString());
 		}
 		System.out.println(t.getTime(t));
 		// }
-	}
-
-	/* */
-	public void writeDataBase() {
-		String dataBase = getApplicationInfo().dataDir + DBHelper.DB_SUFFIX + DBHelper.DB_NAME;
-		File f = new File(dataBase);
-		FileInputStream fis = null;
-		FileOutputStream fos = null;
-
-		try {
-			/*
-			 * code is coming till here so data is loaded in successfully
-			 */
-			fis = new FileInputStream(f);
-			fos = new FileOutputStream("/mnt/sdcard/Download/"+ DBHelper.DB_NAME + ".db");
-			while (true) {
-				int i = fis.read();
-				if (i != -1) {
-					fos.write(i);
-				} else {
-					break;
-				}
-			}
-			fos.flush();
-		} catch (Exception e) {
-			AppLogger.WriteIntoFile(TAG + " -- " + e.toString());
-			Log.e("", e.toString());
-		} finally {
-			try {
-				fos.close();
-				fis.close();
-			} catch (IOException ioe) {
-				Log.e("", ioe.toString());
-			}
-		}
 	}
 }

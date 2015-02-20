@@ -2,7 +2,14 @@ package in.sel.indianbabyname;
 
 import in.sel.adapter.NameAdapter;
 import in.sel.model.M_Name;
+import in.sel.utility.AppLogger;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,6 +18,7 @@ import java.util.List;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.EventLogTags.Description;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class ActivityDisplayName extends Activity {
+	String TAG = "ActivityDisplayName";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +41,9 @@ public class ActivityDisplayName extends Activity {
 		int count = dbHelper.getTableRowCount(TableContract.Name.TABLE_NAME,
 				null);
 
-		/**This is will select only those which are not marked */
-		String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%' AND "+TableContract.Name.DESCRIPTION+" IS NULL" ;
+		/** This is will select only those which are not marked */
+		String where = TableContract.Name.NAME_EN + " like '" + alphabet
+				+ "%' AND " + TableContract.Name.DESCRIPTION + " IS NULL";
 
 		Cursor c = dbHelper.getTableValue(TableContract.Name.TABLE_NAME,
 				new String[] { TableContract.AppColumn.CAUTO_ID,
@@ -56,7 +66,7 @@ public class ActivityDisplayName extends Activity {
 				return rhs.getFrequency() - lhs.getFrequency();
 			}
 		});
-		
+
 		final ListView lsName = (ListView) findViewById(R.id.lv_alphabet);
 		final NameAdapter na = new NameAdapter(this, name);
 		lsName.setAdapter(na);
@@ -147,18 +157,19 @@ public class ActivityDisplayName extends Activity {
 				String s = c.getString(c
 						.getColumnIndex(TableContract.Name.DESCRIPTION));
 
-				/* Considering default value as -1*/
+				/* Considering default value as -1 */
 				int desc = -1;
-				if (s!= null && s.length() > 0)
+				if (s != null && s.length() > 0)
 					desc = Integer.parseInt(s);
 
 				M_Name temp = new M_Name(ma, en, fre, id, desc);
 				lsName.add(temp);
 			} while (c.moveToNext());
-			
-			/** Close database*/
+
+			/** Close database */
 			c.close();
 		}
 		return lsName;
 	}
+	
 }
