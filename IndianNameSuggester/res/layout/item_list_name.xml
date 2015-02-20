@@ -81,7 +81,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Religin" />
+            android:text="Sirname" />
+        
+        <RadioButton
+            android:id="@+id/rbDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Delete" />
     </RadioGroup>
     <!-- <LinearLayout -->
     <!-- android:layout_width="match_parent" -->

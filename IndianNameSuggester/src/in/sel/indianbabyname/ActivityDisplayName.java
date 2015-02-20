@@ -49,7 +49,7 @@ public class ActivityDisplayName extends Activity {
 				new String[] { TableContract.AppColumn.CAUTO_ID,
 						TableContract.Name.NAME_EN, TableContract.Name.NAME_MA,
 						TableContract.Name.NAME_FRE,
-						TableContract.Name.DESCRIPTION }, where);
+						TableContract.Name.DESCRIPTION}, where);
 
 		/** Parse */
 		final List<M_Name> name = parseListName(c);

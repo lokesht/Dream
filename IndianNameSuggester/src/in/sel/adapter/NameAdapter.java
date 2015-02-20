@@ -27,7 +27,6 @@ public class NameAdapter extends BaseAdapter {
 		TextView c2;
 		TextView c3;
 		RadioGroup rg;
-
 		ImageView ivSmile;
 	}
 
@@ -147,6 +146,9 @@ public class NameAdapter extends BaseAdapter {
 					break;
 				case R.id.rbCast:
 					checked = 3;
+					break;
+				case R.id.rbDelete:
+					checked = 100;
 					break;
 				}
 
