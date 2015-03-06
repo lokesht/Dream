@@ -104,7 +104,7 @@ public class NameAdapter extends BaseAdapter {
 		String fre = mName.getFrequency() + "";
 		holder.c3.setText(fre);
 
-		int posCheck = allElementDetails.get(position).getDescription();
+		int posCheck = Integer.parseInt(allElementDetails.get(position).getDescription());
 		if (posCheck > -1) {
 			int checkedId = -1;
 			switch (posCheck) {
@@ -133,10 +133,10 @@ public class NameAdapter extends BaseAdapter {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				int checked = -1;
-
+/*5 Means It is Valid Name*/
 				switch (checkedId) {
 				case R.id.rbMale:
-					checked = 0;
+					checked = 5;
 					break;
 				case R.id.rbFeMale:
 					checked = 1;
@@ -154,7 +154,7 @@ public class NameAdapter extends BaseAdapter {
 
 				if (checked > -1) {
 				
-					allElementDetails.get(position).setDescription(checked);
+					allElementDetails.get(position).setDescription(checked+"");
 
 					DBHelper dbtemp = new DBHelper(mInflater.getContext());
 					ContentValues cv = new ContentValues();

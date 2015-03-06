@@ -1,14 +1,15 @@
 package in.sel.indianbabyname;
 
+import in.sel.model.M_Name;
 import in.sel.utility.AppLogger;
 import in.sel.utility.Utility;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -38,6 +39,7 @@ public class ActivitySplash extends Activity {
 
 				/** Copy full database from asset Folder to database Folder */
 				copyDatabaseFromAsset();
+				//insertValue();
 				return "";
 			}
 
@@ -74,4 +76,51 @@ public class ActivitySplash extends Activity {
 		System.out.println(t.getTime(t));
 		// }
 	}
+	
+	/** Inser Value from text file to database*/
+	public void insertValue() {
+		// boolean isDrop = this.deleteDatabase(DatabaseHelper.DATABASE_NAME);
+		Utility t = new Utility();
+		
+		/* Insert Database */
+		DBHelper db = new DBHelper(this);
+		// /db.executeStatement(dropDB);
+
+		/* State Entry */
+		int count = db.getTableRowCount(TableContract.Name.TABLE_NAME, null);
+		if (count == 0) {
+			try {
+				System.out.println("Started");
+			//	db.createDataBase();
+				InputStream im = getAssets().open("BabyName");
+				BufferedReader br = new BufferedReader(new InputStreamReader(im, "UTF-8"));
+				String line = br.readLine();
+				List<M_Name> lst = new ArrayList<M_Name>();
+				do {
+					String temp[] = line.split(",");
+					String desc = "";
+					if(temp.length == 4)
+					desc = temp[3];
+							
+					M_Name s1 = new M_Name( temp[1],temp[0], Integer.parseInt(temp[2]),desc);
+					lst.add(s1);
+					
+					count++;
+					if(count%5000==0)
+					{
+					   Log.i("Count", count+" - "+t.getTime(t));
+					   }
+				} while ((line = br.readLine()) != null);
+				//db.insertName(lst);
+				
+				System.out.println(t.getTime(t));
+				db.insertNameInsertHelperLock(lst);
+			} catch (IOException e) {
+				AppLogger.WriteIntoFile("state " + TAG + " -- " + e.toString());
+				Log.e("", e.toString());
+			}
+			System.out.println(t.getTime(t));
+		}
+	}
+
 }

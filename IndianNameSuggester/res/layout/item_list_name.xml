@@ -60,9 +60,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Male" />
+            android:text="Name" />
 
         <RadioButton
+            android:visibility="gone"
             android:id="@+id/rbFeMale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,6 +71,7 @@
             android:text="Female" />
 
         <RadioButton
+             android:visibility="gone"
             android:id="@+id/rbBoth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -77,6 +79,7 @@
             android:text="Trans" />
 
         <RadioButton
+             android:visibility="gone"
             android:id="@+id/rbCast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

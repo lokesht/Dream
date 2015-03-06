@@ -4,6 +4,7 @@ import in.sel.exception.ValueNotInsertedException;
 import in.sel.model.M_Name;
 import in.sel.utility.AppConstants;
 import in.sel.utility.AppLogger;
+import in.sel.utility.Utility;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -49,16 +50,15 @@ public class DBHelper extends SQLiteOpenHelper {
 		super(context, DB_NAME, null, DATABASE_VERSION);
 		this.myContext = context;
 
-		// DB_PATH =
-		// Environment.getExternalStorageDirectory()+"/Test/AndroidBabyName/";
+		// DB_PATH = Environment.getExternalStorageDirectory()+"/Test/AndroidBabyName/";
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		try {
-			// db.execSQL(TableContract.TimeStamp.SQL_CREATE);
-			// db.execSQL(TableContract.Name.SQL_CREATE);
-			// Log.i(TAG, "success");
+			 db.execSQL(TableContract.TimeStamp.SQL_CREATE);
+			 db.execSQL(TableContract.Name.SQL_CREATE);
+			 Log.i(TAG, "Tatabase created Successfully");
 		} catch (Exception e) {
 			if (AppConstants.DEBUG)
 				Log.e(TAG, e.toString());
@@ -95,8 +95,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			String outFileName = getDatabasePath();
 
 			/* if the path doesn't exist first, create it */
-			File f = new File(myContext.getApplicationInfo().dataDir
-					+ DB_SUFFIX);
+			File f = new File(myContext.getApplicationInfo().dataDir+ DB_SUFFIX);
 			if (!f.exists())
 				f.mkdir();
 
@@ -121,8 +120,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	public boolean openDataBase() throws SQLException {
 		String myPath = getDatabasePath();
-		db = SQLiteDatabase.openDatabase(myPath, null,
-				SQLiteDatabase.NO_LOCALIZED_COLLATORS);
+		db = SQLiteDatabase.openDatabase(myPath, null,SQLiteDatabase.NO_LOCALIZED_COLLATORS);
 		return db != null;
 	}
 
@@ -284,95 +282,49 @@ public class DBHelper extends SQLiteOpenHelper {
 		return rowid;
 	}
 
-	/* Insert state */
-	public long insertNameTransaction(List<M_Name> lsData) {
-		long rowid = 0;
-		try {
-			db = this.getWritableDatabase();
-			db.beginTransaction();
-			for (M_Name obj : lsData) {
-				ContentValues cv = new ContentValues();
-				cv.put(TableContract.Name.NAME_EN, obj.getName_en());
-				cv.put(TableContract.Name.NAME_MA, obj.getName_ma());
-				cv.put(TableContract.Name.NAME_FRE, obj.getFrequency());
-
-				rowid = db.insert(TableContract.Name.TABLE_NAME,
-						TableContract.Name.NAME_EN, cv);
-
-			}
-			db.setTransactionSuccessful();
-		} catch (Exception e) {
-			AppLogger.WriteIntoFile(TAG + e.toString());
-			if (AppConstants.DEBUG)
-				Log.e("insertName", e.toString());
-		} finally {
-			db.endTransaction();
-			db.close();
-		}
-		return rowid;
-	}
-
-	/* Insert state */
-	public long insertNameInsertHelper(List<M_Name> lsData) {
-		long rowid = 0;
-		InsertHelper ih = new InsertHelper(getWritableDatabase(),
-				TableContract.Name.TABLE_NAME);
-		try {
-			final int nEn = ih.getColumnIndex(TableContract.Name.NAME_EN);
-			final int nMa = ih.getColumnIndex(TableContract.Name.NAME_MA);
-			final int nFre = ih.getColumnIndex(TableContract.Name.NAME_FRE);
-
-			for (M_Name obj : lsData) {
-
-				ih.prepareForInsert();
-				ih.bind(nEn, obj.getName_en());
-				ih.bind(nMa, obj.getName_ma());
-				ih.bind(nFre, obj.getFrequency());
-				ih.execute();
-			}
-
-		} catch (Exception e) {
-			AppLogger.WriteIntoFile(TAG + e.toString());
-			if (AppConstants.DEBUG)
-				Log.e("insertName", e.toString());
-		} finally {
-			if (ih != null)
-				ih.close();
-			this.db.setLockingEnabled(true);
-		}
-		return rowid;
-	}
-
-	/* Insert state */
+	
+	/** Insert state */
 	public long insertNameInsertHelperLock(List<M_Name> lsData) {
 		long rowid = 0;
-		InsertHelper ih = new InsertHelper(getWritableDatabase(),
-				TableContract.Name.TABLE_NAME);
+		db = getWritableDatabase();
+		InsertHelper ih = new InsertHelper(getWritableDatabase(),TableContract.Name.TABLE_NAME);
 
+		/** To measure Time for insertion*/
+		Utility t = new Utility();
+		
+		/** */
 		final int nEn = ih.getColumnIndex(TableContract.Name.NAME_EN);
 		final int nMa = ih.getColumnIndex(TableContract.Name.NAME_MA);
 		final int nFre = ih.getColumnIndex(TableContract.Name.NAME_FRE);
+		final int gender = ih.getColumnIndex(TableContract.Name.GENDER_CAST);
 		try {
 
-			this.db.setLockingEnabled(false);
+			//this.db.setLockingEnabled(false);
+			db.beginTransaction();
 			for (M_Name obj : lsData) {
 
 				ih.prepareForInsert();
 				ih.bind(nEn, obj.getName_en());
 				ih.bind(nMa, obj.getName_ma());
 				ih.bind(nFre, obj.getFrequency());
+				ih.bind(gender, obj.getDescription());
+				
 				ih.execute();
 			}
-
+			db.setTransactionSuccessful();
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile(TAG + e.toString());
+			AppLogger.WriteIntoFile(TAG + e.toString());	
 			if (AppConstants.DEBUG)
 				Log.e("insertName", e.toString());
 		} finally {
 			if (ih != null)
 				ih.close();
-			this.db.setLockingEnabled(true);
+			db.endTransaction();
+			db.close();
+			//this.db.setLockingEnabled(true);
+			
 		}
+		Log.i("InsertTime", t.getTime(t));
 		return rowid;
 	}
 

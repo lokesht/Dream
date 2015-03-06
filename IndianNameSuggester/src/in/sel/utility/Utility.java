@@ -63,7 +63,7 @@ public class Utility {
 
 		long second = (millis / 1000) % 60;
 		long minute = (millis / (1000 * 60)) % 60;
-		long hour = (millis / (1000 * 60 * 60)) % 24;
+		long hour = (millis / (1000 * 60 * 60));
 
 		return hour + ":" + minute + ":" + second;
 	}

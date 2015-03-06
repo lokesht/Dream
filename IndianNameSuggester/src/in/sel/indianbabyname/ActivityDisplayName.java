@@ -158,9 +158,9 @@ public class ActivityDisplayName extends Activity {
 						.getColumnIndex(TableContract.Name.GENDER_CAST));
 
 				/* Considering default value as -1 */
-				int desc = -1;
+				String desc = "-1";
 				if (s != null && s.length() > 0)
-					desc = Integer.parseInt(s);
+					desc = s;
 
 				M_Name temp = new M_Name(ma, en, fre, id, desc);
 				lsName.add(temp);
