@@ -108,7 +108,7 @@ public class NameAdapter extends BaseAdapter {
 		if (posCheck > -1) {
 			int checkedId = -1;
 			switch (posCheck) {
-			case 0:
+			case 5:
 				checkedId = R.id.rbMale;
 				break;
 			case 1:
@@ -119,6 +119,9 @@ public class NameAdapter extends BaseAdapter {
 				break;
 			case 3:
 				checkedId = R.id.rbCast;
+				break;
+			case 100:
+				checkedId = R.id.rbDelete;
 				break;
 			}
 			holder.rg.check(checkedId);
@@ -133,7 +136,7 @@ public class NameAdapter extends BaseAdapter {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				int checked = -1;
-/*5 Means It is Valid Name*/
+                   /*5 Means It is Valid Name*/
 				switch (checkedId) {
 				case R.id.rbMale:
 					checked = 5;

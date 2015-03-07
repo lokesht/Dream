@@ -50,15 +50,16 @@ public class DBHelper extends SQLiteOpenHelper {
 		super(context, DB_NAME, null, DATABASE_VERSION);
 		this.myContext = context;
 
-		// DB_PATH = Environment.getExternalStorageDirectory()+"/Test/AndroidBabyName/";
+		// DB_PATH =
+		// Environment.getExternalStorageDirectory()+"/Test/AndroidBabyName/";
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		try {
-			 db.execSQL(TableContract.TimeStamp.SQL_CREATE);
-			 db.execSQL(TableContract.Name.SQL_CREATE);
-			 Log.i(TAG, "Tatabase created Successfully");
+			db.execSQL(TableContract.TimeStamp.SQL_CREATE);
+			db.execSQL(TableContract.Name.SQL_CREATE);
+			Log.i(TAG, "Tatabase created Successfully");
 		} catch (Exception e) {
 			if (AppConstants.DEBUG)
 				Log.e(TAG, e.toString());
@@ -95,7 +96,8 @@ public class DBHelper extends SQLiteOpenHelper {
 			String outFileName = getDatabasePath();
 
 			/* if the path doesn't exist first, create it */
-			File f = new File(myContext.getApplicationInfo().dataDir+ DB_SUFFIX);
+			File f = new File(myContext.getApplicationInfo().dataDir
+					+ DB_SUFFIX);
 			if (!f.exists())
 				f.mkdir();
 
@@ -120,7 +122,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	public boolean openDataBase() throws SQLException {
 		String myPath = getDatabasePath();
-		db = SQLiteDatabase.openDatabase(myPath, null,SQLiteDatabase.NO_LOCALIZED_COLLATORS);
+		db = SQLiteDatabase.openDatabase(myPath, null,
+				SQLiteDatabase.NO_LOCALIZED_COLLATORS);
 		return db != null;
 	}
 
@@ -183,6 +186,31 @@ public class DBHelper extends SQLiteOpenHelper {
 				db.close();
 		}
 		return c;
+	}
+
+	/**
+	 * @param TableName
+	 * @param columns
+	 * @param where
+	 * @return Cursor
+	 */
+	public int deleteRow(String TableName, String where) {
+		Cursor c = null;
+		try {
+			db = getWritableDatabase();
+			int i = db.delete(TableName, where, null);
+			return i;
+		} catch (Exception e) {
+			AppLogger.WriteIntoFile("Class Name --> DBHelper -- "
+					+ e.toString());
+			if (AppConstants.DEBUG)
+				Log.e(TAG, e.toString() + "--> getTableValue()");
+		} finally {
+			/** If database does not contain anything immediately close database */
+			if (c == null)
+				db.close();
+		}
+		return 0;
 	}
 
 	/**
@@ -282,16 +310,16 @@ public class DBHelper extends SQLiteOpenHelper {
 		return rowid;
 	}
 
-	
 	/** Insert state */
 	public long insertNameInsertHelperLock(List<M_Name> lsData) {
 		long rowid = 0;
 		db = getWritableDatabase();
-		InsertHelper ih = new InsertHelper(getWritableDatabase(),TableContract.Name.TABLE_NAME);
+		InsertHelper ih = new InsertHelper(getWritableDatabase(),
+				TableContract.Name.TABLE_NAME);
 
-		/** To measure Time for insertion*/
+		/** To measure Time for insertion */
 		Utility t = new Utility();
-		
+
 		/** */
 		final int nEn = ih.getColumnIndex(TableContract.Name.NAME_EN);
 		final int nMa = ih.getColumnIndex(TableContract.Name.NAME_MA);
@@ -299,7 +327,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		final int gender = ih.getColumnIndex(TableContract.Name.GENDER_CAST);
 		try {
 
-			//this.db.setLockingEnabled(false);
+			// this.db.setLockingEnabled(false);
 			db.beginTransaction();
 			for (M_Name obj : lsData) {
 
@@ -308,12 +336,12 @@ public class DBHelper extends SQLiteOpenHelper {
 				ih.bind(nMa, obj.getName_ma());
 				ih.bind(nFre, obj.getFrequency());
 				ih.bind(gender, obj.getDescription());
-				
+
 				ih.execute();
 			}
 			db.setTransactionSuccessful();
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile(TAG + e.toString());	
+			AppLogger.WriteIntoFile(TAG + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e("insertName", e.toString());
 		} finally {
@@ -321,8 +349,8 @@ public class DBHelper extends SQLiteOpenHelper {
 				ih.close();
 			db.endTransaction();
 			db.close();
-			//this.db.setLockingEnabled(true);
-			
+			// this.db.setLockingEnabled(true);
+
 		}
 		Log.i("InsertTime", t.getTime(t));
 		return rowid;

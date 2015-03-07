@@ -2,28 +2,27 @@ package in.sel.indianbabyname;
 
 import in.sel.adapter.NameAdapter;
 import in.sel.model.M_Name;
-import in.sel.utility.AppLogger;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.EventLogTags.Description;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ActivityDisplayName extends Activity {
 	String TAG = "ActivityDisplayName";
@@ -43,7 +42,8 @@ public class ActivityDisplayName extends Activity {
 
 		/** This is will select only those which are not marked */
 		String where = TableContract.Name.NAME_EN + " like '" + alphabet
-				+ "%' AND " + TableContract.Name.GENDER_CAST + " IS NULL";
+				+ "%' AND " +TableContract.Name.GENDER_CAST+" = ''";
+		//+ "%' AND " + TableContract.Name.GENDER_CAST + " IS NULL";
 
 		Cursor c = dbHelper.getTableValue(TableContract.Name.TABLE_NAME,
 				new String[] { TableContract.AppColumn.CAUTO_ID,
@@ -70,6 +70,73 @@ public class ActivityDisplayName extends Activity {
 		final ListView lsName = (ListView) findViewById(R.id.lv_alphabet);
 		final NameAdapter na = new NameAdapter(this, name);
 		lsName.setAdapter(na);
+		
+		lsName.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				final M_Name name = (M_Name)na.getItem(position);
+				
+				String nameEn = name.getName_en();
+				String nameMa = name.getName_ma();
+				
+				final Dialog d = new Dialog(ActivityDisplayName.this);
+				d.setContentView(R.layout.dialog_name_editor);
+				
+				final EditText etEn = (EditText)d.findViewById(R.id.et_name_en);
+				final EditText etMa = (EditText)d.findViewById(R.id.et_name_ma);
+				
+				etEn.setText(nameEn);
+				etMa.setText(nameMa);
+				
+				Button btnSub = (Button)d.findViewById(R.id.btn_submit);
+				Button btnCan = (Button)d.findViewById(R.id.btn_cancel);
+				
+				btnSub.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+                     String nameEn = etEn.getText().toString();   		
+                     String nameMa = etMa.getText().toString();
+                     
+                     DBHelper db = new DBHelper(getApplicationContext());
+                     
+                     String where = TableContract.Name.NAME_EN+" = "+nameEn;
+                     Cursor c = db.getTableValue(TableContract.Name.TABLE_NAME,new String[]{TableContract.Name.NAME_FRE}, where);
+                     long newfre = name.getFrequency();
+                     
+                     ContentValues cv = new ContentValues();
+                     if(c.getCount()>0)
+                     {
+                    	 c.moveToFirst();
+                    	 newfre = newfre + c.getLong(0);
+                    	 cv.put(TableContract.Name.NAME_FRE,newfre);
+                    	 
+                    	 db.deleteRow(TableContract.Name.TABLE_NAME, where);
+                     }else
+                     {
+                    	 cv.put(TableContract.Name.NAME_EN,nameEn );
+                    	 cv.put(TableContract.Name.NAME_MA,nameMa ); 
+                     }
+                     
+                     where  = TableContract.AppColumn.CAUTO_ID+" = "+name.getId();
+                     long l = db.updateTable(TableContract.Name.TABLE_NAME, cv, where);
+                     if(l>0)
+                    	 Toast.makeText(getApplicationContext(), "Text Updated", Toast.LENGTH_SHORT).show();
+					}
+				});
+				
+				btnCan.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						d.cancel();
+					}
+				});
+				return false;
+			}
+		});
 
 		/* Sorting on Name based on English Name */
 		TextView tvEnName = (TextView) findViewById(R.id.tvEnglish);
@@ -131,8 +198,7 @@ public class ActivityDisplayName extends Activity {
 					}
 				});
 
-				lsName.setAdapter(new NameAdapter(ActivityDisplayName.this,
-						name));
+				lsName.setAdapter(new NameAdapter(ActivityDisplayName.this,	name));
 				lsName.invalidate();
 			}
 		});
