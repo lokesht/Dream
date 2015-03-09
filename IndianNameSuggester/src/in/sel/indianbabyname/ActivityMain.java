@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
@@ -90,8 +91,7 @@ public class ActivityMain extends Activity {
 			 * code is coming till here so data is loaded in successfully
 			 */
 			fis = new FileInputStream(f);
-			fos = new FileOutputStream("/mnt/sdcard/Download/"
-					+ DBHelper.DB_NAME + ".sqlite");
+			fos = new FileOutputStream("/mnt/sdcard/Download/"+ DBHelper.DB_NAME);
 
 			byte buffer[] = new byte[1024];
 			int length;
@@ -99,6 +99,8 @@ public class ActivityMain extends Activity {
 				fos.write(buffer, 0, length);
 			}
 			fos.flush();
+			
+			Toast.makeText(getApplicationContext(), "Copied", Toast.LENGTH_LONG).show();
 		} catch (Exception e) {
 			AppLogger.WriteIntoFile(TAG + " -- " + e.toString());
 			Log.e("", e.toString());

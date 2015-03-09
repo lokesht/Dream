@@ -37,19 +37,16 @@ public class ActivityDisplayName extends Activity {
 		DBHelper dbHelper = new DBHelper(this);
 
 		/** just to check total entry inside table */
-		int count = dbHelper.getTableRowCount(TableContract.Name.TABLE_NAME,
-				null);
+		int count = dbHelper.getTableRowCount(TableContract.Name.TABLE_NAME, null);
 
 		/** This is will select only those which are not marked */
-		String where = TableContract.Name.NAME_EN + " like '" + alphabet
-				+ "%' AND " +TableContract.Name.GENDER_CAST+" = ''";
-		//+ "%' AND " + TableContract.Name.GENDER_CAST + " IS NULL";
+		String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%' AND " + TableContract.Name.GENDER_CAST
+				+ " = ''";
+		// + "%' AND " + TableContract.Name.GENDER_CAST + " IS NULL";
 
-		Cursor c = dbHelper.getTableValue(TableContract.Name.TABLE_NAME,
-				new String[] { TableContract.AppColumn.CAUTO_ID,
-						TableContract.Name.NAME_EN, TableContract.Name.NAME_MA,
-						TableContract.Name.NAME_FRE,
-						TableContract.Name.GENDER_CAST}, where);
+		Cursor c = dbHelper.getTableValue(TableContract.Name.TABLE_NAME, new String[] {
+				TableContract.AppColumn.CAUTO_ID, TableContract.Name.NAME_EN, TableContract.Name.NAME_MA,
+				TableContract.Name.NAME_FRE, TableContract.Name.GENDER_CAST }, where);
 
 		/** Parse */
 		final List<M_Name> name = parseListName(c);
@@ -70,70 +67,74 @@ public class ActivityDisplayName extends Activity {
 		final ListView lsName = (ListView) findViewById(R.id.lv_alphabet);
 		final NameAdapter na = new NameAdapter(this, name);
 		lsName.setAdapter(na);
-		
+
 		lsName.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				final M_Name name = (M_Name)na.getItem(position);
-				
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				final M_Name name = (M_Name) na.getItem(position);
+
 				String nameEn = name.getName_en();
 				String nameMa = name.getName_ma();
-				
+
 				final Dialog d = new Dialog(ActivityDisplayName.this);
 				d.setContentView(R.layout.dialog_name_editor);
-				
-				final EditText etEn = (EditText)d.findViewById(R.id.et_name_en);
-				final EditText etMa = (EditText)d.findViewById(R.id.et_name_ma);
-				
+
+				final EditText etEn = (EditText) d.findViewById(R.id.et_name_en);
+				final EditText etMa = (EditText) d.findViewById(R.id.et_name_ma);
+
 				etEn.setText(nameEn);
 				etMa.setText(nameMa);
-				
-				Button btnSub = (Button)d.findViewById(R.id.btn_submit);
-				Button btnCan = (Button)d.findViewById(R.id.btn_cancel);
-				
+
+				Button btnSub = (Button) d.findViewById(R.id.btn_submit);
+				Button btnCan = (Button) d.findViewById(R.id.btn_cancel);
+
 				btnSub.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
-                     String nameEn = etEn.getText().toString();   		
-                     String nameMa = etMa.getText().toString();
-                     
-                     DBHelper db = new DBHelper(getApplicationContext());
-                     
-                     String where = TableContract.Name.NAME_EN+" = "+nameEn;
-                     Cursor c = db.getTableValue(TableContract.Name.TABLE_NAME,new String[]{TableContract.Name.NAME_FRE}, where);
-                     long newfre = name.getFrequency();
-                     
-                     ContentValues cv = new ContentValues();
-                     if(c.getCount()>0)
-                     {
-                    	 c.moveToFirst();
-                    	 newfre = newfre + c.getLong(0);
-                    	 cv.put(TableContract.Name.NAME_FRE,newfre);
-                    	 
-                    	 db.deleteRow(TableContract.Name.TABLE_NAME, where);
-                     }else
-                     {
-                    	 cv.put(TableContract.Name.NAME_EN,nameEn );
-                    	 cv.put(TableContract.Name.NAME_MA,nameMa ); 
-                     }
-                     
-                     where  = TableContract.AppColumn.CAUTO_ID+" = "+name.getId();
-                     long l = db.updateTable(TableContract.Name.TABLE_NAME, cv, where);
-                     if(l>0)
-                    	 Toast.makeText(getApplicationContext(), "Text Updated", Toast.LENGTH_SHORT).show();
+						String nameEn = etEn.getText().toString();
+						String nameMa = etMa.getText().toString();
+						long newfre = name.getFrequency();
+
+						DBHelper db = new DBHelper(getApplicationContext());
+
+						String where = TableContract.Name.NAME_EN + " = '" + nameEn + "'";
+						Cursor c = db.getTableValue(TableContract.Name.TABLE_NAME, new String[] {
+								TableContract.AppColumn.CAUTO_ID, TableContract.Name.NAME_FRE }, where);
+
+						ContentValues cv = new ContentValues();
+						if (c != null && c.getCount() > 0) {
+							c.moveToFirst();
+							newfre = newfre + c.getLong(1);
+
+							where = TableContract.AppColumn.CAUTO_ID + " = " + c.getLong(0);
+							long l = db.deleteRow(TableContract.Name.TABLE_NAME, where);
+							if (l > 0)
+								Toast.makeText(getApplicationContext(), "Row Deleted", Toast.LENGTH_SHORT).show();
+						}
+
+						cv.put(TableContract.Name.NAME_EN, nameEn);
+						cv.put(TableContract.Name.NAME_MA, nameMa);
+						cv.put(TableContract.Name.NAME_FRE, newfre);
+
+						where = TableContract.AppColumn.CAUTO_ID + " = " + name.getId();
+						long l = db.updateTable(TableContract.Name.TABLE_NAME, cv, where);
+						if (l > 0)
+							Toast.makeText(getApplicationContext(), "Text Updated", Toast.LENGTH_SHORT).show();
+						
+						d.cancel();
 					}
 				});
-				
+
 				btnCan.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
 						d.cancel();
 					}
 				});
+				d.show();
 				return false;
 			}
 		});
@@ -154,8 +155,7 @@ public class ActivityDisplayName extends Activity {
 					}
 				});
 
-				lsName.setAdapter(new NameAdapter(ActivityDisplayName.this,
-						name));
+				lsName.setAdapter(new NameAdapter(ActivityDisplayName.this, name));
 				lsName.invalidate();
 			}
 		});
@@ -176,8 +176,7 @@ public class ActivityDisplayName extends Activity {
 					}
 				});
 
-				lsName.setAdapter(new NameAdapter(ActivityDisplayName.this,
-						name));
+				lsName.setAdapter(new NameAdapter(ActivityDisplayName.this, name));
 				lsName.invalidate();
 			}
 		});
@@ -198,7 +197,7 @@ public class ActivityDisplayName extends Activity {
 					}
 				});
 
-				lsName.setAdapter(new NameAdapter(ActivityDisplayName.this,	name));
+				lsName.setAdapter(new NameAdapter(ActivityDisplayName.this, name));
 				lsName.invalidate();
 			}
 		});
@@ -210,18 +209,13 @@ public class ActivityDisplayName extends Activity {
 		if (c != null && c.getCount() > 0) {
 			c.moveToFirst();
 			do {
-				int id = c.getInt(c
-						.getColumnIndex(TableContract.AppColumn.CAUTO_ID));
+				int id = c.getInt(c.getColumnIndex(TableContract.AppColumn.CAUTO_ID));
 
-				String en = c.getString(c
-						.getColumnIndex(TableContract.Name.NAME_EN));
-				String ma = c.getString(c
-						.getColumnIndex(TableContract.Name.NAME_MA));
-				int fre = c.getInt(c
-						.getColumnIndex(TableContract.Name.NAME_FRE));
+				String en = c.getString(c.getColumnIndex(TableContract.Name.NAME_EN));
+				String ma = c.getString(c.getColumnIndex(TableContract.Name.NAME_MA));
+				int fre = c.getInt(c.getColumnIndex(TableContract.Name.NAME_FRE));
 
-				String s = c.getString(c
-						.getColumnIndex(TableContract.Name.GENDER_CAST));
+				String s = c.getString(c.getColumnIndex(TableContract.Name.GENDER_CAST));
 
 				/* Considering default value as -1 */
 				String desc = "-1";
@@ -237,5 +231,5 @@ public class ActivityDisplayName extends Activity {
 		}
 		return lsName;
 	}
-	
+
 }
