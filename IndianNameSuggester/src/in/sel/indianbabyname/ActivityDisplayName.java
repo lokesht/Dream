@@ -56,6 +56,8 @@ public class ActivityDisplayName extends Activity {
 		final List<M_Name> name = parseListName(c);
 		dbHelper.close();
 		displayList(name);
+		
+		
 
 		/* */
 		TextView tvTotal = (TextView) findViewById(R.id.tvTotal);
@@ -165,8 +167,80 @@ public class ActivityDisplayName extends Activity {
 
 	public void displayList(List<M_Name> name) {
 		lsName = (ListView) findViewById(R.id.lv_alphabet);
-		NameAdapter na = new NameAdapter(this, name);
+		final NameAdapter na = new NameAdapter(this, name);
 		lsName.setAdapter(na);
+		
+		lsName.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				final M_Name name = (M_Name) na.getItem(position);
+
+				String nameEn = name.getName_en();
+				String nameMa = name.getName_ma();
+
+				final Dialog d = new Dialog(ActivityDisplayName.this);
+				d.setContentView(R.layout.dialog_name_editor);
+
+				final EditText etEn = (EditText) d.findViewById(R.id.et_name_en);
+				final EditText etMa = (EditText) d.findViewById(R.id.et_name_ma);
+
+				etEn.setText(nameEn);
+				etMa.setText(nameMa);
+
+				Button btnSub = (Button) d.findViewById(R.id.btn_submit);
+				Button btnCan = (Button) d.findViewById(R.id.btn_cancel);
+
+				btnSub.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						String nameEn = etEn.getText().toString();
+						String nameMa = etMa.getText().toString();
+						long newfre = name.getFrequency();
+
+						DBHelper db = new DBHelper(getApplicationContext());
+
+						String where = TableContract.Name.NAME_EN + " = '" + nameEn + "'";
+						Cursor c = db.getTableValue(TableContract.Name.TABLE_NAME, new String[] {
+								TableContract.AUTO_ID, TableContract.Name.NAME_FRE }, where);
+
+						ContentValues cv = new ContentValues();
+						if (c != null && c.getCount() > 0) {
+							c.moveToFirst();
+							newfre = newfre + c.getLong(1);
+
+							where = TableContract.AUTO_ID + " = " + c.getLong(0);
+							long l = db.deleteRow(TableContract.Name.TABLE_NAME, where);
+							if (l > 0)
+								Toast.makeText(getApplicationContext(), "Row Deleted", Toast.LENGTH_SHORT).show();
+						}
+
+						cv.put(TableContract.Name.NAME_EN, nameEn);
+						cv.put(TableContract.Name.NAME_MA, nameMa);
+						cv.put(TableContract.Name.NAME_FRE, newfre);
+
+						where = TableContract.AUTO_ID + " = " + name.getId();
+						long l = db.updateTable(TableContract.Name.TABLE_NAME, cv, where);
+						if (l > 0)
+							Toast.makeText(getApplicationContext(), "Text Updated", Toast.LENGTH_SHORT).show();
+						
+						d.cancel();
+					}
+				});
+
+				btnCan.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						d.cancel();
+					}
+				});
+				d.show();
+				return false;
+			}
+		});
+
 	}
 
 	@Override
