@@ -188,7 +188,7 @@ public class NameAdapter extends BaseAdapter {
                     	 cv.put(TableContract.Name.NAME_MA,nameMa ); 
                      }
                      
-                     where  = TableContract.AppColumn.CAUTO_ID+" = "+allElementDetails.get(position).getId();
+                     where  = TableContract.Name.AUTO_ID+" = "+allElementDetails.get(position).getId();
                      long l = db.updateTable(TableContract.Name.TABLE_NAME, cv, where);
                      if(l>0)
                      { Toast.makeText(mInflater.getContext(), "Text Updated", Toast.LENGTH_SHORT).show();
@@ -244,7 +244,7 @@ public class NameAdapter extends BaseAdapter {
 					cv.put(TableContract.Name.GENDER_CAST, checked);
 
 					/** Where clause */
-					String where = TableContract.AppColumn.CAUTO_ID + " = " + allElementDetails.get(position).getId();
+					String where = TableContract.Name.AUTO_ID + " = " + allElementDetails.get(position).getId();
 					int i = dbtemp.updateTable(TableContract.Name.TABLE_NAME, cv, where);
 					Log.i("Updated", i + "");
 				}

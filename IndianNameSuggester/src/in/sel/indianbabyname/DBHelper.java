@@ -37,8 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	SQLiteDatabase db;
 
 	/**
-	 * If you change the database schema, you must increment the database
-	 * version.
+	 * If you change the database schema, you must increment the database version.
 	 */
 	public static final int DATABASE_VERSION = 1;
 	public static final String DB_NAME = "BabyName.sqlite";
@@ -59,12 +58,12 @@ public class DBHelper extends SQLiteOpenHelper {
 		try {
 			db.execSQL(TableContract.TimeStamp.SQL_CREATE);
 			db.execSQL(TableContract.Name.SQL_CREATE);
+			db.execSQL(TableContract.SavedStatus.SQL_CREATE);
 			Log.i(TAG, "Tatabase created Successfully");
 		} catch (Exception e) {
 			if (AppConstants.DEBUG)
 				Log.e(TAG, e.toString());
-			AppLogger.WriteIntoFile("Class Name --> DBHelper -- "
-					+ e.toString());
+			AppLogger.WriteIntoFile("Class Name --> DBHelper -- " + e.toString());
 		}
 	}
 
@@ -96,8 +95,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			String outFileName = getDatabasePath();
 
 			/* if the path doesn't exist first, create it */
-			File f = new File(myContext.getApplicationInfo().dataDir
-					+ DB_SUFFIX);
+			File f = new File(myContext.getApplicationInfo().dataDir + DB_SUFFIX);
 			if (!f.exists())
 				f.mkdir();
 
@@ -122,8 +120,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	public boolean openDataBase() throws SQLException {
 		String myPath = getDatabasePath();
-		db = SQLiteDatabase.openDatabase(myPath, null,
-				SQLiteDatabase.NO_LOCALIZED_COLLATORS);
+		db = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS);
 		return db != null;
 	}
 
@@ -151,11 +148,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
 			int rowId = db.update("sqlite_sequence", cv, whereClause, null);
 
-			int s = (rowId < 0) ? Log.i(TAG, "Not reseted Table --> "
-					+ TableName) : Log.i(TAG, "Reseted Table --> " + TableName);
+			int s = (rowId < 0) ? Log.i(TAG, "Not reseted Table --> " + TableName) : Log.i(TAG, "Reseted Table --> "
+					+ TableName);
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile("Class Name --> DBHelper -- "
-					+ e.toString());
+			AppLogger.WriteIntoFile("Class Name --> DBHelper -- " + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e("dbHelper", e.toString());
 		} finally {
@@ -173,11 +169,9 @@ public class DBHelper extends SQLiteOpenHelper {
 		Cursor c = null;
 		try {
 			db = this.getReadableDatabase();
-			c = db.query(TableName, columns, where, null, null, null, null,
-					null);
+			c = db.query(TableName, columns, where, null, null, null, null, null);
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile("Class Name --> DBHelper -- "
-					+ e.toString());
+			AppLogger.WriteIntoFile("Class Name --> DBHelper -- " + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e(TAG, e.toString() + "--> getTableValue()");
 		} finally {
@@ -201,8 +195,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			int i = db.delete(TableName, where, null);
 			return i;
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile("Class Name --> DBHelper -- "
-					+ e.toString());
+			AppLogger.WriteIntoFile("Class Name --> DBHelper -- " + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e(TAG, e.toString() + "--> getTableValue()");
 		} finally {
@@ -225,11 +218,11 @@ public class DBHelper extends SQLiteOpenHelper {
 		try {
 			db = getReadableDatabase();
 			Cursor c = db.query(tableName, null, where, null, null, null, null);
-			if (c != null)
+			if (c != null){
 				count = c.getCount();
+				c.close();}
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile("Class Name --> " + TAG + " "
-					+ e.toString());
+			AppLogger.WriteIntoFile("Class Name --> " + TAG + " " + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e(getClass().getName(), e.toString() + "-->");
 		} finally {
@@ -247,8 +240,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		try {
 			db = this.getWritableDatabase();
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile("Class Name --> " + TAG + " "
-					+ e.toString());
+			AppLogger.WriteIntoFile("Class Name --> " + TAG + " " + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e(getClass().getName(), e.toString() + "-->");
 		} finally {
@@ -292,8 +284,7 @@ public class DBHelper extends SQLiteOpenHelper {
 				cv.put(TableContract.Name.NAME_MA, obj.getName_ma());
 				cv.put(TableContract.Name.NAME_FRE, obj.getFrequency());
 
-				rowid = db.insert(TableContract.Name.TABLE_NAME,
-						TableContract.Name.NAME_EN, cv);
+				rowid = db.insert(TableContract.Name.TABLE_NAME, TableContract.Name.NAME_EN, cv);
 
 				if (rowid < 0) {
 					throw new ValueNotInsertedException();
@@ -310,12 +301,32 @@ public class DBHelper extends SQLiteOpenHelper {
 		return rowid;
 	}
 
+	/* Insert Saved Status of List */
+	public long insertInTable(String tableName, String column,ContentValues cv) {
+		long rowid = 0;
+		try {
+			db = this.getWritableDatabase();
+			rowid = db.insert(tableName, column, cv);
+
+			if (rowid < 0) {
+				throw new ValueNotInsertedException();
+			}
+
+		} catch (Exception e) {
+			AppLogger.WriteIntoFile(TAG + e.toString());
+			if (AppConstants.DEBUG)
+				Log.e("insertName", e.toString());
+		} finally {
+			db.close();
+		}
+		return rowid;
+	}
+
 	/** Insert state */
 	public long insertNameInsertHelperLock(List<M_Name> lsData) {
 		long rowid = 0;
 		db = getWritableDatabase();
-		InsertHelper ih = new InsertHelper(getWritableDatabase(),
-				TableContract.Name.TABLE_NAME);
+		InsertHelper ih = new InsertHelper(getWritableDatabase(), TableContract.Name.TABLE_NAME);
 
 		/** To measure Time for insertion */
 		Utility t = new Utility();
@@ -326,7 +337,6 @@ public class DBHelper extends SQLiteOpenHelper {
 		final int nFre = ih.getColumnIndex(TableContract.Name.NAME_FRE);
 		final int gender = ih.getColumnIndex(TableContract.Name.GENDER_CAST);
 		try {
-
 			// this.db.setLockingEnabled(false);
 			db.beginTransaction();
 			for (M_Name obj : lsData) {
@@ -350,7 +360,6 @@ public class DBHelper extends SQLiteOpenHelper {
 			db.endTransaction();
 			db.close();
 			// this.db.setLockingEnabled(true);
-
 		}
 		Log.i("InsertTime", t.getTime(t));
 		return rowid;
