@@ -142,74 +142,75 @@ public class NameAdapter extends BaseAdapter {
 			holder.rg.clearCheck();
 		}
 		
-//		/** */
-//		holder.ll.setOnLongClickListener(new OnLongClickListener() {
-//
-//			@Override
-//			public boolean onLongClick(View v) {
-//				
-//				
-//				final Dialog d = new Dialog(mInflater.getContext());
-//				d.setContentView(R.layout.dialog_name_editor);
-//				
-//				final EditText etEn = (EditText)d.findViewById(R.id.et_name_en);
-//				final EditText etMa = (EditText)d.findViewById(R.id.et_name_ma);
-//				
-//				etEn.setText(allElementDetails.get(position).getName_en());
-//				etMa.setText(allElementDetails.get(position).getName_ma());
-//				
-//				Button btnSub = (Button)d.findViewById(R.id.btn_submit);
-//				Button btnCan = (Button)d.findViewById(R.id.btn_cancel);
-//				
-//				btnSub.setOnClickListener(new OnClickListener() {
-//					
-//					@Override
-//					public void onClick(View v) {
-//                     String nameEn = etEn.getText().toString();   		
-//                     String nameMa = etMa.getText().toString();
-//                     
-//                     DBHelper db = new DBHelper(mInflater.getContext());
-//                     
-//                     String where = TableContract.Name.NAME_EN+" = "+nameEn;
-//                     Cursor c = db.getTableValue(TableContract.Name.TABLE_NAME,new String[]{TableContract.Name.NAME_FRE}, where);
-//                     long newfre = allElementDetails.get(position).getFrequency();
-//                     
-//                     ContentValues cv = new ContentValues();
-//                     if(c.getCount()>0)
-//                     {
-//                    	 c.moveToFirst();
-//                    	 newfre = newfre + c.getLong(0);
-//                    	 cv.put(TableContract.Name.NAME_FRE,newfre);
-//                    	 
-//                    	 db.deleteRow(TableContract.Name.TABLE_NAME, where);
-//                     }else
-//                     {
-//                    	 cv.put(TableContract.Name.NAME_EN,nameEn );
-//                    	 cv.put(TableContract.Name.NAME_MA,nameMa ); 
-//                     }
-//                     
-//                     where  = TableContract.Name.AUTO_ID+" = "+allElementDetails.get(position).getId();
-//                     long l = db.updateTable(TableContract.Name.TABLE_NAME, cv, where);
-//                     if(l>0)
-//                     { Toast.makeText(mInflater.getContext(), "Text Updated", Toast.LENGTH_SHORT).show();
-//                     
-//                     }
-//					}
-//				});
-//				
-//				btnCan.setOnClickListener(new OnClickListener() {
-//					
-//					@Override
-//					public void onClick(View v) {
-//						d.cancel();
-//					}
-//				});
-//				
-//				Toast.makeText(mInflater.getContext(), "Clicked", Toast.LENGTH_SHORT).show();
-//				d.show();
-//				return false;
-//			}
-//		});
+		/** */
+		holder.ll.setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View v) {
+				
+				
+				final Dialog d = new Dialog(mInflater.getContext());
+				d.setContentView(R.layout.dialog_name_editor);
+				
+				final EditText etEn = (EditText)d.findViewById(R.id.et_name_en);
+				final EditText etMa = (EditText)d.findViewById(R.id.et_name_ma);
+				
+				etEn.setText(allElementDetails.get(position).getName_en());
+				etMa.setText(allElementDetails.get(position).getName_ma());
+				
+				Button btnSub = (Button)d.findViewById(R.id.btn_submit);
+				Button btnCan = (Button)d.findViewById(R.id.btn_cancel);
+				
+				btnSub.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+                     String nameEn = etEn.getText().toString();   		
+                     String nameMa = etMa.getText().toString();
+                     
+                     DBHelper db = new DBHelper(mInflater.getContext());
+                     
+                     String where = TableContract.Name.NAME_EN+" = "+nameEn;
+                     Cursor c = db.getTableValue(TableContract.Name.TABLE_NAME,new String[]{TableContract.Name.NAME_FRE}, where);
+                     long newfre = allElementDetails.get(position).getFrequency();
+                     
+                     ContentValues cv = new ContentValues();
+                     if(c.getCount()>0)
+                     {
+                    	 c.moveToFirst();
+                    	 newfre = newfre + c.getLong(0);
+                    	 cv.put(TableContract.Name.NAME_FRE,newfre);
+                    	 
+                    	 db.deleteRow(TableContract.Name.TABLE_NAME, where);
+                     }else
+                     {
+                    	 cv.put(TableContract.Name.NAME_EN,nameEn );
+                    	 cv.put(TableContract.Name.NAME_MA,nameMa ); 
+                     }
+                     
+                     where  = TableContract.Name.AUTO_ID+" = "+allElementDetails.get(position).getId();
+                     long l = db.updateTable(TableContract.Name.TABLE_NAME, cv, where);
+                     if(l>0)
+                     { Toast.makeText(mInflater.getContext(), "Text Updated", Toast.LENGTH_SHORT).show();
+                     
+                     }
+                     d.cancel();
+					}
+				});
+				
+				btnCan.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						d.cancel();
+					}
+				});
+				
+				Toast.makeText(mInflater.getContext(), "Clicked", Toast.LENGTH_SHORT).show();
+				d.show();
+				return false;
+			}
+		});
 		
 		/** */
 		holder.rg.setOnCheckedChangeListener(new OnCheckedChangeListener() {
