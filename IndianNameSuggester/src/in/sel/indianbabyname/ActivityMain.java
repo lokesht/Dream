@@ -31,9 +31,8 @@ public class ActivityMain extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		final String[] letter = new String[] { "A", "B", "C", "D", "E", "F",
-				"G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R",
-				"S", "T", "U", "V", "W", "X", "Y", "Z" };
+		final String[] letter = new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
+				"O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
 		AlphaGridAdapter adapter = new AlphaGridAdapter(this);
 		GridView gvAl = (GridView) findViewById(R.id.gv_alphabet);
@@ -42,10 +41,9 @@ public class ActivityMain extends Activity {
 		gvAl.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				Intent in = new Intent(ActivityMain.this,
-						ActivityDisplayName.class);
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				//Intent in = new Intent(ActivityMain.this, DepricatedActivityDisplayName.class);
+				Intent in = new Intent(ActivityMain.this, ActivityDisplayName_Developer.class);
 				in.putExtra(ALPHA, letter[position] + "");
 				startActivity(in);
 			}
@@ -80,8 +78,7 @@ public class ActivityMain extends Activity {
 
 	/* */
 	public void writeDataBase() {
-		String dataBase = getApplicationInfo().dataDir + DBHelper.DB_SUFFIX
-				+ DBHelper.DB_NAME;
+		String dataBase = getApplicationInfo().dataDir + DBHelper.DB_SUFFIX + DBHelper.DB_NAME;
 		File f = new File(dataBase);
 		InputStream fis = null;
 		OutputStream fos = null;
@@ -91,7 +88,7 @@ public class ActivityMain extends Activity {
 			 * code is coming till here so data is loaded in successfully
 			 */
 			fis = new FileInputStream(f);
-			fos = new FileOutputStream("/mnt/sdcard/Download/"+ DBHelper.DB_NAME);
+			fos = new FileOutputStream("/mnt/sdcard/Download/" + DBHelper.DB_NAME);
 
 			byte buffer[] = new byte[1024];
 			int length;
@@ -99,7 +96,7 @@ public class ActivityMain extends Activity {
 				fos.write(buffer, 0, length);
 			}
 			fos.flush();
-			
+
 			Toast.makeText(getApplicationContext(), "Copied", Toast.LENGTH_LONG).show();
 		} catch (Exception e) {
 			AppLogger.WriteIntoFile(TAG + " -- " + e.toString());

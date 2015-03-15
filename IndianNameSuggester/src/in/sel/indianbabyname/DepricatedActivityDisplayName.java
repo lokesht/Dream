@@ -1,6 +1,7 @@
 package in.sel.indianbabyname;
 
 import in.sel.adapter.NameAdapter;
+import in.sel.adapter.NameCursorAdapter;
 import in.sel.model.M_Name;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ActivityDisplayName extends Activity {
+public class DepricatedActivityDisplayName extends Activity {
 	String TAG = "ActivityDisplayName";
 
 	ListView lsName;
@@ -47,18 +48,21 @@ public class ActivityDisplayName extends Activity {
 
 		/** This is will select only those which are not marked */
 		String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%' AND " + TableContract.Name.GENDER_CAST
-				+ " = ''";
+				+ " = ''"+" ORDER BY "+TableContract.Name.NAME_FRE+" DESC";
 
 		Cursor c = dbHelper.getTableValue(TableContract.Name.TABLE_NAME, new String[] { TableContract.Name.AUTO_ID,
 				TableContract.Name.NAME_EN, TableContract.Name.NAME_MA, TableContract.Name.NAME_FRE,
 				TableContract.Name.GENDER_CAST }, where);
 
 		/** Parse */
-		final List<M_Name> name = parseListName(c);
+//		final List<M_Name> name = new ArrayList<M_Name>();
+//		name = parseListName(c);
+		final List<M_Name> name  = parseListName(c);
 		dbHelper.close();
 		displayList(name);
 		
-		//displayListWithCursor(c);
+		//displayListWithSimpleCursor(c);
+		//displayListWithCustomCursor(c);
 
 		/* */
 		TextView tvTotal = (TextView) findViewById(R.id.tvTotal);
@@ -89,7 +93,7 @@ public class ActivityDisplayName extends Activity {
 					}
 				});
 
-				lsName.setAdapter(new NameAdapter(ActivityDisplayName.this, name));
+				lsName.setAdapter(new NameAdapter(DepricatedActivityDisplayName.this, name));
 				lsName.invalidate();
 			}
 		});
@@ -110,7 +114,7 @@ public class ActivityDisplayName extends Activity {
 					}
 				});
 
-				lsName.setAdapter(new NameAdapter(ActivityDisplayName.this, name));
+				lsName.setAdapter(new NameAdapter(DepricatedActivityDisplayName.this, name));
 				lsName.invalidate();
 			}
 		});
@@ -131,7 +135,7 @@ public class ActivityDisplayName extends Activity {
 					}
 				});
 
-				lsName.setAdapter(new NameAdapter(ActivityDisplayName.this, name));
+				lsName.setAdapter(new NameAdapter(DepricatedActivityDisplayName.this, name));
 				lsName.invalidate();
 			}
 		});
@@ -173,18 +177,26 @@ public class ActivityDisplayName extends Activity {
 	}
 	
 	/** For Testing of Cursor Adapter*/
-	public void displayListWithCursor(Cursor c) {
+	public void displayListWithSimpleCursor(Cursor c) {
 		lsName = (ListView) findViewById(R.id.lv_alphabet);
 		startManagingCursor(c);
-		String[] from = new String[] {TableContract.Name.NAME_EN};
+		String[] from = new String[] {TableContract.Name.NAME_EN,TableContract.Name.NAME_MA};
         int[] to = new int[] { android.R.id.text1 };
         
 		SimpleCursorAdapter sca =new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, c, from,to );
 		lsName.setAdapter(sca);
 	}
+	
+	/** For Testing of Cursor Adapter*/
+	public void displayListWithCustomCursor(Cursor c) {
+		lsName = (ListView) findViewById(R.id.lv_alphabet);
+		
+		NameCursorAdapter sca =new NameCursorAdapter(this,  c );
+		lsName.setAdapter(sca);
+	}
 
-	@Override
-	protected void onPause() {
+	//@Override
+	protected void onPauseT() {
 		super.onPause();
 
 		int index = lsName.getFirstVisiblePosition();
@@ -208,8 +220,8 @@ public class ActivityDisplayName extends Activity {
 		Log.i(TAG, "onPause index-->" + index + " top-->" + top + " lsName.getPaddingTop()-->" + lsName.getPaddingTop());
 	}
 
-	@Override
-	protected void onResume() {
+	//@Override
+	protected void onResumeT() {
 		super.onResume();
 
 		DBHelper db = new DBHelper(this);

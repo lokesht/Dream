@@ -9,7 +9,13 @@ public class M_Name implements Comparator<M_Name> {
 	String name_en;
 	int frequency;
 	int id;
-	String description;
+	String gender_cast;
+
+	public M_Name(int id, String gender_cast) {
+		super();
+		this.id = id;
+		this.gender_cast = gender_cast;
+	}
 
 	public M_Name(String name_en, String name_ma, int frequency) {
 		super();
@@ -18,31 +24,29 @@ public class M_Name implements Comparator<M_Name> {
 		this.frequency = frequency;
 	}
 
-	public M_Name(String name_ma, String name_en, int frequency,
-			String description) {
+	public M_Name(String name_ma, String name_en, int frequency, String description) {
 		super();
 		this.name_ma = name_ma;
 		this.name_en = name_en;
 		this.frequency = frequency;
-		this.description = description;
+		this.gender_cast = description;
 	}
 
-	public M_Name(String name_ma, String name_en, int frequency, int id,
-			String description) {
+	public M_Name(String name_ma, String name_en, int frequency, int id, String description) {
 		super();
 		this.name_ma = name_ma;
 		this.name_en = name_en;
 		this.frequency = frequency;
 		this.id = id;
-		this.description = description;
+		this.gender_cast = description;
 	}
 
 	public String getDescription() {
-		return description;
+		return gender_cast;
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.gender_cast = description;
 	}
 
 	public M_Name(String name_ma, String name_en, int frequency, int id) {
@@ -85,8 +89,16 @@ public class M_Name implements Comparator<M_Name> {
 		this.id = id;
 	}
 
+	public String getGender_cast() {
+		return gender_cast;
+	}
+
+	public void setGender_cast(String gender_cast) {
+		this.gender_cast = gender_cast;
+	}
+
 	@Override
 	public int compare(M_Name lhs, M_Name rhs) {
-		return lhs.getFrequency()-rhs.getFrequency();
+		return lhs.getFrequency() - rhs.getFrequency();
 	}
 }

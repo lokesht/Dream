@@ -100,11 +100,11 @@ public class ActivitySplash extends Activity {
 				List<M_Name> lst = new ArrayList<M_Name>();
 				do {
 					String temp[] = line.split(",");
-					String desc = "";
+					String gender_cast = "";
 					if(temp.length == 4)
-					desc = temp[3];
+						gender_cast = temp[3];
 							
-					M_Name s1 = new M_Name( temp[1],temp[0], Integer.parseInt(temp[2]),desc);
+					M_Name s1 = new M_Name( temp[1],temp[0], Integer.parseInt(temp[2]),gender_cast);
 					lst.add(s1);
 					
 					count++;

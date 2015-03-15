@@ -1,6 +1,6 @@
 package in.sel.adapter;
 
-import in.sel.indianbabyname.ActivityDisplayName;
+import in.sel.indianbabyname.ActivityDisplayName_Developer;
 import in.sel.indianbabyname.DBHelper;
 import in.sel.indianbabyname.R;
 import in.sel.indianbabyname.TableContract;
@@ -170,7 +170,7 @@ public class NameAdapter extends BaseAdapter {
                      
                      DBHelper db = new DBHelper(mInflater.getContext());
                      
-                     String where = TableContract.Name.NAME_EN+" = "+nameEn;
+                     String where = TableContract.Name.NAME_EN+" = '"+nameEn+"'";
                      Cursor c = db.getTableValue(TableContract.Name.TABLE_NAME,new String[]{TableContract.Name.NAME_FRE}, where);
                      long newfre = allElementDetails.get(position).getFrequency();
                      
@@ -221,7 +221,7 @@ public class NameAdapter extends BaseAdapter {
 				/* 5 Means It is Valid Name */
 				switch (checkedId) {
 				case R.id.rbMale:
-					checked = 5;
+					checked = 0;
 					break;
 				case R.id.rbFeMale:
 					checked = 1;

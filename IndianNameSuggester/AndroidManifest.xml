@@ -23,7 +23,9 @@
             </intent-filter>
         </activity>
          <activity android:name="in.sel.indianbabyname.ActivityMain" />
-        <activity android:name="in.sel.indianbabyname.ActivityDisplayName" />
+        <activity android:name="in.sel.indianbabyname.ActivityDisplayName_Developer" />
+        <activity android:name="in.sel.indianbabyname.ActivityDisplayName_User" />
+        <activity android:name="in.sel.indianbabyname.DepricatedActivityDisplayName"></activity>
          <activity android:name="in.sel.indianbabyname.ActivityAbout" />
     </application>
 
