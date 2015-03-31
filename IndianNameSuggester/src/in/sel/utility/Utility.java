@@ -16,8 +16,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Base64;
 import android.util.Log;
 
@@ -28,19 +26,13 @@ public class Utility {
 	long endTime;
 
 	private static String TAG = "ValidationControl";
-	/** Whether there is a Wi-Fi connection. */
-	public boolean wifiConnected = false;
-	// Whether there is a mobile connection.
-	public boolean mobileConnected = false;
-	// Whether there is a mobile connection.
-	private boolean internetConnected = false;
 
 	public Utility() {
 		/* start time analysis */
 		startTime = System.currentTimeMillis();
 	}
 
-	/**Give end time Of Object */
+	/** Give end time Of Object */
 	public String endTime(Utility gm) {
 		endTime = System.currentTimeMillis();
 		/* end time of process */
@@ -54,7 +46,7 @@ public class Utility {
 		return hour + ":" + minute + ":" + second;
 	}
 
-	/** Return Time in Formated Manner*/
+	/** Return Time in Formated Manner */
 	public String getTime(Utility gm) {
 		endTime = System.currentTimeMillis();
 		/* end time of process */
@@ -144,24 +136,6 @@ public class Utility {
 		return date;
 	}
 
-	public boolean isNetAvailable(Object connectivityService) {
-
-		ConnectivityManager connMgr = (ConnectivityManager) connectivityService;
-
-		NetworkInfo activeInfo = connMgr.getActiveNetworkInfo();
-		if (activeInfo != null && activeInfo.isConnectedOrConnecting()) {
-			internetConnected = true;
-			wifiConnected = activeInfo.getType() == ConnectivityManager.TYPE_WIFI;
-			mobileConnected = activeInfo.getType() == ConnectivityManager.TYPE_MOBILE;
-		} else {
-			internetConnected = false;
-			wifiConnected = false;
-			mobileConnected = false;
-		}
-
-		return internetConnected;
-	}
-
 	/** Write file Using file path and byte code */
 	public static String writeFile(File file, String strByte) {
 		try {
@@ -191,7 +165,8 @@ public class Utility {
 	}
 
 	/* make image rounded */
-	public static Bitmap getRoundedRectBitmap(Bitmap myBitmap, int dim , int margin) {
+	public static Bitmap getRoundedRectBitmap(Bitmap myBitmap, int dim,
+			int margin) {
 		Bitmap result = null;
 		try {
 			Bitmap bitmap = Bitmap.createScaledBitmap(myBitmap, dim, dim, true);
