@@ -25,7 +25,7 @@ public class Utility {
 	long startTime;
 	long endTime;
 
-	private static String TAG = "ValidationControl";
+	private static String TAG = "Utility";
 
 	public Utility() {
 		/* start time analysis */
