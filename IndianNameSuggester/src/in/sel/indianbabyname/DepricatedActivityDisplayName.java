@@ -1,6 +1,7 @@
 package in.sel.indianbabyname;
 
 import in.sel.adapter.NameAdapter;
+import in.sel.adapter.NameCursorAdapter;
 import in.sel.model.M_Name;
 
 import java.util.ArrayList;
@@ -23,10 +24,11 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ActivityDisplayName extends Activity {
+public class DepricatedActivityDisplayName extends Activity {
 	String TAG = "ActivityDisplayName";
 
 	ListView lsName;
@@ -46,18 +48,21 @@ public class ActivityDisplayName extends Activity {
 
 		/** This is will select only those which are not marked */
 		String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%' AND " + TableContract.Name.GENDER_CAST
-				+ " = ''";
+				+ " = ''"+" ORDER BY "+TableContract.Name.NAME_FRE+" DESC";
 
 		Cursor c = dbHelper.getTableValue(TableContract.Name.TABLE_NAME, new String[] { TableContract.Name.AUTO_ID,
 				TableContract.Name.NAME_EN, TableContract.Name.NAME_MA, TableContract.Name.NAME_FRE,
 				TableContract.Name.GENDER_CAST }, where);
 
 		/** Parse */
-		final List<M_Name> name = parseListName(c);
+//		final List<M_Name> name = new ArrayList<M_Name>();
+//		name = parseListName(c);
+		final List<M_Name> name  = parseListName(c);
 		dbHelper.close();
 		displayList(name);
 		
-		
+		//displayListWithSimpleCursor(c);
+		//displayListWithCustomCursor(c);
 
 		/* */
 		TextView tvTotal = (TextView) findViewById(R.id.tvTotal);
@@ -88,7 +93,7 @@ public class ActivityDisplayName extends Activity {
 					}
 				});
 
-				lsName.setAdapter(new NameAdapter(ActivityDisplayName.this, name));
+				lsName.setAdapter(new NameAdapter(DepricatedActivityDisplayName.this, name));
 				lsName.invalidate();
 			}
 		});
@@ -109,7 +114,7 @@ public class ActivityDisplayName extends Activity {
 					}
 				});
 
-				lsName.setAdapter(new NameAdapter(ActivityDisplayName.this, name));
+				lsName.setAdapter(new NameAdapter(DepricatedActivityDisplayName.this, name));
 				lsName.invalidate();
 			}
 		});
@@ -130,7 +135,7 @@ public class ActivityDisplayName extends Activity {
 					}
 				});
 
-				lsName.setAdapter(new NameAdapter(ActivityDisplayName.this, name));
+				lsName.setAdapter(new NameAdapter(DepricatedActivityDisplayName.this, name));
 				lsName.invalidate();
 			}
 		});
@@ -169,82 +174,29 @@ public class ActivityDisplayName extends Activity {
 		lsName = (ListView) findViewById(R.id.lv_alphabet);
 		final NameAdapter na = new NameAdapter(this, name);
 		lsName.setAdapter(na);
+	}
+	
+	/** For Testing of Cursor Adapter*/
+	public void displayListWithSimpleCursor(Cursor c) {
+		lsName = (ListView) findViewById(R.id.lv_alphabet);
+		startManagingCursor(c);
+		String[] from = new String[] {TableContract.Name.NAME_EN,TableContract.Name.NAME_MA};
+        int[] to = new int[] { android.R.id.text1 };
+        
+		SimpleCursorAdapter sca =new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, c, from,to );
+		lsName.setAdapter(sca);
+	}
+	
+	/** For Testing of Cursor Adapter*/
+	public void displayListWithCustomCursor(Cursor c) {
+		lsName = (ListView) findViewById(R.id.lv_alphabet);
 		
-		lsName.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				final M_Name name = (M_Name) na.getItem(position);
-
-				String nameEn = name.getName_en();
-				String nameMa = name.getName_ma();
-
-				final Dialog d = new Dialog(ActivityDisplayName.this);
-				d.setContentView(R.layout.dialog_name_editor);
-
-				final EditText etEn = (EditText) d.findViewById(R.id.et_name_en);
-				final EditText etMa = (EditText) d.findViewById(R.id.et_name_ma);
-
-				etEn.setText(nameEn);
-				etMa.setText(nameMa);
-
-				Button btnSub = (Button) d.findViewById(R.id.btn_submit);
-				Button btnCan = (Button) d.findViewById(R.id.btn_cancel);
-
-				btnSub.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						String nameEn = etEn.getText().toString();
-						String nameMa = etMa.getText().toString();
-						long newfre = name.getFrequency();
-
-						DBHelper db = new DBHelper(getApplicationContext());
-
-						String where = TableContract.Name.NAME_EN + " = '" + nameEn + "'";
-						Cursor c = db.getTableValue(TableContract.Name.TABLE_NAME, new String[] {
-								TableContract.AUTO_ID, TableContract.Name.NAME_FRE }, where);
-
-						ContentValues cv = new ContentValues();
-						if (c != null && c.getCount() > 0) {
-							c.moveToFirst();
-							newfre = newfre + c.getLong(1);
-
-							where = TableContract.AUTO_ID + " = " + c.getLong(0);
-							long l = db.deleteRow(TableContract.Name.TABLE_NAME, where);
-							if (l > 0)
-								Toast.makeText(getApplicationContext(), "Row Deleted", Toast.LENGTH_SHORT).show();
-						}
-
-						cv.put(TableContract.Name.NAME_EN, nameEn);
-						cv.put(TableContract.Name.NAME_MA, nameMa);
-						cv.put(TableContract.Name.NAME_FRE, newfre);
-
-						where = TableContract.AUTO_ID + " = " + name.getId();
-						long l = db.updateTable(TableContract.Name.TABLE_NAME, cv, where);
-						if (l > 0)
-							Toast.makeText(getApplicationContext(), "Text Updated", Toast.LENGTH_SHORT).show();
-						
-						d.cancel();
-					}
-				});
-
-				btnCan.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						d.cancel();
-					}
-				});
-				d.show();
-				return false;
-			}
-		});
-
+		NameCursorAdapter sca =new NameCursorAdapter(this,  c );
+		lsName.setAdapter(sca);
 	}
 
-	@Override
-	protected void onPause() {
+	//@Override
+	protected void onPauseT() {
 		super.onPause();
 
 		int index = lsName.getFirstVisiblePosition();
@@ -268,8 +220,8 @@ public class ActivityDisplayName extends Activity {
 		Log.i(TAG, "onPause index-->" + index + " top-->" + top + " lsName.getPaddingTop()-->" + lsName.getPaddingTop());
 	}
 
-	@Override
-	protected void onResume() {
+	//@Override
+	protected void onResumeT() {
 		super.onResume();
 
 		DBHelper db = new DBHelper(this);
