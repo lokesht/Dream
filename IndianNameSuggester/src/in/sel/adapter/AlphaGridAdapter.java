@@ -1,11 +1,12 @@
 package in.sel.adapter;
 
+import in.sel.indianbabyname.DBHelper;
 import in.sel.indianbabyname.R;
+import in.sel.indianbabyname.TableContract;
 import in.sel.utility.Utility;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,11 @@ public class AlphaGridAdapter extends BaseAdapter {
 		TextView tvAlpha;
 		ImageView ivUpper;
 		ImageView ivLower;
+
+		ImageView ivCountCover;
+		ImageView ivCount;
+		TextView tvcount;
 	}
-	
-	
 
 	LayoutInflater mInflator;
 
@@ -29,9 +32,8 @@ public class AlphaGridAdapter extends BaseAdapter {
 		mInflator = LayoutInflater.from(con);
 	}
 
-	final String[] letter = new String[] { "A", "B", "C", "D", "E", "F", "G",
-			"H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
-			"U", "V", "W", "X", "Y", "Z" };
+	final String[] letter = new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
+			"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
 	@Override
 	public int getCount() {
@@ -55,55 +57,82 @@ public class AlphaGridAdapter extends BaseAdapter {
 			v = new ViewHolder();
 			convertView = mInflator.inflate(R.layout.item_alphabet, null);
 			v.tvAlpha = (TextView) convertView.findViewById(R.id.tv_alphabet);
-			v.ivLower = (ImageView)convertView.findViewById(R.id.iv_product);
-			v.ivUpper = (ImageView)convertView.findViewById(R.id.iv_product_cover);
+			v.ivLower = (ImageView) convertView.findViewById(R.id.iv_product);
+			v.ivUpper = (ImageView) convertView.findViewById(R.id.iv_product_cover);
+
+			v.ivCount = (ImageView) convertView.findViewById(R.id.iv_count);
+			v.ivCountCover = (ImageView) convertView.findViewById(R.id.iv_count_cover);
+			v.tvcount = (TextView) convertView.findViewById(R.id.tv_count);
+
 			convertView.setTag(v);
 		} else {
 			v = (ViewHolder) convertView.getTag();
 		}
-		
+
 		/* set Image of Type */
-		
-		
-		//String path = "/data/data/" + mInflator.getContext().getPackageName() + "/databases/"
-		//		+ DatabaseHelper.DB_NAME;
-		
-		//String path = Environment.getExternalStorageDirectory().toString() + "/Download/PeriodicTableValence.png";
-		
+
+		// String path = "/data/data/" + mInflator.getContext().getPackageName() + "/databases/"+
+		// DatabaseHelper.DB_NAME;
+		// String path = Environment.getExternalStorageDirectory().toString() + "/Download/PeriodicTableValence.png";
+
+		// Bitmap bm= BitmapFactory.decodeResource(mInflator.getContext().getResources(),R.drawable.test);
+
+		/** This would be diameter of Circle */
 		int dim = 150;
-		Bitmap bm = getBitMapImage(null, dim);
-		
-		//Bitmap bm= BitmapFactory.decodeResource(mInflator.getContext().getResources(), 
-		//	    R.drawable.test);
-		
+
+		/** Base circle */
+		Bitmap bm = getBitMapImage(null, dim, false);
 		v.ivLower.setImageBitmap(bm);
 
-		bm = getCoverBitMapImage(dim);
+		/* Upper Circle */
+		bm = getCoverBitMapImage(dim, false);
 		v.ivUpper.setImageBitmap(bm);
-		
+
+		bm = getBitMapImage(null, 40, true);
+		v.ivCount.setImageBitmap(bm);
+
+		/* Upper Circle */
+		bm = getCoverBitMapImage(40, true);
+		v.ivCountCover.setImageBitmap(bm);
+
+		/* Text */
 		v.tvAlpha.setText(letter[position]);
 		
+		DBHelper db = new DBHelper(mInflator.getContext());
+		String where = TableContract.Name.NAME_EN+" like '"+letter[position]+"%' AND "+TableContract.Name.GENDER_CAST+"=''";
+		long count = db.getTableRowCount(TableContract.Name.TABLE_NAME, where);
+		v.tvcount.setText(count+"");
+
 		return convertView;
 	}
-	
-	private Bitmap getBitMapImage(String path, int dim) {
+
+	private Bitmap getBitMapImage(String path, int dim, boolean trial) {
 		Bitmap myBitmap;
 		if (path != null) {
 			myBitmap = BitmapFactory.decodeFile(path);
 		} else {
 			myBitmap = BitmapFactory.decodeResource(mInflator.getContext().getResources(), R.drawable.test);
 		}
-		/** Radius margin*/
+		/** Radius margin */
 		int margin = 5;
-		return Utility.getRoundedRectBitmap(myBitmap, dim, margin);
+		if (trial)
+			return Utility.getRoundedRectBitmapTrial(myBitmap, dim, margin);
+		else
+			return Utility.getRoundedRectBitmap(myBitmap, dim, margin);
 	}
 
-	private Bitmap getCoverBitMapImage(int dim) {
-		Bitmap myBitmap = BitmapFactory.decodeResource(mInflator.getContext().getResources(), R.drawable.ic_lutect_indi_border_circle);
-		
-		/** Radius margin*/
-		int margin = 3;
-		return Utility.getRoundedRectBitmap(myBitmap, dim , margin);
+	private Bitmap getCoverBitMapImage(int dim, boolean trial) {
+		Bitmap myBitmap = BitmapFactory.decodeResource(mInflator.getContext().getResources(),
+				R.drawable.indicator_border);
+
+		/** Radius margin */
+		int margin = 2;
+
+		if (trial)
+			return Utility.getRoundedRectBitmapTrial(myBitmap, dim, margin);
+		else
+			return Utility.getRoundedRectBitmap(myBitmap, dim, margin);
+
 	}
 
 }

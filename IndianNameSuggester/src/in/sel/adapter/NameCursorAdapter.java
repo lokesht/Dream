@@ -203,8 +203,6 @@ public class NameCursorAdapter extends CursorAdapter {
 		/** Saving id and gender = Male by Default */
 		//int id = c.getInt(c.getColumnIndex(TableContract.Name.AUTO_ID));
 		//lsNameMarked.put(id, 0 + "");
-		
-		
 	}
 
 	@Override

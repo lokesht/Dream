@@ -17,7 +17,7 @@ import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-/** Class is designed for Developer For Marking of Name*/
+/** Class is designed for Developer For Marking of Name */
 public class ActivityDisplayName_Developer extends Activity {
 	String TAG = "ActivityDisplayName";
 
@@ -37,11 +37,11 @@ public class ActivityDisplayName_Developer extends Activity {
 		final DBHelper dbHelper = new DBHelper(this);
 
 		/** just to check total entry inside table */
-		//int count = dbHelper.getTableRowCount(TableContract.Name.TABLE_NAME, null);
+		// int count = dbHelper.getTableRowCount(TableContract.Name.TABLE_NAME, null);
 
-		/** Update list before Any transaction*/
+		/** Update list before Any transaction */
 		updateGenderCast();
-		
+
 		/** This is will select only those which are not marked */
 		String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%' AND " + TableContract.Name.GENDER_CAST
 				+ " = ''" + " ORDER BY " + TableContract.Name.NAME_FRE + " DESC";
@@ -50,94 +50,101 @@ public class ActivityDisplayName_Developer extends Activity {
 				TableContract.Name.NAME_EN, TableContract.Name.NAME_MA, TableContract.Name.NAME_FRE,
 				TableContract.Name.GENDER_CAST }, where);
 
-		/** Parse */
-		displayListWithCustomCursor(c);
+		if (c != null && c.getCount() > 0) {
+			/** Parse */
+			displayListWithCustomCursor(c);
 
-		/* */
-		TextView tvTotal = (TextView) findViewById(R.id.tvTotal);
-		tvTotal.setText("Total unique word in this group is " + c.getCount());
+			/* */
+			TextView tvTotal = (TextView) findViewById(R.id.tvTotal);
+			tvTotal.setText("Total unique word in this group is " + c.getCount());
 
-		/* Sorting on Name based on English Name */
-		TextView tvEnName = (TextView) findViewById(R.id.tvEnglish);
-		tvEnName.setOnClickListener(new OnClickListener() {
+			/* Sorting on Name based on English Name */
+			TextView tvEnName = (TextView) findViewById(R.id.tvEnglish);
+			tvEnName.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
+				@Override
+				public void onClick(View v) {
 
-				/** First Update List */
-				updateGenderCast();
-				
-				/** This is will select only those which are not marked */
-				String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%' AND "
-						+ TableContract.Name.GENDER_CAST + " = ''" + " ORDER BY " + TableContract.Name.NAME_EN + " ASC";
+					/** First Update List */
+					updateGenderCast();
 
-				Cursor c = dbHelper.getTableValue(TableContract.Name.TABLE_NAME, new String[] {
-						TableContract.Name.AUTO_ID, TableContract.Name.NAME_EN, TableContract.Name.NAME_MA,
-						TableContract.Name.NAME_FRE, TableContract.Name.GENDER_CAST }, where);
+					/** This is will select only those which are not marked */
+					String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%' AND "
+							+ TableContract.Name.GENDER_CAST + " = ''" + " ORDER BY " + TableContract.Name.NAME_EN
+							+ " ASC";
 
-				/** At the time of publishing keep this one as code */
-				// adapter.swapCursor(c);
-				// adapter.notifyDataSetChanged();
+					Cursor c = dbHelper.getTableValue(TableContract.Name.TABLE_NAME, new String[] {
+							TableContract.Name.AUTO_ID, TableContract.Name.NAME_EN, TableContract.Name.NAME_MA,
+							TableContract.Name.NAME_FRE, TableContract.Name.GENDER_CAST }, where);
 
-				/** At the time of Developemnt keep this in Code */
-				
-				lsName.setAdapter(new NameCursorAdapter(ActivityDisplayName_Developer.this, c));
-				lsName.invalidate();
-			}
-		});
+					/** At the time of publishing keep this one as code */
+					// adapter.swapCursor(c);
+					// adapter.notifyDataSetChanged();
 
-		/* Sorting on Name based on Marathi Name */
-		TextView tvHinName = (TextView) findViewById(R.id.tvHindi);
-		tvHinName.setOnClickListener(new OnClickListener() {
+					/** At the time of Developemnt keep this in Code */
+					lsName.setAdapter(new NameCursorAdapter(ActivityDisplayName_Developer.this, c));
+					lsName.invalidate();
+				}
+			});
 
-			@Override
-			public void onClick(View v) {
-				
-				/** First Update List */
-				updateGenderCast();
-				
-				/** This is will select only those which are not marked */
-				String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%' AND "
-						+ TableContract.Name.GENDER_CAST + " = ''" + " ORDER BY " + TableContract.Name.NAME_MA + " ASC";
+			/* Sorting on Name based on Marathi Name */
+			TextView tvHinName = (TextView) findViewById(R.id.tvHindi);
+			tvHinName.setOnClickListener(new OnClickListener() {
 
-				Cursor c = dbHelper.getTableValue(TableContract.Name.TABLE_NAME, new String[] {
-						TableContract.Name.AUTO_ID, TableContract.Name.NAME_EN, TableContract.Name.NAME_MA,
-						TableContract.Name.NAME_FRE, TableContract.Name.GENDER_CAST }, where);
+				@Override
+				public void onClick(View v) {
 
-				// adapter.swapCursor(c);
-				// adapter.notifyDataSetChanged();
+					/** First Update List */
+					updateGenderCast();
 
-				lsName.setAdapter(new NameCursorAdapter(ActivityDisplayName_Developer.this, c));
-				lsName.invalidate();
-			}
-		});
+					/** This is will select only those which are not marked */
+					String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%' AND "
+							+ TableContract.Name.GENDER_CAST + " = ''" + " ORDER BY " + TableContract.Name.NAME_MA
+							+ " ASC";
 
-		/* Sorting on Name based on Frequency */
-		TextView tvFrequ = (TextView) findViewById(R.id.tvFrequency);
-		tvFrequ.setOnClickListener(new OnClickListener() {
+					Cursor c = dbHelper.getTableValue(TableContract.Name.TABLE_NAME, new String[] {
+							TableContract.Name.AUTO_ID, TableContract.Name.NAME_EN, TableContract.Name.NAME_MA,
+							TableContract.Name.NAME_FRE, TableContract.Name.GENDER_CAST }, where);
 
-			@Override
-			public void onClick(View v) {
-				/** First Update List */
-				updateGenderCast();
-				
-				/** This is will select only those which are not marked */
-				String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%' AND "
-						+ TableContract.Name.GENDER_CAST + " = ''" + " ORDER BY " + TableContract.Name.NAME_FRE
-						+ " DESC";
+					// adapter.swapCursor(c);
+					// adapter.notifyDataSetChanged();
 
-				Cursor c = dbHelper.getTableValue(TableContract.Name.TABLE_NAME, new String[] {
-						TableContract.Name.AUTO_ID, TableContract.Name.NAME_EN, TableContract.Name.NAME_MA,
-						TableContract.Name.NAME_FRE, TableContract.Name.GENDER_CAST }, where);
+					lsName.setAdapter(new NameCursorAdapter(ActivityDisplayName_Developer.this, c));
+					lsName.invalidate();
+				}
+			});
 
-				// adapter.swapCursor(c);
-				// adapter.notifyDataSetChanged();
+			/* Sorting on Name based on Frequency */
+			TextView tvFrequ = (TextView) findViewById(R.id.tvFrequency);
+			tvFrequ.setOnClickListener(new OnClickListener() {
 
-				/** */
-				lsName.setAdapter(new NameCursorAdapter(ActivityDisplayName_Developer.this, c));
-				lsName.invalidate();
-			}
-		});
+				@Override
+				public void onClick(View v) {
+					/** First Update List */
+					updateGenderCast();
+
+					/** This is will select only those which are not marked */
+					String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%' AND "
+							+ TableContract.Name.GENDER_CAST + " = ''" + " ORDER BY " + TableContract.Name.NAME_FRE
+							+ " DESC";
+
+					Cursor c = dbHelper.getTableValue(TableContract.Name.TABLE_NAME, new String[] {
+							TableContract.Name.AUTO_ID, TableContract.Name.NAME_EN, TableContract.Name.NAME_MA,
+							TableContract.Name.NAME_FRE, TableContract.Name.GENDER_CAST }, where);
+
+					// adapter.swapCursor(c);
+					// adapter.notifyDataSetChanged();
+
+					/** */
+					lsName.setAdapter(new NameCursorAdapter(ActivityDisplayName_Developer.this, c));
+					lsName.invalidate();
+				}
+			});
+		} else {
+			if (c != null)
+				c.close();
+		}
+
 	}
 
 	public void displayList(List<M_Name> name) {
@@ -152,62 +159,62 @@ public class ActivityDisplayName_Developer extends Activity {
 
 		adapter = new NameCursorAdapter(this, c);
 		lsName.setAdapter(adapter);
-		
-		//listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+		// listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 	}
 
-//	@Override
-//	protected void onPause() {
-//		super.onPause();
-//
-//		int index = lsName.getFirstVisiblePosition();
-//
-//		View v = lsName.getChildAt(index);
-//		int top = (v == null) ? 0 : (v.getTop() - lsName.getPaddingTop());
-//
-//		// restore index and position
-//		lsName.setSelectionFromTop(index, top);
-//		ContentValues cv = new ContentValues();
-//		cv.put(TableContract.SavedStatus.LETTER, alphabet);
-//		cv.put(TableContract.SavedStatus.INDEX, index);
-//		cv.put(TableContract.SavedStatus.POSITION, top);
-//
-//		DBHelper db = new DBHelper(this);
-//		long i = db.insertInTable(TableContract.SavedStatus.TABLE_NAME, TableContract.SavedStatus.LETTER, cv);
-//		db.close();
-//		if (i > 0)
-//			Toast.makeText(this, "Saved", Toast.LENGTH_LONG).show();
-//
-//		Log.i(TAG, "onPause index-->" + index + " top-->" + top + " lsName.getPaddingTop()-->" + lsName.getPaddingTop());
-//	}
-//
-//	@Override
-//	protected void onResume() {
-//		super.onResume();
-//
-//		DBHelper db = new DBHelper(this);
-//
-//		String where = TableContract.SavedStatus.LETTER + " = '" + alphabet + "'";
-//		Cursor c = db.getTableValue(TableContract.SavedStatus.TABLE_NAME, new String[] {
-//				TableContract.SavedStatus.INDEX, TableContract.SavedStatus.POSITION }, where);
-//
-//		if (c != null && c.getCount() > 0) {
-//			c.moveToFirst();
-//			int index = c.getInt(0);
-//			int pos = c.getInt(1);
-//			Log.i(TAG, "onResume index-->" + index + " pos-->" + pos);
-//
-//			lsName.setSelectionFromTop(index, pos);
-//		}
-//
-//		/** */
-//		if (c != null)
-//			c.close();
-//
-//		db.close();
-//	}
+	// @Override
+	// protected void onPause() {
+	// super.onPause();
+	//
+	// int index = lsName.getFirstVisiblePosition();
+	//
+	// View v = lsName.getChildAt(index);
+	// int top = (v == null) ? 0 : (v.getTop() - lsName.getPaddingTop());
+	//
+	// // restore index and position
+	// lsName.setSelectionFromTop(index, top);
+	// ContentValues cv = new ContentValues();
+	// cv.put(TableContract.SavedStatus.LETTER, alphabet);
+	// cv.put(TableContract.SavedStatus.INDEX, index);
+	// cv.put(TableContract.SavedStatus.POSITION, top);
+	//
+	// DBHelper db = new DBHelper(this);
+	// long i = db.insertInTable(TableContract.SavedStatus.TABLE_NAME, TableContract.SavedStatus.LETTER, cv);
+	// db.close();
+	// if (i > 0)
+	// Toast.makeText(this, "Saved", Toast.LENGTH_LONG).show();
+	//
+	// Log.i(TAG, "onPause index-->" + index + " top-->" + top + " lsName.getPaddingTop()-->" + lsName.getPaddingTop());
+	// }
+	//
+	// @Override
+	// protected void onResume() {
+	// super.onResume();
+	//
+	// DBHelper db = new DBHelper(this);
+	//
+	// String where = TableContract.SavedStatus.LETTER + " = '" + alphabet + "'";
+	// Cursor c = db.getTableValue(TableContract.SavedStatus.TABLE_NAME, new String[] {
+	// TableContract.SavedStatus.INDEX, TableContract.SavedStatus.POSITION }, where);
+	//
+	// if (c != null && c.getCount() > 0) {
+	// c.moveToFirst();
+	// int index = c.getInt(0);
+	// int pos = c.getInt(1);
+	// Log.i(TAG, "onResume index-->" + index + " pos-->" + pos);
+	//
+	// lsName.setSelectionFromTop(index, pos);
+	// }
+	//
+	// /** */
+	// if (c != null)
+	// c.close();
+	//
+	// db.close();
+	// }
 
-	/** Update Table with gender_cast Value marked By User*/
+	/** Update Table with gender_cast Value marked By User */
 	public void updateGenderCast() {
 		if (NameCursorAdapter.lsNameMarked.size() > 0) {
 			DBHelper dbtemp = new DBHelper(this);
@@ -219,10 +226,10 @@ public class ActivityDisplayName_Developer extends Activity {
 				/** Where clause */
 				String where = TableContract.Name.AUTO_ID + " = " + name.getKey();
 				int i = dbtemp.updateTable(TableContract.Name.TABLE_NAME, cv, where);
-				
+
 				if (i > 0) {
 					Log.i("Updated", i + "");
-					//Toast.makeText(this, "Text Updated-->"+name.getKey(), Toast.LENGTH_SHORT).show();
+					// Toast.makeText(this, "Text Updated-->"+name.getKey(), Toast.LENGTH_SHORT).show();
 				}
 				NameCursorAdapter.lsNameMarked.remove(name);
 			}

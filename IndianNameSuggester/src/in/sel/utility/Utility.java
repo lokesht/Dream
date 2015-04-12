@@ -165,8 +165,7 @@ public class Utility {
 	}
 
 	/* make image rounded */
-	public static Bitmap getRoundedRectBitmap(Bitmap myBitmap, int dim,
-			int margin) {
+	public static Bitmap getRoundedRectBitmap(Bitmap myBitmap, int dim, int margin) {
 		Bitmap result = null;
 		try {
 			Bitmap bitmap = Bitmap.createScaledBitmap(myBitmap, dim, dim, true);
@@ -197,4 +196,35 @@ public class Utility {
 		return result;
 	}
 
+	/* make image rounded */
+	public static Bitmap getRoundedRectBitmapTrial(Bitmap myBitmap, int dim, int margin) {
+		Bitmap result = null;
+		try {
+			Bitmap bitmap = Bitmap.createScaledBitmap(myBitmap, dim, dim, true);
+			result = Bitmap.createBitmap(dim, dim, Bitmap.Config.ARGB_8888);
+			// int color = 0xFFFFFFFF;
+
+			Paint paint = new Paint();
+			paint.setAntiAlias(true);
+			paint.setColor(Color.WHITE);
+			paint.setFilterBitmap(true);
+
+			Canvas canvas = new Canvas(result);
+			canvas.drawARGB(0, 255, 255, 255);
+			canvas.drawCircle(dim/2, (dim/2), ((dim / 2) - margin), paint);
+
+			paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+
+			Rect rect = new Rect(0, 0, dim, dim);
+			canvas.drawBitmap(bitmap, null, rect, paint);
+
+		} catch (NullPointerException e) {
+			AppLogger.WriteIntoFile(TAG + " " + e.toString());
+			Log.e(TAG, e.toString());
+		} catch (OutOfMemoryError o) {
+			AppLogger.WriteIntoFile(TAG + " " + o.toString());
+			Log.e(TAG, o.toString());
+		}
+		return result;
+	}
 }
