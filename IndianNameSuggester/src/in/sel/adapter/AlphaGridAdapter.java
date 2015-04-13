@@ -60,8 +60,8 @@ public class AlphaGridAdapter extends BaseAdapter {
 			v.ivLower = (ImageView) convertView.findViewById(R.id.iv_product);
 			v.ivUpper = (ImageView) convertView.findViewById(R.id.iv_product_cover);
 
-			v.ivCount = (ImageView) convertView.findViewById(R.id.iv_count);
-			v.ivCountCover = (ImageView) convertView.findViewById(R.id.iv_count_cover);
+//			v.ivCount = (ImageView) convertView.findViewById(R.id.iv_count);
+//			v.ivCountCover = (ImageView) convertView.findViewById(R.id.iv_count_cover);
 			v.tvcount = (TextView) convertView.findViewById(R.id.tv_count);
 
 			convertView.setTag(v);
@@ -88,12 +88,12 @@ public class AlphaGridAdapter extends BaseAdapter {
 		bm = getCoverBitMapImage(dim, false);
 		v.ivUpper.setImageBitmap(bm);
 
-		bm = getBitMapImage(null, 40, true);
-		v.ivCount.setImageBitmap(bm);
-
-		/* Upper Circle */
-		bm = getCoverBitMapImage(40, true);
-		v.ivCountCover.setImageBitmap(bm);
+//		bm = getBitMapImage(null, 40, true);
+//		v.ivCount.setImageBitmap(bm);
+//
+//		/* Upper Circle */
+//		bm = getCoverBitMapImage(40, true);
+//		v.ivCountCover.setImageBitmap(bm);
 
 		/* Text */
 		v.tvAlpha.setText(letter[position]);
