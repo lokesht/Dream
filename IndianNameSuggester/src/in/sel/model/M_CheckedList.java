@@ -1,4 +1,4 @@
-package in.sel.adapter;
+package in.sel.model;
 
 public class M_CheckedList {
 

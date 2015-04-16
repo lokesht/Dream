@@ -38,15 +38,6 @@
             android:gravity="center"
             android:text="ABC"
             android:textSize="60sp" />
-
-        <TextView
-            android:id="@+id/tv_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="ABC"
-            android:textSize="12sp" />
     </FrameLayout>
 
     <!-- <FrameLayout -->

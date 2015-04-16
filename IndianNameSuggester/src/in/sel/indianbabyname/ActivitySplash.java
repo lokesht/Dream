@@ -1,7 +1,7 @@
 package in.sel.indianbabyname;
 
+import in.sel.logging.AppLogger;
 import in.sel.model.M_Name;
-import in.sel.utility.AppLogger;
 import in.sel.utility.Utility;
 
 import java.io.BufferedReader;

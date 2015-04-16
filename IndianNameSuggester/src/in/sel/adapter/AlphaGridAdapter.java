@@ -1,5 +1,6 @@
 package in.sel.adapter;
 
+import in.sel.customview.BadgeView;
 import in.sel.indianbabyname.DBHelper;
 import in.sel.indianbabyname.R;
 import in.sel.indianbabyname.TableContract;
@@ -23,7 +24,8 @@ public class AlphaGridAdapter extends BaseAdapter {
 
 		ImageView ivCountCover;
 		ImageView ivCount;
-		TextView tvcount;
+
+		BadgeView b;
 	}
 
 	LayoutInflater mInflator;
@@ -32,8 +34,9 @@ public class AlphaGridAdapter extends BaseAdapter {
 		mInflator = LayoutInflater.from(con);
 	}
 
-	final String[] letter = new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
-			"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+	final String[] letter = new String[] { "A", "B", "C", "D", "E", "F", "G",
+			"H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
+			"U", "V", "W", "X", "Y", "Z" };
 
 	@Override
 	public int getCount() {
@@ -58,11 +61,14 @@ public class AlphaGridAdapter extends BaseAdapter {
 			convertView = mInflator.inflate(R.layout.item_alphabet, null);
 			v.tvAlpha = (TextView) convertView.findViewById(R.id.tv_alphabet);
 			v.ivLower = (ImageView) convertView.findViewById(R.id.iv_product);
-			v.ivUpper = (ImageView) convertView.findViewById(R.id.iv_product_cover);
+			v.ivUpper = (ImageView) convertView
+					.findViewById(R.id.iv_product_cover);
 
-//			v.ivCount = (ImageView) convertView.findViewById(R.id.iv_count);
-//			v.ivCountCover = (ImageView) convertView.findViewById(R.id.iv_count_cover);
-			v.tvcount = (TextView) convertView.findViewById(R.id.tv_count);
+			// v.ivCount = (ImageView) convertView.findViewById(R.id.iv_count);
+			// v.ivCountCover = (ImageView)
+			// convertView.findViewById(R.id.iv_count_cover);
+
+			v.b = new BadgeView(mInflator.getContext(), v.ivLower);
 
 			convertView.setTag(v);
 		} else {
@@ -71,11 +77,14 @@ public class AlphaGridAdapter extends BaseAdapter {
 
 		/* set Image of Type */
 
-		// String path = "/data/data/" + mInflator.getContext().getPackageName() + "/databases/"+
+		// String path = "/data/data/" + mInflator.getContext().getPackageName()
+		// + "/databases/"+
 		// DatabaseHelper.DB_NAME;
-		// String path = Environment.getExternalStorageDirectory().toString() + "/Download/PeriodicTableValence.png";
+		// String path = Environment.getExternalStorageDirectory().toString() +
+		// "/Download/PeriodicTableValence.png";
 
-		// Bitmap bm= BitmapFactory.decodeResource(mInflator.getContext().getResources(),R.drawable.test);
+		// Bitmap bm=
+		// BitmapFactory.decodeResource(mInflator.getContext().getResources(),R.drawable.test);
 
 		/** This would be diameter of Circle */
 		int dim = 150;
@@ -88,20 +97,25 @@ public class AlphaGridAdapter extends BaseAdapter {
 		bm = getCoverBitMapImage(dim, false);
 		v.ivUpper.setImageBitmap(bm);
 
-//		bm = getBitMapImage(null, 40, true);
-//		v.ivCount.setImageBitmap(bm);
-//
-//		/* Upper Circle */
-//		bm = getCoverBitMapImage(40, true);
-//		v.ivCountCover.setImageBitmap(bm);
+		// bm = getBitMapImage(null, 40, true);
+		// v.ivCount.setImageBitmap(bm);
+		//
+		// /* Upper Circle */
+		// bm = getCoverBitMapImage(40, true);
+		// v.ivCountCover.setImageBitmap(bm);
 
 		/* Text */
 		v.tvAlpha.setText(letter[position]);
-		
+
 		DBHelper db = new DBHelper(mInflator.getContext());
-		String where = TableContract.Name.NAME_EN+" like '"+letter[position]+"%' AND "+TableContract.Name.GENDER_CAST+"=''";
+		String where = TableContract.Name.NAME_EN + " like '"
+				+ letter[position] + "%' AND " + TableContract.Name.GENDER_CAST
+				+ "=''";
 		long count = db.getTableRowCount(TableContract.Name.TABLE_NAME, where);
-		v.tvcount.setText(count+"");
+
+		/** */
+		v.b.setText(count + "");
+		v.b.show();
 
 		return convertView;
 	}
@@ -111,7 +125,8 @@ public class AlphaGridAdapter extends BaseAdapter {
 		if (path != null) {
 			myBitmap = BitmapFactory.decodeFile(path);
 		} else {
-			myBitmap = BitmapFactory.decodeResource(mInflator.getContext().getResources(), R.drawable.test);
+			myBitmap = BitmapFactory.decodeResource(mInflator.getContext()
+					.getResources(), R.drawable.test);
 		}
 		/** Radius margin */
 		int margin = 5;
@@ -122,8 +137,8 @@ public class AlphaGridAdapter extends BaseAdapter {
 	}
 
 	private Bitmap getCoverBitMapImage(int dim, boolean trial) {
-		Bitmap myBitmap = BitmapFactory.decodeResource(mInflator.getContext().getResources(),
-				R.drawable.indicator_border);
+		Bitmap myBitmap = BitmapFactory.decodeResource(mInflator.getContext()
+				.getResources(), R.drawable.indicator_border);
 
 		/** Radius margin */
 		int margin = 2;

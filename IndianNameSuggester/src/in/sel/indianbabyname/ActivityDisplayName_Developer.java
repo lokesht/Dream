@@ -57,6 +57,10 @@ public class ActivityDisplayName_Developer extends Activity {
 			/* */
 			TextView tvTotal = (TextView) findViewById(R.id.tvTotal);
 			tvTotal.setText("Total unique word in this group is " + c.getCount());
+			
+			in.sel.customview.BadgeView badge = new in.sel.customview.BadgeView(this, tvTotal);
+			badge.setText(c.getCount()+"");
+			badge.show();
 
 			/* Sorting on Name based on English Name */
 			TextView tvEnName = (TextView) findViewById(R.id.tvEnglish);

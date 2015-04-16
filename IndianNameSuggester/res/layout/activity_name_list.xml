@@ -42,10 +42,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:text="English"
-                android:textSize="@dimen/ts_large"
+                android:textSize="@dimen/ts_medium"
                 android:textStyle="bold" />
 
             <TextView
@@ -53,10 +52,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:text="Marathi/Hindi"
-                android:textSize="@dimen/ts_large"
+                android:text="Marathi"
+                android:textSize="@dimen/ts_medium"
                 android:textStyle="bold" />
 
             <TextView
@@ -66,7 +64,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="Frequency"
-                android:textSize="@dimen/ts_large"
+                android:textSize="@dimen/ts_medium"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>

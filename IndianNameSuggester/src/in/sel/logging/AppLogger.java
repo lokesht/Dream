@@ -1,4 +1,4 @@
-package in.sel.utility;
+package in.sel.logging;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

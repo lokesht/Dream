@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import in.sel.adapter.AlphaGridAdapter;
-import in.sel.utility.AppLogger;
+import in.sel.logging.AppLogger;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

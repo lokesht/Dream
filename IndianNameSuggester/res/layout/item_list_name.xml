@@ -19,16 +19,14 @@
             android:id="@+id/c1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_weight="1.2"
             android:text="ABC"
-            android:textSize="@dimen/ts_large" />
+            android:textSize="@dimen/ts_medium" />
 
         <TextView
             android:id="@+id/c2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_weight="1.2"
             android:text="ABC"
             android:textSize="@dimen/ts_large" />
@@ -83,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Sir" />
-        
+
         <RadioButton
             android:id="@+id/rbDelete"
             android:layout_width="wrap_content"
