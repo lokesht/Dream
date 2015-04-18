@@ -63,7 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		} catch (Exception e) {
 			if (AppConstants.DEBUG)
 				Log.e(TAG, e.toString());
-			AppLogger.WriteIntoFile("Class Name --> DBHelper -- " + e.toString());
+			AppLogger.writeLog("Class Name --> DBHelper -- " + e.toString());
 		}
 	}
 
@@ -151,7 +151,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			int s = (rowId < 0) ? Log.i(TAG, "Not reseted Table --> " + TableName) : Log.i(TAG, "Reseted Table --> "
 					+ TableName);
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile("Class Name --> DBHelper -- " + e.toString());
+			AppLogger.writeLog("Class Name --> DBHelper -- " + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e("dbHelper", e.toString());
 		} finally {
@@ -171,7 +171,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			db = this.getReadableDatabase();
 			c = db.query(TableName, columns, where, null, null, null, null, null);
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile("Class Name --> DBHelper -- " + e.toString());
+			AppLogger.writeLog("Class Name --> DBHelper -- " + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e(TAG, e.toString() + "--> getTableValue()");
 		} finally {
@@ -195,7 +195,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			int i = db.delete(TableName, where, null);
 			return i;
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile("Class Name --> DBHelper -- " + e.toString());
+			AppLogger.writeLog("Class Name --> DBHelper -- " + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e(TAG, e.toString() + "--> getTableValue()");
 		} finally {
@@ -222,7 +222,7 @@ public class DBHelper extends SQLiteOpenHelper {
 				count = c.getCount();
 				c.close();}
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile("Class Name --> " + TAG + " " + e.toString());
+			AppLogger.writeLog("Class Name --> " + TAG + " " + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e(getClass().getName(), e.toString() + "-->");
 		} finally {
@@ -240,7 +240,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		try {
 			db = this.getWritableDatabase();
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile("Class Name --> " + TAG + " " + e.toString());
+			AppLogger.writeLog("Class Name --> " + TAG + " " + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e(getClass().getName(), e.toString() + "-->");
 		} finally {
@@ -261,7 +261,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		try {
 			return db.update(table, cv, where, null);
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile(TAG + e.toString());
+			AppLogger.writeLog(TAG + e.toString());
 
 			if (AppConstants.DEBUG)
 				Log.e("updateTable", e.toString());
@@ -292,7 +292,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			}
 
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile(TAG + e.toString());
+			AppLogger.writeLog(TAG + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e("insertName", e.toString());
 		} finally {
@@ -313,7 +313,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			}
 
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile(TAG + e.toString());
+			AppLogger.writeLog(TAG + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e("insertName", e.toString());
 		} finally {
@@ -351,7 +351,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			}
 			db.setTransactionSuccessful();
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile(TAG + e.toString());
+			AppLogger.writeLog(TAG + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e("insertName", e.toString());
 		} finally {

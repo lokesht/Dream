@@ -151,13 +151,13 @@ public class Utility {
 			out.flush();
 			out.close();
 		} catch (FileNotFoundException e) {
-			AppLogger.WriteIntoFile(TAG + e.toString());
+			AppLogger.writeLog(TAG + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e(TAG, e.toString() + "error<-- in getting");
 			return e.toString();
 		} catch (IOException e) {
 			e.printStackTrace();
-			AppLogger.WriteIntoFile(TAG + e.toString());
+			AppLogger.writeLog(TAG + e.toString());
 			if (AppConstants.DEBUG)
 				Log.e(TAG, e.toString() + "error<-- in getting");
 			return e.toString();
@@ -189,10 +189,10 @@ public class Utility {
 			canvas.drawBitmap(bitmap, null, rect, paint);
 
 		} catch (NullPointerException e) {
-			AppLogger.WriteIntoFile(TAG + " " + e.toString());
+			AppLogger.writeLog(TAG + " " + e.toString());
 			Log.e(TAG, e.toString());
 		} catch (OutOfMemoryError o) {
-			AppLogger.WriteIntoFile(TAG + " " + o.toString());
+			AppLogger.writeLog(TAG + " " + o.toString());
 			Log.e(TAG, o.toString());
 		}
 		return result;
@@ -221,10 +221,10 @@ public class Utility {
 			canvas.drawBitmap(bitmap, null, rect, paint);
 
 		} catch (NullPointerException e) {
-			AppLogger.WriteIntoFile(TAG + " " + e.toString());
+			AppLogger.writeLog(TAG + " " + e.toString());
 			Log.e(TAG, e.toString());
 		} catch (OutOfMemoryError o) {
-			AppLogger.WriteIntoFile(TAG + " " + o.toString());
+			AppLogger.writeLog(TAG + " " + o.toString());
 			Log.e(TAG, o.toString());
 		}
 		return result;

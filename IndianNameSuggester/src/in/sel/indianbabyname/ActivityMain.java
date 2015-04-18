@@ -99,7 +99,7 @@ public class ActivityMain extends Activity {
 
 			Toast.makeText(getApplicationContext(), "Copied", Toast.LENGTH_LONG).show();
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile(TAG + " -- " + e.toString());
+			AppLogger.writeLog(TAG + " -- " + e.toString());
 			Log.e("", e.toString());
 		} finally {
 			try {

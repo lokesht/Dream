@@ -72,7 +72,7 @@ public class ActivitySplash extends Activity {
 				db.copyDataBaseFromAsset();
 
 		} catch (Exception e) {
-			AppLogger.WriteIntoFile("state " + TAG + " -- " + e.toString());
+			AppLogger.writeLog("state " + TAG + " -- " + e.toString());
 			Log.e("", e.toString());
 		}
 		System.out.println(t.getTime(t));
@@ -118,7 +118,7 @@ public class ActivitySplash extends Activity {
 				System.out.println(t.getTime(t));
 				db.insertNameInsertHelperLock(lst);
 			} catch (IOException e) {
-				AppLogger.WriteIntoFile("state " + TAG + " -- " + e.toString());
+				AppLogger.writeLog("state " + TAG + " -- " + e.toString());
 				Log.e("", e.toString());
 			}
 			System.out.println(t.getTime(t));
