@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/in.sel.indianbabyname"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/AliceBlue"
-    android:paddingLeft="@dimen/def_padding"
-    android:paddingRight="@dimen/def_padding" >
+    android:paddingLeft="@dimen/def_margin_horizontal"
+    android:paddingRight="@dimen/def_margin_horizontal" >
 
     <FrameLayout
         android:id="@+id/fl_main"
@@ -12,23 +13,14 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" >
 
-        <ImageView
-            android:id="@+id/iv_product_cover"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:contentDescription="@string/about"
-            android:scaleType="matrix"
-            android:src="@drawable/ic_blank_img" />
-
-        <ImageView
-            android:id="@+id/iv_product"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:contentDescription="@string/about"
-            android:scaleType="matrix"
-            android:src="@drawable/ic_blank_img" />
+        <in.sel.customview.CircularImageView
+            android:id="@+id/circular_image_view"
+            android:layout_width="@dimen/circular_imageview_width"
+            android:layout_height="@dimen/circular_imageview_height"
+            android:src="@drawable/bc_circle"
+            app:border_color="#EEEEEE"
+            app:border_width="4dp"
+            app:shadow="true" />
 
         <TextView
             android:id="@+id/tv_alphabet"
@@ -39,45 +31,5 @@
             android:text="ABC"
             android:textSize="60sp" />
     </FrameLayout>
-
-    <!-- <FrameLayout -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:layout_toRightOf="@+id/fl_main" -->
-    <!-- android:layout_marginTop="20dp" -->
-    <!-- android:layout_marginLeft="-40dp" -->
-    <!-- android:layout_marginStart="-40dp" -->
-    <!-- android:layout_toEndOf="@+id/fl_main" > -->
-
-
-    <!-- <ImageView -->
-    <!-- android:id="@+id/iv_count_cover" -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:layout_gravity="center" -->
-    <!-- android:contentDescription="@string/about" -->
-    <!-- android:scaleType="matrix" -->
-    <!-- android:src="@drawable/ic_blank_img" /> -->
-
-
-    <!-- <ImageView -->
-    <!-- android:id="@+id/iv_count" -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:layout_gravity="center" -->
-    <!-- android:contentDescription="@string/about" -->
-    <!-- android:scaleType="matrix" -->
-    <!-- android:src="@drawable/ic_blank_img" /> -->
-
-
-    <!-- <TextView -->
-    <!-- android:id="@+id/tv_count" -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:layout_gravity="center" -->
-    <!-- android:gravity="center" -->
-    <!-- android:textSize="12sp" > -->
-    <!-- </TextView> -->
-    <!-- </FrameLayout> -->
 
 </RelativeLayout>

@@ -17,23 +17,23 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:paddingBottom="5dp"
-            android:paddingLeft="@dimen/def_margin_vertical"
-            android:paddingRight="@dimen/def_margin_vertical"
+            android:paddingLeft="@dimen/def_margin_horizontal"
+            android:paddingRight="@dimen/def_margin_horizontal"
             android:paddingTop="5dp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/def_margin_vertical"
-            android:layout_marginRight="@dimen/def_margin_vertical"
+            android:layout_marginLeft="@dimen/def_margin_horizontal"
+            android:layout_marginRight="@dimen/def_margin_horizontal"
             android:background="@color/Black" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
-            android:paddingLeft="@dimen/def_margin_vertical"
-            android:paddingRight="@dimen/def_margin_vertical"
+            android:paddingLeft="@dimen/def_margin_horizontal"
+            android:paddingRight="@dimen/def_margin_horizontal"
             android:paddingTop="10dp"
             android:weightSum="3" >
 

@@ -4,10 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/def_margin_vertical"
-    android:paddingLeft="@dimen/def_margin_vertical"
-    android:paddingRight="@dimen/def_margin_vertical"
-    android:paddingTop="@dimen/def_margin_vertical" >
+    android:padding="@dimen/def_margin_horizontal" >
 
     <LinearLayout
         android:layout_width="match_parent"

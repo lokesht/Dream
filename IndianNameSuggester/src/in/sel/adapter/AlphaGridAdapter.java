@@ -1,6 +1,7 @@
 package in.sel.adapter;
 
 import in.sel.customview.BadgeView;
+import in.sel.customview.CircularImageView;
 import in.sel.indianbabyname.DBHelper;
 import in.sel.indianbabyname.R;
 import in.sel.indianbabyname.TableContract;
@@ -12,18 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class AlphaGridAdapter extends BaseAdapter {
 
 	public static class ViewHolder {
 		TextView tvAlpha;
-		ImageView ivUpper;
-		ImageView ivLower;
+		// ImageView ivUpper;
+		// ImageView ivLower;
 
-		ImageView ivCountCover;
-		ImageView ivCount;
+		CircularImageView circular_image_view;
 
 		BadgeView b;
 	}
@@ -60,17 +59,19 @@ public class AlphaGridAdapter extends BaseAdapter {
 			v = new ViewHolder();
 			convertView = mInflator.inflate(R.layout.item_alphabet, null);
 			v.tvAlpha = (TextView) convertView.findViewById(R.id.tv_alphabet);
-			v.ivLower = (ImageView) convertView.findViewById(R.id.iv_product);
-			v.ivUpper = (ImageView) convertView
-					.findViewById(R.id.iv_product_cover);
+			v.circular_image_view = (CircularImageView) convertView.findViewById(R.id.circular_image_view);
+			
+			// v.ivLower = (ImageView)convertView.findViewById(R.id.iv_product);
+			// v.ivUpper =
+			// (ImageView)convertView.findViewById(R.id.iv_product_cover);
 
 			// v.ivCount = (ImageView) convertView.findViewById(R.id.iv_count);
-			// v.ivCountCover = (ImageView)
-			// convertView.findViewById(R.id.iv_count_cover);
+			// v.ivCountCover =
+			// (ImageView)convertView.findViewById(R.id.iv_count_cover);
 
-			v.b = new BadgeView(mInflator.getContext(), v.ivLower);
-
+			 v.b = new BadgeView(mInflator.getContext(), v.circular_image_view);
 			convertView.setTag(v);
+
 		} else {
 			v = (ViewHolder) convertView.getTag();
 		}
@@ -78,8 +79,7 @@ public class AlphaGridAdapter extends BaseAdapter {
 		/* set Image of Type */
 
 		// String path = "/data/data/" + mInflator.getContext().getPackageName()
-		// + "/databases/"+
-		// DatabaseHelper.DB_NAME;
+		// + "/databases/"+ DatabaseHelper.DB_NAME;
 		// String path = Environment.getExternalStorageDirectory().toString() +
 		// "/Download/PeriodicTableValence.png";
 
@@ -87,15 +87,15 @@ public class AlphaGridAdapter extends BaseAdapter {
 		// BitmapFactory.decodeResource(mInflator.getContext().getResources(),R.drawable.test);
 
 		/** This would be diameter of Circle */
-		int dim = 150;
+		// int dim = 150;
 
 		/** Base circle */
-		Bitmap bm = getBitMapImage(null, dim, false);
-		v.ivLower.setImageBitmap(bm);
-
-		/* Upper Circle */
-		bm = getCoverBitMapImage(dim, false);
-		v.ivUpper.setImageBitmap(bm);
+		// Bitmap bm = getBitMapImage(null, dim, false);
+		// v.ivLower.setImageBitmap(bm);
+		//
+		// /* Upper Circle */
+		// bm = getCoverBitMapImage(dim, false);
+		// v.ivUpper.setImageBitmap(bm);
 
 		// bm = getBitMapImage(null, 40, true);
 		// v.ivCount.setImageBitmap(bm);
@@ -120,7 +120,7 @@ public class AlphaGridAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private Bitmap getBitMapImage(String path, int dim, boolean trial) {
+	private Bitmap getBitMapImage(String path, int dim) {
 		Bitmap myBitmap;
 		if (path != null) {
 			myBitmap = BitmapFactory.decodeFile(path);
@@ -130,23 +130,18 @@ public class AlphaGridAdapter extends BaseAdapter {
 		}
 		/** Radius margin */
 		int margin = 5;
-		if (trial)
-			return Utility.getRoundedRectBitmapTrial(myBitmap, dim, margin);
-		else
-			return Utility.getRoundedRectBitmap(myBitmap, dim, margin);
+
+		return Utility.getRoundedRectBitmap(myBitmap, dim, margin);
 	}
 
-	private Bitmap getCoverBitMapImage(int dim, boolean trial) {
+	private Bitmap getCoverBitMapImage(int dim) {
 		Bitmap myBitmap = BitmapFactory.decodeResource(mInflator.getContext()
 				.getResources(), R.drawable.indicator_border);
 
 		/** Radius margin */
 		int margin = 2;
 
-		if (trial)
-			return Utility.getRoundedRectBitmapTrial(myBitmap, dim, margin);
-		else
-			return Utility.getRoundedRectBitmap(myBitmap, dim, margin);
+		return Utility.getRoundedRectBitmap(myBitmap, dim, margin);
 
 	}
 

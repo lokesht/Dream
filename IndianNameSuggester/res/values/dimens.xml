@@ -1,18 +1,18 @@
 <resources>
 
-    <dimen name="activity_vertical_margin">64dp</dimen>
-    <dimen name="activity_horizontal_margin">64dp</dimen>
     <!-- Default screen margins,as per the Android Design guidelines. -->
-    <dimen name="def_margin_horizontal">16dp</dimen>
-    <dimen name="def_margin_vertical">16dp</dimen>
-    <dimen name="def_lutech_margin_vertical">30dp</dimen>
-    <dimen name="def_lutech_margin_horizontal">20dp</dimen>
+    <dimen name="activity_margin_horizontal">16dp</dimen>
+    <dimen name="activity_margin_vertical">16dp</dimen>
+
+    <!-- Default screen margins,as per the Android Design guidelines. -->
+    <dimen name="def_margin_horizontal">10dp</dimen>
 
     <!-- Default Text size as per the Android Design guidelines -->
     <dimen name="ts_micro">12sp</dimen>
     <dimen name="ts_small">14sp</dimen>
     <dimen name="ts_medium">18sp</dimen>
     <dimen name="ts_large">22sp</dimen>
+
     <!-- Customize Text size -->
     <dimen name="ts_default">20sp</dimen>
 
@@ -22,29 +22,8 @@
     <!-- Default Min height , For Spinner, TextView, EditText -->
     <dimen name="def_min_height">48dp</dimen>
 
-    <!-- Submenu Icon Height -->
-    <dimen name="icon_height">35dp</dimen>
-
-    <!-- Submenu Icon Width -->
-    <dimen name="icon_width">35dp</dimen>
-
-    <!-- folder structure height -->
-    <dimen name="folder_height">30dp</dimen>
-
-    <!-- Defalult Padding -->
-    <dimen name="def_padding">8dp</dimen>
-
-    <!-- Dimension of PopupWindow -->
-    <dimen name="width_window">400dp</dimen>
-    <dimen name="space_left">20dp</dimen>
-    <dimen name="space_right">20dp</dimen>
-    <dimen name="space_top">20dp</dimen>
-    <dimen name="space_bottom">10dp</dimen>
-    <dimen name="products_image_width">200dp</dimen>
-    <dimen name="products_image_height">200dp</dimen>
-
-    <item name="no_of_grid_column" format="integer" type="dimen">2</item>
-
-    <dimen name="height_sales_cart">650dp</dimen>
+    <!-- Circular Image Dimention -->
+    <dimen name="circular_imageview_width">100dp</dimen>
+    <dimen name="circular_imageview_height">100dp</dimen>
 
 </resources>

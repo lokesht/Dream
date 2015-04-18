@@ -1,31 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="blue_lutech_text_header_product_des">#668ECD</color>
-    <color name="blue_lutech_header_dark">#3366cc</color>
-    <color name="blue_lutech_text_header_color">#659EC7</color>
-    <color name="blue_lutech_divider">#E0EDF5</color>
-    <color name="blue_lutech_light_background_product">#F5F9FC</color>
-    <color name="blue_lutech_circle_border">#E0ECF4</color>
-    <color name="blue_lutech_category_header_color">#2B7AB3</color>
-    <color name="blue_lutech_dark_login_button">#123751</color>
-    <color name="blue_lutech_dark_header_order_form">#397AAA</color>
-    <color name="blue_lutech_light_background_order_form">#F4F9FB</color>
-    <color name="blue_lutech_light_trans_blue">#81AFD1</color>
-    
-<!--     <color name="dark_grey_lutech_light_client_name">#959595</color> -->
-<!--     <color name="light_grey_lutech_light_client_contact">#E2E2E2</color> -->
-<!--     <color name="very_light_grey_lutech_client_add">#C6C6C6</color> -->
-    
-    <color name="gray_lutech_collection_sidebar_divider">#565C65</color>
-    <color name="gray_lutech_collection_sidebar_background">#313840</color>
-    
-    <color name="blue_lutech_salesorder_mainpage_sync">#96BDDA</color>
-    <color name="blue_lutech_salesorder_mainpage_news">#5595C1</color>
-    
+    <color name="White">#ffffff</color>
+    <color name="Blue">#2980b9</color>
+    <color name="Black">#000000</color>
+    <color name="Gray">#c9c9c9</color>
+    <color name="GrayLight">#eeeeee</color>
+    <color name="GrayHot">#272727</color>
     <color name="DefaultBule">#33b5e5</color>
     <color name="Transparent">#55000000</color>
-    <color name="White">#FFFFFF</color>
     <color name="LineColorLightGrey">#DED7DA</color>
     <color name="Ivory">#FFFFF0</color>
     <color name="LightYellow">#FFFFE0</color>
@@ -121,7 +104,7 @@
     <color name="BlueViolet">#8A2BE2</color>
     <color name="LightSkyBlue">#87CEFA</color>
     <color name="SkyBlue">#87CEEB</color>
-    <color name="Gray">#808080</color>
+  
     <color name="Olive">#808000</color>
     <color name="Purple">#800080</color>
     <color name="Maroon">#800000</color>
@@ -163,11 +146,11 @@
     <color name="Teal">#008080</color>
     <color name="Green">#008000</color>
     <color name="DarkGreen">#006400</color>
-    <color name="Blue">#0000FF</color>
+    
     <color name="Blue_dark">#000047</color>
     <color name="MediumBlue">#0000CD</color>
     <color name="DarkBlue">#00008B</color>
     <color name="Navy">#000080</color>
-    <color name="Black">#000000</color>
+    
 
 </resources>
