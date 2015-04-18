@@ -1,25 +1,24 @@
 package in.sel.indianbabyname;
 
+import in.sel.adapter.AlphaGridAdapter;
+import in.sel.logging.AppLogger;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 
-import in.sel.adapter.AlphaGridAdapter;
-import in.sel.logging.AppLogger;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.Toast;
 
 public class ActivityMain extends Activity {
 
@@ -31,23 +30,56 @@ public class ActivityMain extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		final String[] letter = new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
-				"O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+		init();
+	}
 
-		AlphaGridAdapter adapter = new AlphaGridAdapter(this);
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		/** Update count of selected element */
+		if (ActivityDisplayName_Developer.selectedAlphabet.length() != 0) {
+
+			String alphabet = ActivityDisplayName_Developer.selectedAlphabet;
+			String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%' AND " + TableContract.Name.GENDER_CAST + "=''";
+			DBHelper db = new DBHelper(this);
+			long count = db.getTableRowCount(TableContract.Name.TABLE_NAME, where);
+			/** Close Database*/
+			db.close();
+			
+			AlphaGridAdapter.selectedText.setText(count + "");
+		}
+
+	}
+
+	/** Initialize Variable and list */
+	private void init() {
+		/** */
+		HashMap<String, Integer> hm = new HashMap<String, Integer>(26);
+		hm = getCount(hm);
+
+		/** */
+		AlphaGridAdapter adapter = new AlphaGridAdapter(this, hm);
 		GridView gvAl = (GridView) findViewById(R.id.gv_alphabet);
 		gvAl.setAdapter(adapter);
+	}
 
-		gvAl.setOnItemClickListener(new OnItemClickListener() {
+	/** Give count of Remaining Value in each section */
+	private HashMap<String, Integer> getCount(HashMap<String, Integer> hm) {
+		DBHelper db = new DBHelper(this);
 
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				//Intent in = new Intent(ActivityMain.this, DepricatedActivityDisplayName.class);
-				Intent in = new Intent(ActivityMain.this, ActivityDisplayName_Developer.class);
-				in.putExtra(ALPHA, letter[position] + "");
-				startActivity(in);
-			}
-		});
+		String[] letter = new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
+				"R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+
+		for (int i = 0; i < letter.length; i++) {
+			String where = TableContract.Name.NAME_EN + " like '" + letter[i] + "%' AND " + TableContract.Name.GENDER_CAST
+					+ "=''";
+			long count = db.getTableRowCount(TableContract.Name.TABLE_NAME, where);
+
+			hm.put(letter[i], (int) count);
+		}
+		db.close();
+		return hm;
 	}
 
 	@Override
@@ -84,9 +116,7 @@ public class ActivityMain extends Activity {
 		OutputStream fos = null;
 
 		try {
-			/*
-			 * code is coming till here so data is loaded in successfully
-			 */
+
 			fis = new FileInputStream(f);
 			fos = new FileOutputStream("/mnt/sdcard/Download/" + DBHelper.DB_NAME);
 

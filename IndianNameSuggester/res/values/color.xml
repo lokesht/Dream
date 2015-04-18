@@ -2,12 +2,16 @@
 <resources>
 
     <color name="White">#ffffff</color>
+    
     <color name="Blue">#2980b9</color>
+    <color name="DefaultBule">#33b5e5</color>
+    
     <color name="Black">#000000</color>
+    
     <color name="Gray">#c9c9c9</color>
     <color name="GrayLight">#eeeeee</color>
     <color name="GrayHot">#272727</color>
-    <color name="DefaultBule">#33b5e5</color>
+        
     <color name="Transparent">#55000000</color>
     <color name="LineColorLightGrey">#DED7DA</color>
     <color name="Ivory">#FFFFF0</color>

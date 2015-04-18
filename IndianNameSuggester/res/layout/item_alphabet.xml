@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res/in.sel.indianbabyname"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/AliceBlue"
     android:paddingLeft="@dimen/def_margin_horizontal"
     android:paddingRight="@dimen/def_margin_horizontal" >
 
@@ -17,9 +16,15 @@
             android:id="@+id/circular_image_view"
             android:layout_width="@dimen/circular_imageview_width"
             android:layout_height="@dimen/circular_imageview_height"
-            android:src="@drawable/bc_circle"
-            app:border_color="#EEEEEE"
-            app:border_width="4dp"
+            android:clickable="true"
+            android:src="@drawable/test"
+            app:border="true"
+            app:border_color="@color/GrayLight"
+            app:border_width="2dp"
+            app:selector="true"
+            app:selector_color="@color/LightBlue"
+            app:selector_stroke_color="@color/DarkMagenta"
+            app:selector_stroke_width="2dp"
             app:shadow="true" />
 
         <TextView

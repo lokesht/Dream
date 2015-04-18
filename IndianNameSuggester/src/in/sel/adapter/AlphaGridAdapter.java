@@ -1,50 +1,55 @@
 package in.sel.adapter;
 
 import in.sel.customview.BadgeView;
-import in.sel.customview.CircularImageView;
-import in.sel.indianbabyname.DBHelper;
+import in.sel.indianbabyname.ActivityDisplayName_Developer;
+import in.sel.indianbabyname.ActivityMain;
 import in.sel.indianbabyname.R;
-import in.sel.indianbabyname.TableContract;
 import in.sel.utility.Utility;
+
+import java.util.HashMap;
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class AlphaGridAdapter extends BaseAdapter {
 
+	public static BadgeView selectedText;
 	public static class ViewHolder {
 		TextView tvAlpha;
-		// ImageView ivUpper;
-		// ImageView ivLower;
-
-		CircularImageView circular_image_view;
-
+		ImageView circular_image_view;
 		BadgeView b;
 	}
 
+	String[] letter = new String[] { "A", "B", "C", "D", "E", "F", "G", "H",
+			"I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
+			"V", "W", "X", "Y", "Z" };
+
 	LayoutInflater mInflator;
+	HashMap<String, Integer> hm;
 
-	public AlphaGridAdapter(Context con) {
+	public AlphaGridAdapter(Context con, HashMap<String, Integer> hm) {
 		mInflator = LayoutInflater.from(con);
+		this.hm = hm;
 	}
-
-	final String[] letter = new String[] { "A", "B", "C", "D", "E", "F", "G",
-			"H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
-			"U", "V", "W", "X", "Y", "Z" };
 
 	@Override
 	public int getCount() {
-		return letter.length;
+		return hm.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return letter[position];
+		return hm.get(0);
 	}
 
 	@Override
@@ -59,67 +64,47 @@ public class AlphaGridAdapter extends BaseAdapter {
 			v = new ViewHolder();
 			convertView = mInflator.inflate(R.layout.item_alphabet, null);
 			v.tvAlpha = (TextView) convertView.findViewById(R.id.tv_alphabet);
-			v.circular_image_view = (CircularImageView) convertView.findViewById(R.id.circular_image_view);
-			
-			// v.ivLower = (ImageView)convertView.findViewById(R.id.iv_product);
-			// v.ivUpper =
-			// (ImageView)convertView.findViewById(R.id.iv_product_cover);
+			v.circular_image_view = (ImageView) convertView
+					.findViewById(R.id.circular_image_view);
 
-			// v.ivCount = (ImageView) convertView.findViewById(R.id.iv_count);
-			// v.ivCountCover =
-			// (ImageView)convertView.findViewById(R.id.iv_count_cover);
-
-			 v.b = new BadgeView(mInflator.getContext(), v.circular_image_view);
+			v.b = new BadgeView(mInflator.getContext(), v.circular_image_view);
 			convertView.setTag(v);
 
 		} else {
 			v = (ViewHolder) convertView.getTag();
 		}
 
-		/* set Image of Type */
-
-		// String path = "/data/data/" + mInflator.getContext().getPackageName()
-		// + "/databases/"+ DatabaseHelper.DB_NAME;
-		// String path = Environment.getExternalStorageDirectory().toString() +
-		// "/Download/PeriodicTableValence.png";
-
-		// Bitmap bm=
-		// BitmapFactory.decodeResource(mInflator.getContext().getResources(),R.drawable.test);
-
-		/** This would be diameter of Circle */
-		// int dim = 150;
-
-		/** Base circle */
-		// Bitmap bm = getBitMapImage(null, dim, false);
-		// v.ivLower.setImageBitmap(bm);
-		//
-		// /* Upper Circle */
-		// bm = getCoverBitMapImage(dim, false);
-		// v.ivUpper.setImageBitmap(bm);
-
-		// bm = getBitMapImage(null, 40, true);
-		// v.ivCount.setImageBitmap(bm);
-		//
-		// /* Upper Circle */
-		// bm = getCoverBitMapImage(40, true);
-		// v.ivCountCover.setImageBitmap(bm);
-
 		/* Text */
 		v.tvAlpha.setText(letter[position]);
 
-		DBHelper db = new DBHelper(mInflator.getContext());
-		String where = TableContract.Name.NAME_EN + " like '"
-				+ letter[position] + "%' AND " + TableContract.Name.GENDER_CAST
-				+ "=''";
-		long count = db.getTableRowCount(TableContract.Name.TABLE_NAME, where);
+		v.circular_image_view.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				
+				ViewHolder vh = (ViewHolder) v.getTag();
+				selectedText = vh.b;
+				String alp = vh.tvAlpha.getText().toString();
+				
+				Intent in = new Intent(mInflator.getContext(),ActivityDisplayName_Developer.class);
+				in.putExtra(ActivityMain.ALPHA, alp);
+				mInflator.getContext().startActivity(in);
+
+			}
+		});
+
+		///** Tagging the Image with respective text value*/
+		v.circular_image_view.setTag(v);
+		
 		/** */
-		v.b.setText(count + "");
+		Integer in = hm.get(letter[position]);
+		v.b.setText(in.intValue() + "");
 		v.b.show();
 
 		return convertView;
 	}
 
+	/** Return rounded images of source Image */
 	private Bitmap getBitMapImage(String path, int dim) {
 		Bitmap myBitmap;
 		if (path != null) {
@@ -130,10 +115,10 @@ public class AlphaGridAdapter extends BaseAdapter {
 		}
 		/** Radius margin */
 		int margin = 5;
-
 		return Utility.getRoundedRectBitmap(myBitmap, dim, margin);
 	}
 
+	/** Return rounded images fixed Images */
 	private Bitmap getCoverBitMapImage(int dim) {
 		Bitmap myBitmap = BitmapFactory.decodeResource(mInflator.getContext()
 				.getResources(), R.drawable.indicator_border);
