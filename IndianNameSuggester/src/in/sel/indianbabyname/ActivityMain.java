@@ -44,10 +44,15 @@ public class ActivityMain extends Activity {
 			String where = TableContract.Name.NAME_EN + " like '" + alphabet + "%' AND " + TableContract.Name.GENDER_CAST + "=''";
 			DBHelper db = new DBHelper(this);
 			long count = db.getTableRowCount(TableContract.Name.TABLE_NAME, where);
-			/** Close Database*/
+			/** Close Database */
 			db.close();
-			
+
+			AppLogger.ToastLong(this, count+"");
 			AlphaGridAdapter.selectedText.setText(count + "");
+
+			/** Update value of Adapter */
+			if (AlphaGridAdapter.hm != null)
+				AlphaGridAdapter.hm.put(alphabet, Integer.valueOf((int) count));
 		}
 
 	}
@@ -68,12 +73,12 @@ public class ActivityMain extends Activity {
 	private HashMap<String, Integer> getCount(HashMap<String, Integer> hm) {
 		DBHelper db = new DBHelper(this);
 
-		String[] letter = new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
-				"R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+		String[] letter = new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
+				"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
 		for (int i = 0; i < letter.length; i++) {
-			String where = TableContract.Name.NAME_EN + " like '" + letter[i] + "%' AND " + TableContract.Name.GENDER_CAST
-					+ "=''";
+			String where = TableContract.Name.NAME_EN + " like '" + letter[i] + "%' AND "
+					+ TableContract.Name.GENDER_CAST + "=''";
 			long count = db.getTableRowCount(TableContract.Name.TABLE_NAME, where);
 
 			hm.put(letter[i], (int) count);

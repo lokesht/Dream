@@ -35,11 +35,11 @@ public class AlphaGridAdapter extends BaseAdapter {
 			"V", "W", "X", "Y", "Z" };
 
 	LayoutInflater mInflator;
-	HashMap<String, Integer> hm;
+	public static HashMap<String, Integer> hm;
 
 	public AlphaGridAdapter(Context con, HashMap<String, Integer> hm) {
 		mInflator = LayoutInflater.from(con);
-		this.hm = hm;
+		AlphaGridAdapter.hm = hm;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package in.sel.indianbabyname;
 
 import in.sel.adapter.NameAdapter;
 import in.sel.adapter.NameCursorAdapter;
+import in.sel.logging.AppLogger;
 import in.sel.model.M_Name;
 
 import java.util.List;
@@ -60,6 +61,7 @@ public class ActivityDisplayName_Developer extends Activity implements OnClickLi
 
 		if (c != null && c.getCount() > 0) {
 
+			AppLogger.ToastLong(this, c.getCount()+"");
 			/** Parse */
 			displayListWithCustomCursor(c);
 
@@ -181,9 +183,8 @@ public class ActivityDisplayName_Developer extends Activity implements OnClickLi
 	/** Update Table with gender_cast Value marked By User */
 	public void updateGenderCast() {
 		int count = NameCursorAdapter.lsNameMarked.size() > 0 ? NameCursorAdapter.lsNameMarked.size() : 0;
-		
+		AppLogger.ToastLong(this, "updateGenderCast"+count+"");
 		if (count > 0) {
-			DBHelper dbtemp = new DBHelper(this);
 
 			for (Map.Entry<Integer, String> name : NameCursorAdapter.lsNameMarked.entrySet()) {
 				ContentValues cv = new ContentValues();
@@ -191,7 +192,7 @@ public class ActivityDisplayName_Developer extends Activity implements OnClickLi
 
 				/** Where clause */
 				String where = TableContract.Name.AUTO_ID + " = " + name.getKey();
-				int i = dbtemp.updateTable(TableContract.Name.TABLE_NAME, cv, where);
+				int i = dbHelper.updateTable(TableContract.Name.TABLE_NAME, cv, where);
 
 				if (i > 0) {
 					Log.i("Updated", i + "");
@@ -199,7 +200,6 @@ public class ActivityDisplayName_Developer extends Activity implements OnClickLi
 				}
 				NameCursorAdapter.lsNameMarked.remove(name);
 			}
-			dbtemp.close();
 		}
 
 		/** */
@@ -209,11 +209,20 @@ public class ActivityDisplayName_Developer extends Activity implements OnClickLi
 	}
 
 	@Override
-	protected void onStop() {
+	protected void onPause() {
 		super.onPause();
-
+		
 		/** Update List */
 		updateGenderCast();
+		
+		/** */
+		dbHelper.close();
+	}
+	@Override
+	protected void onStop() {
+		super.onStop();
+
+		
 	}
 
 	// @Override
