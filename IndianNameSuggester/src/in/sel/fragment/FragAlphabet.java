@@ -20,7 +20,7 @@ import android.widget.GridView;
 public class FragAlphabet extends Fragment {
 
 	private String TAG = "FragAlphabet";
-	private HashMap<String, Integer> hm;
+	private static HashMap<String, Integer> hm;
 	private GridView gv;
 
 	/** */
@@ -47,7 +47,8 @@ public class FragAlphabet extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		hm = getCount(hm);
+		if (hm != null && FragAlphabet.hm.size() == 0)
+			hm = getCount(hm);
 
 		AlphaGridAdapter adapter = new AlphaGridAdapter(getActivity(), hm);
 		gv.setAdapter(adapter);

@@ -86,11 +86,11 @@ public class ActivityMain extends Activity {
 		lsView.setAdapter(adapter);
 
 		lsView.setOnItemClickListener(new DrawerListListener());
-		
+
 		if (savedInstanceState == null) {
-            // on first time display view for first nav item
+			// on first time display view for first nav item
 			display(0);
-        }
+		}
 
 	}
 
@@ -108,13 +108,14 @@ public class ActivityMain extends Activity {
 		super.onRestoreInstanceState(savedInstanceState);
 		Log.i(TAG, "onRestoreInstanceState");
 	}
-	
+
 	@Override
 	protected void onRestart() {
 		super.onRestart();
 		Log.i(TAG, "onRestart");
-		
+
 	}
+
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -127,24 +128,26 @@ public class ActivityMain extends Activity {
 		super.onStop();
 		Log.i(TAG, "onStop");
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
 		Log.i(TAG, "onPause");
 	}
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		Log.i(TAG, "onResume");
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		// TODO Auto-generated method stub
 		super.onSaveInstanceState(outState);
 		Log.i(TAG, "onSaveInstanceState");
 	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -200,10 +203,9 @@ public class ActivityMain extends Activity {
 	}
 
 	/** display */
-	public void display(int position)
-	{
+	public void display(int position) {
 		/** */
-		if (position == 0) {
+		if (position == 0 && getFragmentManager().findFragmentByTag("FragAlpha") == null) {
 			FragAlphabet fragAlpha = new FragAlphabet();
 			FragmentManager fragManage = getFragmentManager();
 			FragmentTransaction fragTrans = fragManage.beginTransaction();
@@ -214,6 +216,7 @@ public class ActivityMain extends Activity {
 
 		mDrawerLayout.closeDrawer(lsView);
 	}
+
 	/* */
 	public void writeDataBase() {
 		String dataBase = getApplicationInfo().dataDir + DBHelper.DB_SUFFIX + DBHelper.DB_NAME;

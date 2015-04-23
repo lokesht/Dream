@@ -2,12 +2,11 @@
 <resources>
 
     <string-array name="drawer_menu">
-        <item>Alphabets</item>
-        <item>Favorite</item>
+        <item>English Alphabets</item>
+        <item>Hindi Alphabets</item>       
         <item>Top 100 Male</item>
         <item>Top 100 Female</item>
-        <item>Favorite</item>
-        
+        <item>Favorite</item>  
         <item>Settings</item>
     </string-array>
 
