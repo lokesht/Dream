@@ -57,5 +57,7 @@ Thanks for downloading.
 	
 	</string>
     <string name="copy_database">copy_database</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 
 </resources>

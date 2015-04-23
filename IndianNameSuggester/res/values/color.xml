@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="Transparent">#55000000</color>
+    
     <color name="White">#ffffff</color>
     
     <color name="Blue">#2980b9</color>
@@ -11,19 +13,38 @@
     <color name="Gray">#c9c9c9</color>
     <color name="GrayLight">#eeeeee</color>
     <color name="GrayHot">#272727</color>
-        
-    <color name="Transparent">#55000000</color>
+     <color name="Light_Grey_Gainsboro">#DCDCDC</color>
+    
+    <color name="Orange">#FFA500</color>
+    <color name="OrangeRed">#FF4500</color>
+    
+    <color name="Pink">#FFC0CB</color>
+    <color name="LightPink">#FFB6C1</color>
+    <color name="DeepPink">#FF1493</color>
+    <color name="HotPink">#FF69B4</color>
+    
+    <color name="Yellow">#FFFF00</color>
+    <color name="LightYellow">#FFFFE0</color>
+     
+    <color name="Green">#008000</color>
+    <color name="DarkGreen">#006400</color>
+    <color name="MediumSpringGreen">#00FA9A</color>
+    <color name="LimeGreen">#32CD32</color>
+    <color name="SeaGreen">#2E8B57</color>
+    <color name="ForestGreen">#228B22</color>
+    <color name="LightSeaGreen">#20B2AA</color>
+    
     <color name="LineColorLightGrey">#DED7DA</color>
     <color name="Ivory">#FFFFF0</color>
-    <color name="LightYellow">#FFFFE0</color>
-    <color name="Yellow">#FFFF00</color>
+   
+    
     <color name="Snow">#FFFAFA</color>
     <color name="FloralWhite">#FFFAF0</color>
     <color name="LemonChiffon">#FFFACD</color>
     <color name="Cornsilk">#FFF8DC</color>
     <color name="Seashell">#FFF5EE</color>
     <color name="LavenderBlush">#FFF0F5</color>
-    <color name="LightGrey_header">#DED7DA</color>
+  
     <color name="PapayaWhip">#FFEFD5</color>
     <color name="BlanchedAlmond">#FFEBCD</color>
     <color name="MistyRose">#FFE4E1</color>
@@ -32,16 +53,14 @@
     <color name="NavajoWhite">#FFDEAD</color>
     <color name="PeachPuff">#FFDAB9</color>
     <color name="Gold">#FFD700</color>
-    <color name="Pink">#FFC0CB</color>
-    <color name="LightPink">#FFB6C1</color>
-    <color name="Orange">#FFA500</color>
+   
+    
     <color name="LightSalmon">#FFA07A</color>
     <color name="DarkOrange">#FF8C00</color>
     <color name="Coral">#FF7F50</color>
-    <color name="HotPink">#FF69B4</color>
+   
     <color name="Tomato">#FF6347</color>
-    <color name="OrangeRed">#FF4500</color>
-    <color name="DeepPink">#FF1493</color>
+    
     <color name="Fuchsia">#FF00FF</color>
     <color name="Magenta">#FF00FF</color>
     <color name="Red">#FF0000</color>
@@ -68,8 +87,8 @@
     <color name="LightCyan">#E0FFFF</color>
     <color name="BurlyWood">#DEB887</color>
     <color name="Plum">#DDA0DD</color>
-    <color name="Light_Grey_Gainsboro">#DCDCDC</color>
-    <color name="Grey_very_light">#EBEBEB</color>
+   
+   
     <color name="Crimson">#DC143C</color>
     <color name="PaleVioletRed">#DB7093</color>
     <color name="Goldenrod">#DAA520</color>
@@ -132,24 +151,21 @@
     <color name="RoyalBlue">#4169E1</color>
     <color name="Turquoise">#40E0D0</color>
     <color name="MediumSeaGreen">#3CB371</color>
-    <color name="LimeGreen">#32CD32</color>
+   
     <color name="DarkSlateGray">#2F4F4F</color>
-    <color name="SeaGreen">#2E8B57</color>
-    <color name="ForestGreen">#228B22</color>
-    <color name="LightSeaGreen">#20B2AA</color>
+    
     <color name="DodgerBlue">#1E90FF</color>
     <color name="MidnightBlue">#191970</color>
     <color name="Aqua">#00FFFF</color>
     <color name="Cyan">#00FFFF</color>
     <color name="SpringGreen">#00FF7F</color>
     <color name="Lime">#00FF00</color>
-    <color name="MediumSpringGreen">#00FA9A</color>
+    
     <color name="DarkTurquoise">#00CED1</color>
     <color name="DeepSkyBlue">#00BFFF</color>
     <color name="DarkCyan">#008B8B</color>
     <color name="Teal">#008080</color>
-    <color name="Green">#008000</color>
-    <color name="DarkGreen">#006400</color>
+   
     
     <color name="Blue_dark">#000047</color>
     <color name="MediumBlue">#0000CD</color>
