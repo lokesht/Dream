@@ -2,9 +2,11 @@ package in.sel.indianbabyname;
 
 import in.sel.adapter.NameAdapter;
 import in.sel.adapter.NameCursorAdapter;
+import in.sel.adapter.RecycleViewAdapter;
 import in.sel.logging.AppLogger;
 import in.sel.model.M_Name;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,17 +14,19 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ListView;
+
 import android.widget.TextView;
 
 /** Class is designed for Developer For Marking of Name */
-public class ActivityDisplayName_Developer extends Activity implements OnClickListener {
+public class ActivityDisplayName_Developer_Recycler extends Activity implements OnClickListener {
 	String TAG = "ActivityDisplayName";
 
-	ListView lsName;
+	RecyclerView lsName;
 
 	/** */
 	public static String selectedAlphabet = "";
@@ -36,11 +40,12 @@ public class ActivityDisplayName_Developer extends Activity implements OnClickLi
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_name_list);
+		setContentView(R.layout.activity_name_list_recycle_view);
 
-		selectedAlphabet = getIntent().getStringExtra(ActivityMain.ALPHA);
+		//selectedAlphabet = getIntent().getStringExtra(ActivityMain.ALPHA);
 
-		init();
+		
+		//init();
 	}
 
 	@Override
@@ -63,8 +68,12 @@ public class ActivityDisplayName_Developer extends Activity implements OnClickLi
 
 			AppLogger.ToastLong(this, c.getCount()+"");
 			
+			final List<M_Name> name  = parseListName(c);
+			dbHelper.close();
+			displayList(name);
+			
 			/** Parse */
-			displayListWithCustomCursor(c);
+			//displayListWithCustomCursor(c);
 
 			/* */
 			TextView tvTotal = (TextView) findViewById(R.id.tvTotal);
@@ -90,20 +99,16 @@ public class ActivityDisplayName_Developer extends Activity implements OnClickLi
 
 	/** */
 	public void displayList(List<M_Name> name) {
-		lsName = (ListView) findViewById(R.id.lv_alphabet);
-		final NameAdapter na = new NameAdapter(this, name);
+		lsName = (RecyclerView) findViewById(R.id.lv_alphabet);
+		RecycleViewAdapter na = new RecycleViewAdapter(this, name);
+		
+		
 		lsName.setAdapter(na);
+		
+		lsName.setLayoutManager(new  LinearLayoutManager(this));
 	}
 
-	/** For Testing of Cursor Adapter */
-	public void displayListWithCustomCursor(Cursor c) {
-		lsName = (ListView) findViewById(R.id.lv_alphabet);
-
-		adapter = new NameCursorAdapter(this, c);
-		lsName.setAdapter(adapter);
-
-		// listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-	}
+	
 
 	@Override
 	public void onClick(View v) {
@@ -123,14 +128,7 @@ public class ActivityDisplayName_Developer extends Activity implements OnClickLi
 					TableContract.Name.NAME_EN, TableContract.Name.NAME_MA, TableContract.Name.NAME_FRE,
 					TableContract.Name.GENDER_CAST }, where);
 
-			// adapter.swapCursor(c);
-			// adapter.notifyDataSetChanged();
-
-			/** */
-			if (c != null && c.getCount() > 0) {
-				lsName.setAdapter(new NameCursorAdapter(ActivityDisplayName_Developer.this, c));
-				lsName.invalidate();
-			}
+			
 
 			break;
 
@@ -146,15 +144,7 @@ public class ActivityDisplayName_Developer extends Activity implements OnClickLi
 					TableContract.Name.NAME_EN, TableContract.Name.NAME_MA, TableContract.Name.NAME_FRE,
 					TableContract.Name.GENDER_CAST }, where);
 
-			/** At the time of publishing keep this one as code */
-			// adapter.swapCursor(c);
-			// adapter.notifyDataSetChanged();
-
-			/** At the time of Developemnt keep this in Code */
-			if (c != null && c.getCount() > 0) {
-				lsName.setAdapter(new NameCursorAdapter(ActivityDisplayName_Developer.this, c));
-				lsName.invalidate();
-			}
+			
 			break;
 
 		case R.id.tvHindi:
@@ -169,13 +159,7 @@ public class ActivityDisplayName_Developer extends Activity implements OnClickLi
 					TableContract.Name.NAME_EN, TableContract.Name.NAME_MA, TableContract.Name.NAME_FRE,
 					TableContract.Name.GENDER_CAST }, where);
 
-			// adapter.swapCursor(c);
-			// adapter.notifyDataSetChanged();
-
-			if (c != null && c.getCount() > 0) {
-				lsName.setAdapter(new NameCursorAdapter(ActivityDisplayName_Developer.this, c));
-				lsName.invalidate();
-			}
+			
 			break;
 		}
 
@@ -209,6 +193,36 @@ public class ActivityDisplayName_Developer extends Activity implements OnClickLi
 //		tvTotal.setText("Total unique word in this group is " + (in - count));
 	}
 
+	/** */
+	List<M_Name> parseListName(Cursor c) {
+		List<M_Name> lsName = new ArrayList<M_Name>();
+		if (c != null && c.getCount() > 0) {
+			c.moveToFirst();
+			do {
+				int id = c.getInt(c.getColumnIndex(TableContract.Name.AUTO_ID));
+
+				String en = c.getString(c.getColumnIndex(TableContract.Name.NAME_EN));
+				String ma = c.getString(c.getColumnIndex(TableContract.Name.NAME_MA));
+				int fre = c.getInt(c.getColumnIndex(TableContract.Name.NAME_FRE));
+
+				String s = c.getString(c.getColumnIndex(TableContract.Name.GENDER_CAST));
+
+				/* Considering default value as -1 */
+				String desc = "-1";
+				if (s != null && s.length() > 0)
+					desc = s;
+
+				M_Name temp = new M_Name(ma, en, fre, id, desc);
+				lsName.add(temp);
+			} while (c.moveToNext());
+
+			/** Close database */
+			c.close();
+		}
+		return lsName;
+	}
+
+	
 	@Override
 	protected void onPause() {
 		super.onPause();

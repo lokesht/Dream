@@ -14,6 +14,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.support.v4.content.CursorLoader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,8 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 
 public class NameCursorAdapter extends CursorAdapter {
 
+	private final String  TAG= "NameCursorAdapter";
+	
 	/** Holds All categorized Men and Women which are not marked yet */
 	public static HashMap<Integer, String> lsNameMarked = new HashMap<Integer, String>();
 
@@ -42,7 +45,7 @@ public class NameCursorAdapter extends CursorAdapter {
 
 	@Override
 	public int getViewTypeCount() {
-		return getCount();
+		return 1;
 	}
 
 	@Override
@@ -54,13 +57,14 @@ public class NameCursorAdapter extends CursorAdapter {
 	public void bindView(final View view, final Context context, final Cursor c) {
 		final ViewHolder holder = (ViewHolder) view.getTag();
 
+		int _id = c.getInt(c.getColumnIndex(TableContract.Name.AUTO_ID));
 		// use the holder to assign values to the elements
 		holder.c1.setText((c.getPosition() + 1) + " " + c.getString(c.getColumnIndex(TableContract.Name.NAME_EN)));
 		holder.c2.setText(c.getString(c.getColumnIndex(TableContract.Name.NAME_MA)));
 		holder.c3.setText(c.getString(c.getColumnIndex(TableContract.Name.NAME_FRE)));
 
+		//Log.i(TAG+" bindView", c.getPosition()+"-"+_id);
 		/** Holds Key listener */
-		/** */
 		holder.ll.setOnLongClickListener(new OnLongClickListener() {
 
 			@Override
@@ -157,15 +161,25 @@ public class NameCursorAdapter extends CursorAdapter {
 				}
 
 				if (gender_cast > -1) {
-
+					
 					/** Method 1: to Find view Postion*/
+					
 					// View parentRow = (View) view.getParent();
 					// ListView listView = (ListView) parentRow;
 					// final int position = listView.getPositionForView(view);
 
 					/** Method 2: to Find Postion by Tagging with Object */
 					Object obj = holder.rg.getTag();
+					if(obj!=null)
+					{
+						
 					int id = Integer.parseInt(obj.toString());
+					//Log.i(TAG+" bindView", id+" "+gender_cast);
+					lsNameMarked.put(id, gender_cast + "");
+					
+					if(gender_cast>0)
+						view.setBackgroundColor(Color.GRAY);
+					}
 
 					/** Method 3: to get Value and then query from database*/
 					// TextView t = (TextView) view.findViewById(R.id.c1);
@@ -177,7 +191,7 @@ public class NameCursorAdapter extends CursorAdapter {
 					// int j = c.getPosition();
 					// int id = c.getInt(c.getColumnIndex(TableContract.Name.AUTO_ID));
 
-					lsNameMarked.put(id, gender_cast + "");
+					
 
 					// DBHelper dbtemp = new DBHelper(context);
 					// ContentValues cv = new ContentValues();
@@ -198,16 +212,38 @@ public class NameCursorAdapter extends CursorAdapter {
 		});
 
 		/** By Default make Name as male*/
-	    holder.rg.check(R.id.rbMale);
-		
-		/** Saving id and gender = Male by Default */
-		//int id = c.getInt(c.getColumnIndex(TableContract.Name.AUTO_ID));
-		//lsNameMarked.put(id, 0 + "");
+		holder.rg.setTag(_id);
+		String saved = lsNameMarked.get(_id);
+		if(saved!=null)
+		{
+			switch(Integer.parseInt(saved))
+			{
+			case 0:
+				holder.rg.check(R.id.rbMale);
+				break;
+			case 1:
+				holder.rg.check(R.id.rbFeMale);
+				break;
+			case 2:
+				holder.rg.check(R.id.rbBoth);
+				break;
+			case 3:
+				holder.rg.check(R.id.rbCast);
+				break;
+			case 100:
+				holder.rg.check(R.id.rbDelete);
+				break;
+			}
+		}else
+		{
+			holder.rg.check(R.id.rbMale);
+		}
+	   
 	}
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-
+		Log.i(TAG+" newView", cursor.getInt(cursor.getColumnIndex(TableContract.Name.AUTO_ID))+"");
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View convertView = inflater.inflate(R.layout.item_list_name, null, false);
 
@@ -225,8 +261,8 @@ public class NameCursorAdapter extends CursorAdapter {
 		holder.ivSmile = (ImageView) convertView.findViewById(R.id.ivSmily);
 
 		/** Tag Id of Row */
-		int id = cursor.getInt(cursor.getColumnIndex(TableContract.Name.AUTO_ID));
-		holder.rg.setTag(id);
+		//int id = cursor.getInt(cursor.getColumnIndex(TableContract.Name.AUTO_ID));
+		//holder.rg.setTag(id);
 		convertView.setTag(holder);
 
 		return convertView;

@@ -2,6 +2,7 @@ package in.sel.adapter;
 
 import in.sel.customview.BadgeView;
 import in.sel.indianbabyname.ActivityDisplayName_Developer;
+import in.sel.indianbabyname.ActivityDisplayName_Developer_Recycler;
 import in.sel.indianbabyname.ActivityMain;
 import in.sel.indianbabyname.R;
 import in.sel.utility.Utility;
@@ -85,7 +86,7 @@ public class AlphaGridAdapter extends BaseAdapter {
 				selectedText = vh.b;
 				String alp = vh.tvAlpha.getText().toString();
 				
-				Intent in = new Intent(mInflator.getContext(),ActivityDisplayName_Developer.class);
+				Intent in = new Intent(mInflator.getContext(),ActivityDisplayName_Developer_Recycler.class);
 				in.putExtra(ActivityMain.ALPHA, alp);
 				mInflator.getContext().startActivity(in);
 

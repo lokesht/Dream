@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="22" />
 
     <application
       android:screenOrientation="portrait"
@@ -28,6 +28,7 @@
         <activity android:name="in.sel.indianbabyname.ActivityDisplayName_User" />
         <activity android:name="in.sel.indianbabyname.DepricatedActivityDisplayName"></activity>
          <activity android:name="in.sel.indianbabyname.ActivityAbout" />
+         <activity android:name=".ActivityDisplayName_Developer_Recycler"></activity>
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
